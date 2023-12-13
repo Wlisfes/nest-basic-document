@@ -8,20 +8,16 @@ export default defineNuxtConfig({
         port: 7000,
         host: '0.0.0.0'
     },
+    css: ['@/assets/css/index.scss'],
     build: {
-        transpile: ['naive-ui', 'vueuc', '@css-render/vue3-ssr', '@juggle/resize-observer']
+        transpile: ['@juggle/resize-observer']
     },
     vite: {
         plugins: [
             Components({
-                resolvers: [NaiveUiResolver()] // Automatically register all components in the `components` directory
+                resolvers: [NaiveUiResolver()]
             })
         ],
-        ssr: {
-            noExternal: ['moment', 'naive-ui', '@juggle/resize-observer', '@css-render/vue3-ssr']
-        },
-        vue: { customElement: true },
-        vueJsx: { mergeProps: true },
         optimizeDeps: {
             include: ['naive-ui', 'vueuc', 'date-fns-tz/formatInTimeZone']
         }
