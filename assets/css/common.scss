@@ -1,0 +1,22 @@
+.n-chunk {
+    position: relative;
+    display: flex;
+    &.n-auto {
+        flex: 1;
+    }
+    &.n-column {
+        flex-direction: column;
+    }
+    &.n-center {
+        align-items: center;
+    }
+    &.n-middle {
+        justify-content: center;
+    }
+    &.n-end {
+        justify-content: flex-end;
+    }
+    &.n-space {
+        justify-content: space-between;
+    }
+}
