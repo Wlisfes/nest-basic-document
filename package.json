@@ -19,6 +19,7 @@
     "dependencies": {
         "@css-render/vue3-ssr": "^0.15.12",
         "naive-ui": "^2.35.0",
+        "normalize.css": "^8.0.1",
         "unplugin-vue-components": "^0.26.0",
         "vueuc": "^0.4.51"
     }

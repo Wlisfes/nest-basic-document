@@ -1,6 +1,9 @@
+@import 'normalize.css';
+@import './layout.scss';
+
 html,
 body,
-#app {
+#__nuxt {
     height: 100%;
     overflow: hidden;
     position: relative;

@@ -1,9 +1,13 @@
 <template>
     <n-config-provider abstract inline-theme-disabled>
-        <div>
-            <n-button>1231231</n-button>
-        </div>
+        <NuxtLayout>
+            <NuxtPage />
+        </NuxtLayout>
     </n-config-provider>
 </template>
 
-<script setup></script>
+<script lang="ts" setup>
+useSeoMeta({
+    title: 'Hello word'
+})
+</script>
