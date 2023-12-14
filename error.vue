@@ -14,10 +14,19 @@ export default defineComponent({
         }))
 
         return () => (
-            <section class="common-provider n-chunk n-center n-middle">
-                <img src="/image/1702567045588.jpg" alt="404 Not Found" />
-                <img src="~/assets/image/1702567045588.jpg" alt="404 Not Found" />
-            </section>
+            <n-config-provider abstract inline-theme-disabled>
+                <n-element class="common-provider n-chunk n-column n-center n-middle">
+                    <n-image preview-disabled src="/image/1702567045588.jpg" alt="404 Not Found" style={{ marginBottom: '40px' }} />
+                    <n-button
+                        size="large"
+                        type="primary"
+                        style={{ fontSize: '22px', height: '48px', padding: '0 24px' }}
+                        onClick={async (evt: Event) => await navigateTo('/document')}
+                    >
+                        回到首页
+                    </n-button>
+                </n-element>
+            </n-config-provider>
         )
     }
 })
@@ -25,6 +34,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .common-provider {
+    padding: 24px;
+    box-sizing: border-box;
     &::before {
         content: '';
         position: absolute;
@@ -35,8 +46,10 @@ export default defineComponent({
         background: linear-gradient(45deg, #00dc82 0%, #36e4da 50%, #0047e1 100%);
         filter: blur(20vh);
     }
-    img {
-        width: 640px;
+    .n-image,
+    .n-image :deep(img) {
+        width: 100%;
+        max-width: 640px;
         display: block;
     }
 }
