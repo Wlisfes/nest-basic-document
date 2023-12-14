@@ -14,23 +14,30 @@ export default defineComponent({
         }))
 
         return () => (
-            <n-config-provider abstract inline-theme-disabled locale={zhCN} date-locale={dateZhCN} theme={darkTheme}>
-                <n-layout
-                    style={{ height: '100%', overflow: 'hidden', position: 'relative' }}
-                    content-style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
-                >
-                    <n-result style={{ margin: 'auto' }} size="huge" status={err.value.statusCode} title={err.value.message}>
-                        {{
-                            footer: () => (
-                                <n-button strong secondary type="primary">
-                                    <nuxt-link to="/document">Home</nuxt-link>
-                                </n-button>
-                            )
-                        }}
-                    </n-result>
-                </n-layout>
-            </n-config-provider>
+            <section class="common-provider n-chunk n-center n-middle">
+                <img src="/image/1702567045588.jpg" alt="404 Not Found" />
+                <img src="~/assets/image/1702567045588.jpg" alt="404 Not Found" />
+            </section>
         )
     }
 })
 </script>
+
+<style lang="scss" scoped>
+.common-provider {
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -30%;
+        height: 40%;
+        background: linear-gradient(45deg, #00dc82 0%, #36e4da 50%, #0047e1 100%);
+        filter: blur(20vh);
+    }
+    img {
+        width: 640px;
+        display: block;
+    }
+}
+</style>

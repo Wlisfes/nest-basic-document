@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
+import { fileURLToPath, URL } from 'node:url'
 
 function createBuilderTranspile(NODE_ENV: string) {
     if (NODE_ENV === 'production') {
@@ -24,7 +25,10 @@ export default defineNuxtConfig({
     devtools: {
         enabled: process.env.NODE_ENV === 'development'
     },
-    css: ['@/assets/css/index.scss'],
+    alias: {
+        '~image': fileURLToPath(new URL('./assets/image', import.meta.url))
+    },
+    css: ['@/assets/scss/index.scss'],
     build: {
         transpile: createBuilderTranspile(process.env.NODE_ENV as string)
     },
