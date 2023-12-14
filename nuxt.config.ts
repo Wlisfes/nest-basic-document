@@ -17,10 +17,12 @@ function createViteOptimizeInclude(NODE_ENV: string) {
 }
 
 export default defineNuxtConfig({
-    devtools: { enabled: process.env.NODE_ENV === 'development' },
     devServer: {
         port: 7000,
         host: '0.0.0.0'
+    },
+    devtools: {
+        enabled: process.env.NODE_ENV === 'development'
     },
     css: ['@/assets/css/index.scss'],
     build: {

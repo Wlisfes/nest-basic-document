@@ -17,13 +17,9 @@ export default defineComponent({
                     style={{ overflow: 'hidden', position: 'relative' }}
                     native-scrollbar={false}
                     scrollbar-props={{ trigger: 'none' }}
-                    bordered={true}
                 >
                     {slots.default?.()}
                 </n-layout-content>
-                <n-layout-footer style={{ height: '60px' }} bordered={true}>
-                    footer
-                </n-layout-footer>
             </n-layout>
         )
     }

@@ -11,6 +11,7 @@
     },
     "devDependencies": {
         "@nuxt/devtools": "latest",
+        "@css-render/vue3-ssr": "^0.15.12",
         "nuxt": "^3.8.2",
         "sass": "^1.69.5",
         "vue": "^3.3.10",
@@ -19,8 +20,5 @@
         "normalize.css": "^8.0.1",
         "unplugin-vue-components": "^0.26.0",
         "vueuc": "^0.4.51"
-    },
-    "dependencies": {
-        "@css-render/vue3-ssr": "^0.15.12"
     }
 }
