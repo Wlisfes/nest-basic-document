@@ -1,9 +1,5 @@
 <template>
-    <n-config-provider abstract inline-theme-disabled>
-        <NuxtLayout>
-            <NuxtPage />
-        </NuxtLayout>
-    </n-config-provider>
+    <NuxtWelcome />
 </template>
 
 <script lang="ts" setup>
