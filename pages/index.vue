@@ -4,11 +4,6 @@ import { defineComponent } from 'vue'
 export default defineComponent({
     name: 'Index',
     setup(props, { slots }) {
-        showError({
-            statusCode: 404,
-            message: '404'
-        })
-
         return () => (
             <div>
                 <n-space>

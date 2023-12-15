@@ -1,7 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
-import { fileURLToPath, URL } from 'node:url'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import Components from 'unplugin-vue-components/vite'
+import path from 'path'
 
 function createBuilderTranspile(NODE_ENV: string) {
     if (NODE_ENV === 'production') {
@@ -18,17 +19,14 @@ function createViteOptimizeInclude(NODE_ENV: string) {
 }
 
 export default defineNuxtConfig({
+    devtools: {
+        enabled: process.env.NODE_ENV === 'development'
+    },
     devServer: {
         port: 7000,
         host: '0.0.0.0'
     },
-    devtools: {
-        enabled: process.env.NODE_ENV === 'development'
-    },
-    alias: {
-        '~image': fileURLToPath(new URL('./assets/image', import.meta.url))
-    },
-    css: ['@/assets/scss/index.scss'],
+    css: ['~/assets/scss/index.scss', '~/assets/scss/layout.scss', '~/assets/scss/common.scss'],
     build: {
         transpile: createBuilderTranspile(process.env.NODE_ENV as string)
     },
@@ -36,6 +34,10 @@ export default defineNuxtConfig({
         plugins: [
             Components({
                 resolvers: [NaiveUiResolver()]
+            }),
+            createSvgIconsPlugin({
+                iconDirs: [path.resolve(process.cwd(), 'assets/icons')],
+                symbolId: 'icon-[name]'
             })
         ],
         optimizeDeps: {
@@ -44,8 +46,12 @@ export default defineNuxtConfig({
     },
     app: {
         head: {
-            charset: 'utf-8',
-            viewport: 'width=device-width, initial-scale=1'
+            title: '妖雨录',
+            meta: [
+                { charset: 'utf-8' },
+                { name: 'description', content: '这是我的神奇网站，让我告诉你关于它的一切' },
+                { name: 'viewport', content: 'width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no' }
+            ]
         }
     }
 })

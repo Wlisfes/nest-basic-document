@@ -16,7 +16,7 @@ export default defineComponent({
         return () => (
             <n-config-provider abstract inline-theme-disabled>
                 <n-element class="layout-provider n-chunk n-column n-center n-middle">
-                    <n-image preview-disabled src="/image/1702567045588.jpg" alt="404 Not Found" style={{ marginBottom: '40px' }} />
+                    <common-wrapper size={414} name="404"></common-wrapper>
                     <n-button
                         size="large"
                         type="primary"
@@ -34,23 +34,17 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .layout-provider {
-    padding: 24px;
     box-sizing: border-box;
+    padding-bottom: 10vh;
     &::before {
         content: '';
         position: absolute;
         left: 0;
         right: 0;
-        bottom: -30%;
-        height: 40%;
+        bottom: -50%;
+        height: 50%;
         background: linear-gradient(45deg, #00dc82 0%, #36e4da 50%, #0047e1 100%);
         filter: blur(20vh);
-    }
-    .n-image,
-    .n-image :deep(img) {
-        width: 100%;
-        max-width: 640px;
-        display: block;
     }
 }
 </style>
