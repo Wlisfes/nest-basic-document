@@ -14,19 +14,23 @@ export default defineComponent({
         }))
 
         return () => (
-            <n-config-provider abstract inline-theme-disabled>
-                <n-element class="layout-provider n-chunk n-column n-center n-middle">
-                    <common-wrapper size={414} name="404"></common-wrapper>
-                    <n-button
-                        size="large"
-                        type="primary"
-                        style={{ fontSize: '22px', height: '48px', padding: '0 24px' }}
-                        onClick={async (evt: Event) => await navigateTo('/document')}
-                    >
-                        回到首页
-                    </n-button>
-                </n-element>
-            </n-config-provider>
+            <client-only>
+                <n-config-provider abstract inline-theme-disabled>
+                    {err.value.statusCode == 404 && (
+                        <n-element class="layout-provider n-chunk n-column n-center n-middle">
+                            <common-wrapper size={375} name="404"></common-wrapper>
+                            <n-button
+                                size="large"
+                                type="primary"
+                                style={{ fontSize: '18px', height: '44px', padding: '0 20px' }}
+                                onClick={async (evt: Event) => await navigateTo('/document')}
+                            >
+                                回到首页
+                            </n-button>
+                        </n-element>
+                    )}
+                </n-config-provider>
+            </client-only>
         )
     }
 })

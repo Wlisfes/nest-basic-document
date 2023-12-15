@@ -5,7 +5,7 @@ export default defineComponent({
     name: 'Index',
     setup(props, { slots }) {
         return () => (
-            <div>
+            <n-element class="layout-provider">
                 <n-space>
                     <n-button>
                         <nuxt-link to="/document">Document</nuxt-link>
@@ -17,7 +17,7 @@ export default defineComponent({
                     <n-button type="warning">Warning</n-button>
                     <n-button type="error">Error</n-button>
                 </n-space>
-            </div>
+            </n-element>
         )
     }
 })

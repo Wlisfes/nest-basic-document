@@ -26,6 +26,7 @@ export default defineNuxtConfig({
         port: 7000,
         host: '0.0.0.0'
     },
+    modules: ['@pinia/nuxt'],
     css: ['~/assets/scss/index.scss', '~/assets/scss/layout.scss', '~/assets/scss/common.scss'],
     build: {
         transpile: createBuilderTranspile(process.env.NODE_ENV as string)
