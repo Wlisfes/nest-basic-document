@@ -15,7 +15,7 @@ export default defineComponent({
 
         return () => (
             <n-config-provider abstract inline-theme-disabled>
-                <n-element class="common-provider n-chunk n-column n-center n-middle">
+                <n-element class="layout-provider n-chunk n-column n-center n-middle">
                     <n-image preview-disabled src="/image/1702567045588.jpg" alt="404 Not Found" style={{ marginBottom: '40px' }} />
                     <n-button
                         size="large"
@@ -33,7 +33,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.common-provider {
+.layout-provider {
     padding: 24px;
     box-sizing: border-box;
     &::before {
