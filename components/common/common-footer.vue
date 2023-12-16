@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { createVNode, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
     name: 'CommonFooter',
@@ -9,17 +9,20 @@ export default defineComponent({
                 <n-p style={{ textAlign: 'center' }}>
                     <n-text style={{ margin: '0 8px' }}>
                         <n-text>Copyright © 2021-2024 Lisfes - </n-text>
-                        <n-a type="default" target="_blank" href="https://github.com/Wlisfes/nest-basic-document/blob/master/LICENSE">
-                            MIT License
+                        <n-a target="_blank" href="https://github.com/Wlisfes/nest-basic-document/blob/master/LICENSE">
+                            <n-button text focusable={false}>
+                                MIT License
+                            </n-button>
                         </n-a>
                     </n-text>
                     <n-a
                         style={{ whiteSpace: 'nowrap', margin: '0 8px' }}
-                        type="default"
                         target="_blank"
                         href="https://beian.miit.gov.cn/#/Integrated/index"
                     >
-                        粤ICP备18016996号-1
+                        <n-button text focusable={false}>
+                            粤ICP备18016996号-1
+                        </n-button>
                     </n-a>
                 </n-p>
             </n-layout-footer>
@@ -32,13 +35,5 @@ export default defineComponent({
 .common-footer {
     height: 60px;
     padding: 0 16px;
-    .n-a {
-        text-decoration: none;
-        color: var(--text-color-2);
-        text-decoration-color: var(--text-color-2);
-        &:hover {
-            text-decoration: underline;
-        }
-    }
 }
 </style>
