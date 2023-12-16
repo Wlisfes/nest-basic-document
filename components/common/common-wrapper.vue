@@ -1,5 +1,4 @@
 <script lang="tsx">
-import { zhCN, dateZhCN, darkTheme } from 'naive-ui'
 import { createVNode, defineComponent } from 'vue'
 
 export default defineComponent({
