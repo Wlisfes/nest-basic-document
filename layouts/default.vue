@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { defineComponent, computed, onMounted, type CSSProperties } from 'vue'
+import { defineComponent, computed, type CSSProperties } from 'vue'
 
 export default defineComponent({
     name: 'BaseLayout',
@@ -9,16 +9,14 @@ export default defineComponent({
             position: 'relative',
             minHeight: '100%',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            zIndex: 2
         }))
-
-        onMounted(() => {
-            console.log(window)
-        })
 
         return () => (
             <client-only>
                 <n-layout class="layout-provider" content-style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                    <common-ribbon></common-ribbon>
                     <common-header></common-header>
                     <n-layout-content content-style={contentStyle.value} native-scrollbar={false} scrollbar-props={{ trigger: 'none' }}>
                         <n-element class="layout-pager n-chunk n-column n-auto">{slots.default?.()}</n-element>
