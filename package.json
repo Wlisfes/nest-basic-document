@@ -9,20 +9,21 @@
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare"
     },
+    "dependencies": {
+        "@pinia/nuxt": "^0.5.1",
+        "@vueuse/nuxt": "^10.7.0",
+        "vue": "^3.3.10",
+        "vue-router": "^4.2.5",
+        "naive-ui": "^2.35.0",
+        "normalize.css": "^8.0.1"
+    },
     "devDependencies": {
         "@css-render/vue3-ssr": "^0.15.12",
         "@nuxt/devtools": "latest",
-        "naive-ui": "^2.35.0",
-        "normalize.css": "^8.0.1",
+        "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
         "nuxt": "^3.8.2",
         "sass": "^1.69.5",
         "unplugin-vue-components": "^0.26.0",
-        "vite-plugin-svg-icons": "^2.0.1",
-        "vue": "^3.3.10",
-        "vue-router": "^4.2.5",
-        "vueuc": "^0.4.51"
-    },
-    "dependencies": {
-        "@pinia/nuxt": "^0.5.1"
+        "vite-plugin-svg-icons": "^2.0.1"
     }
 }

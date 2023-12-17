@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
 export const useConfiger = defineStore('configer', {
+    persist: true,
     state: () => ({
         theme: 'light',
         primaryColor: '#18a058'
