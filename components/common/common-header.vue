@@ -8,8 +8,8 @@ export default defineComponent({
         const { inverted, setTheme } = useProvider()
 
         return () => (
-            <n-layout-header class="common-header">
-                <n-element class="common-header__container n-chunk n-center">
+            <n-layout-header class="common-header" style={{ height: '60px' }}>
+                <n-element class="layout-pager n-chunk n-center">
                     <n-space size={20} wrap-item={false} align="center" justify="space-between" style={{ width: '100%' }}>
                         <n-button text focusable={false}>
                             <common-wrapper size={40} name="Nuxt"></common-wrapper>
@@ -32,17 +32,3 @@ export default defineComponent({
     }
 })
 </script>
-
-<style scoped lang="scss">
-.common-header {
-    height: 60px;
-    &__container {
-        width: 100%;
-        height: 100%;
-        max-width: 1280px;
-        margin: 0 auto;
-        box-sizing: border-box;
-        padding: 0 16px;
-    }
-}
-</style>
