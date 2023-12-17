@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { defineComponent, computed, type CSSProperties } from 'vue'
+import { defineComponent, computed, onMounted, type CSSProperties } from 'vue'
 
 export default defineComponent({
     name: 'BaseLayout',
@@ -11,6 +11,10 @@ export default defineComponent({
             display: 'flex',
             flexDirection: 'column'
         }))
+
+        onMounted(() => {
+            console.log(window)
+        })
 
         return () => (
             <client-only>
