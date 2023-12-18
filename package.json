@@ -12,10 +12,11 @@
     "dependencies": {
         "@pinia/nuxt": "^0.5.1",
         "@vueuse/nuxt": "^10.7.0",
-        "vue": "^3.3.10",
-        "vue-router": "^4.2.5",
         "naive-ui": "^2.35.0",
-        "normalize.css": "^8.0.1"
+        "normalize.css": "^8.0.1",
+        "typeorm": "^0.3.17",
+        "vue": "^3.3.10",
+        "vue-router": "^4.2.5"
     },
     "devDependencies": {
         "@css-render/vue3-ssr": "^0.15.12",
