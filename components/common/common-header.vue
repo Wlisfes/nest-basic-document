@@ -11,19 +11,21 @@ export default defineComponent({
             <n-layout-header class="common-header" style={{ height: '60px' }}>
                 <n-element class="layout-pager n-chunk n-center">
                     <n-space size={20} wrap-item={false} align="center" justify="space-between" style={{ width: '100%' }}>
-                        <n-button text focusable={false}>
-                            <common-wrapper size={40} name="Nuxt"></common-wrapper>
-                            <n-h2 style={{ margin: 0, fontWeight: 600, padding: '8px 5px 0' }}>Document</n-h2>
-                        </n-button>
+                        <nuxt-link to="/">
+                            <n-button text focusable={false}>
+                                <common-wrapper size={40} name="Nuxt"></common-wrapper>
+                                <n-h2 style={{ margin: 0, fontWeight: 600, padding: '8px 5px 0' }}>Document</n-h2>
+                            </n-button>
+                        </nuxt-link>
                         <n-space size={16} wrap-item={false} align="center">
                             <n-button text focusable={false} onClick={(e: Event) => setTheme(inverted.value ? 'light' : 'dark')}>
                                 <common-wrapper size={28} name={inverted.value ? 'ThemeDark' : 'ThemeLight'}></common-wrapper>
                             </n-button>
-                            <n-a type="default" target="_blank" href="https://github.com/Wlisfes/nest-basic-document">
+                            <nuxt-link target="_blank" href="https://github.com/Wlisfes/nest-basic-document">
                                 <n-button text focusable={false}>
                                     <common-wrapper size={28} name="Github"></common-wrapper>
                                 </n-button>
-                            </n-a>
+                            </nuxt-link>
                         </n-space>
                     </n-space>
                 </n-element>

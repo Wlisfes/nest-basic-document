@@ -19,15 +19,14 @@ function createViteOptimizeInclude(NODE_ENV: string) {
 }
 
 export default defineNuxtConfig({
-    devtools: {
-        enabled: false
-    },
+    ssr: true,
+    devtools: { enabled: false },
+    modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@vueuse/nuxt'],
+    css: ['~/assets/scss/index.scss', '~/assets/scss/layout.scss', '~/assets/scss/common.scss'],
     devServer: {
         port: 7000,
         host: '0.0.0.0'
     },
-    modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@vueuse/nuxt'],
-    css: ['~/assets/scss/index.scss', '~/assets/scss/layout.scss', '~/assets/scss/common.scss'],
     build: {
         transpile: createBuilderTranspile(process.env.NODE_ENV as string)
     },
@@ -47,11 +46,11 @@ export default defineNuxtConfig({
     },
     app: {
         head: {
-            title: '妖雨录',
+            titleTemplate: '妖雨录 - %s',
             meta: [
                 { charset: 'utf-8' },
-                { name: 'description', content: '这是我的神奇网站，让我告诉你关于它的一切' },
-                { name: 'viewport', content: 'width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no' }
+                { name: 'viewport', content: 'width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no' },
+                { name: 'description', content: '妖雨录|这是我的神奇网站，让我告诉你关于它的一切。' }
             ]
         }
     }

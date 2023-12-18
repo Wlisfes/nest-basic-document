@@ -5,26 +5,22 @@ export default defineComponent({
     name: 'CommonFooter',
     setup(props) {
         return () => (
-            <n-layout-footer class="common-footer" style={{ height: '60px' }}>
+            <n-layout-footer class="common-footer" style={{ height: '50px' }}>
                 <n-element class="layout-pager n-chunk n-center n-middle">
-                    <n-p style={{ textAlign: 'center' }}>
+                    <n-p style={{ textAlign: 'center', fontSize: '12px' }}>
                         <n-text style={{ margin: '0 8px' }}>
                             <n-text>Copyright © 2021-2024 Lisfes - </n-text>
-                            <n-a target="_blank" href="https://github.com/Wlisfes/nest-basic-document/blob/master/LICENSE">
-                                <n-button text focusable={false}>
+                            <nuxt-link target="_blank" href="https://github.com/Wlisfes/nest-basic-document/blob/master/LICENSE">
+                                <n-button text focusable={false} style={{ fontSize: '12px' }}>
                                     MIT License
                                 </n-button>
-                            </n-a>
+                            </nuxt-link>
                         </n-text>
-                        <n-a
-                            style={{ whiteSpace: 'nowrap', margin: '0 8px' }}
-                            target="_blank"
-                            href="https://beian.miit.gov.cn/#/Integrated/index"
-                        >
-                            <n-button text focusable={false}>
+                        <nuxt-link style={{ whiteSpace: 'nowrap', margin: '0 8px' }} target="_blank" href="https://beian.miit.gov.cn">
+                            <n-button text focusable={false} style={{ fontSize: '12px' }}>
                                 粤ICP备18016996号-1
                             </n-button>
-                        </n-a>
+                        </nuxt-link>
                     </n-p>
                 </n-element>
             </n-layout-footer>
