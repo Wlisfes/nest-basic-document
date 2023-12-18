@@ -1,8 +1,7 @@
 <script lang="tsx">
 import { defineComponent, onMounted } from 'vue'
 import { useCurrentElement } from '@vueuse/core'
-// import '@/assets/js/ribbon.min'
-import { createRibboner } from '@/assets/js/ribbon'
+import { createRibboner } from '@/assets/js/ribbon.min'
 
 export default defineComponent({
     name: 'CommonRibbon',
@@ -10,11 +9,7 @@ export default defineComponent({
         const element = useCurrentElement()
 
         onMounted(() => {
-            createRibboner(element.value, {
-                zIndex: 1,
-                size: 90,
-                alpha: 0.6
-            })
+            createRibboner(element.value)
         })
         return () => <div class="common-ribbon"></div>
     }
@@ -30,5 +25,6 @@ export default defineComponent({
     bottom: 60px;
     overflow: hidden;
     z-index: 1;
+    background-color: rgba(255, 0, 0, 0.05);
 }
 </style>

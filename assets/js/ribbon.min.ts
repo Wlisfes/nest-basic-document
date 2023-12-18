@@ -3,14 +3,11 @@
  * Creates low-poly ribbons background effect inside a target container.
  * https://www.jq22.com/jquery-info21392
  */
-;(function (name, factory) {
-    if (typeof window === 'object') {
-        window[name] = factory()
-    }
-})('Ribbons', function () {
+//@ts-nocheck
+export function createRibboner(element) {
     var _w = window,
-        _b = document.body, //杩斿洖html dom涓殑body鑺傜偣 鍗�<body>
-        _d = document.documentElement //杩斿洖html dom涓殑root 鑺傜偣 鍗�<html>
+        _b = document.body, //返回html dom中的body节点 即<body>
+        _d = document.documentElement //返回html dom中的root 节点 即<html>
 
     // random helper
     var random = function () {
@@ -118,8 +115,7 @@
     }
 
     // class constructor
-    var Factory = function (element, options) {
-        this._element = element
+    var Factory = function (options) {
         this._canvas = null
         this._context = null
         this._sto = null
@@ -141,7 +137,7 @@
             // how fast to get to the other side of the screen
             horizontalSpeed: 200,
             // how many ribbons to keep on screen at any given time
-            ribbonCount: 3,
+            ribbonCount: 5,
             // add stroke along with ribbon fill colors
             strokeSize: 0,
             // move ribbons vertically by a factor on page scroll
@@ -176,18 +172,8 @@
         init: function () {
             try {
                 this._canvas = document.createElement('canvas')
-                this._canvas.style['display'] = 'block'
-                this._canvas.style['position'] = 'fixed'
-                this._canvas.style['margin'] = '0'
-                this._canvas.style['padding'] = '0'
-                this._canvas.style['border'] = '0'
-                this._canvas.style['outline'] = '0'
-                this._canvas.style['left'] = '0'
-                this._canvas.style['top'] = '0'
-                this._canvas.style['width'] = '100%'
-                this._canvas.style['height'] = '100%'
-                this._canvas.style['z-index'] = '-1'
-                this._canvas.style['background-color'] = '#1f1f1f'
+                this._canvas.width = element.clientWidth
+                this._canvas.height = element.clientHeight
                 this._canvas.id = 'bgCanvas'
                 this._onResize()
 
@@ -198,7 +184,7 @@
                 window.addEventListener('resize', this._onResize)
                 window.addEventListener('scroll', this._onScroll)
                 // document.body.appendChild(this._canvas)
-                this._element.appendChild(this._canvas)
+                element.appendChild(this._canvas)
             } catch (e) {
                 console.warn('Canvas Context Error: ' + e.toString())
                 return
@@ -380,9 +366,8 @@
 
         // Update container size info
         _onResize: function (e) {
-            var screen = screenInfo(e)
-            this._width = screen.width
-            this._height = screen.height
+            this._width = element.clientWidth
+            this._height = element.clientHeight
 
             if (this._canvas) {
                 this._canvas.width = this._width
@@ -401,6 +386,60 @@
         }
     }
     // export
-    return Factory
-})
-// new Ribbons()
+    return new Factory()
+}
+
+export async function createStaticRibboner(element: Element, config: { zIndex: number; alpha: number; size: number }) {
+    const canvas = document.createElement('canvas')
+    const g2d = canvas.getContext('2d') as CanvasRenderingContext2D
+    let pr = window.devicePixelRatio || 1
+    let width = element.clientWidth
+    let height = element.clientHeight
+    let f = config.size
+    let q: any
+    let t: any
+    let m = Math
+    let r = 0
+    let pi = m.PI * 2
+    let cos = m.cos
+    let random = m.random
+    canvas.width = width * pr
+    canvas.height = height * pr
+    g2d.scale(pr, pr)
+    g2d.globalAlpha = config.alpha
+    canvas.style.cssText = `opacity: ${config.alpha}; z-index: ${config.zIndex}; pointer-events:none;`
+    element.appendChild(canvas)
+
+    function redraw() {
+        g2d.clearRect(0, 0, width, height)
+        q = [
+            { x: 0, y: height * 0.7 + f },
+            { x: 0, y: height * 0.7 - f }
+        ]
+        while (q[1].x < width + f) draw(q[0], q[1])
+    }
+    function draw(i: any, j: any) {
+        g2d.beginPath()
+        g2d.moveTo(i.x, i.y)
+        g2d.lineTo(j.x, j.y)
+        var k = j.x + (random() * 2 - 0.25) * f,
+            n = line(j.y)
+        g2d.lineTo(k, n)
+        g2d.closePath()
+        r -= pi / -50
+        g2d.fillStyle =
+            '#' + (((cos(r) * 127 + 128) << 16) | ((cos(r + pi / 3) * 127 + 128) << 8) | (cos(r + (pi / 3) * 2) * 127 + 128)).toString(16)
+        g2d.fill()
+        q[0] = q[1]
+        q[1] = { x: k, y: n }
+    }
+
+    function line(p: any): any {
+        t = p + (random() * 2 - 1.1) * f
+        return t > height || t < 0 ? line(p) : t
+    }
+
+    document.onclick = redraw
+    document.ontouchstart = redraw
+    return redraw()
+}
