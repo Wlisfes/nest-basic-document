@@ -25,6 +25,5 @@ export default defineComponent({
     bottom: 60px;
     overflow: hidden;
     z-index: 1;
-    background-color: rgba(255, 0, 0, 0.05);
 }
 </style>

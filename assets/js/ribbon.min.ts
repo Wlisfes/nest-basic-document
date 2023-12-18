@@ -137,7 +137,7 @@ export function createRibboner(element) {
             // how fast to get to the other side of the screen
             horizontalSpeed: 200,
             // how many ribbons to keep on screen at any given time
-            ribbonCount: 5,
+            ribbonCount: 3,
             // add stroke along with ribbon fill colors
             strokeSize: 0,
             // move ribbons vertically by a factor on page scroll
