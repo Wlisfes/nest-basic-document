@@ -30,6 +30,13 @@ export default defineNuxtConfig({
     build: {
         transpile: createBuilderTranspile(process.env.NODE_ENV as string)
     },
+    nitro: {
+        hooks: {
+            'rollup:before'(ctx) {
+                ctx.options.moduleSideEffects.push('reflect-metadata')
+            }
+        }
+    },
     vite: {
         plugins: [
             Components({
