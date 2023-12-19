@@ -9,9 +9,12 @@
     height: 100%;
     max-width: 1280px;
     box-sizing: border-box;
-    padding: 0 32px;
+    padding-left: 32px;
+    padding-right: 32px;
     margin: 0 auto;
+    transition: padding-left 200ms, padding-right 200ms;
     @media (max-width: 960px) {
-        padding: 0 16px;
+        padding-left: 16px;
+        padding-right: 16px;
     }
 }
