@@ -31,9 +31,18 @@ export default defineNuxtConfig({
         transpile: createBuilderTranspile(process.env.NODE_ENV as string)
     },
     nitro: {
+        esbuild: {
+            options: {
+                tsconfigRaw: {
+                    compilerOptions: {
+                        experimentalDecorators: true
+                    }
+                }
+            }
+        },
         hooks: {
-            'rollup:before'(ctx) {
-                ctx.options.moduleSideEffects.push('reflect-metadata')
+            'rollup:before'(nitro) {
+                nitro.options.moduleSideEffects.push('reflect-metadata')
             }
         }
     },
