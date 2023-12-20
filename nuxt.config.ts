@@ -19,10 +19,15 @@ function createViteOptimizeInclude(NODE_ENV: string) {
 }
 
 export default defineNuxtConfig({
-    ssr: true,
-    devtools: { enabled: false },
     modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@vueuse/nuxt'],
     css: ['~/assets/scss/index.scss', '~/assets/scss/layout.scss', '~/assets/scss/common.scss'],
+    ssr: true,
+    devtools: {
+        enabled: false
+    },
+    experimental: {
+        writeEarlyHints: false
+    },
     devServer: {
         port: 7000,
         host: '0.0.0.0'
@@ -38,11 +43,6 @@ export default defineNuxtConfig({
                         experimentalDecorators: true
                     }
                 }
-            }
-        },
-        hooks: {
-            'rollup:before'(nitro) {
-                nitro.options.moduleSideEffects.push('reflect-metadata')
             }
         }
     },
