@@ -13,7 +13,10 @@ export default defineComponent({
         const clock = ref<HTMLDivElement>()
 
         onMounted(() => {
-            createUtilityClock(clock.value, element.value.parentElement, { max: props.max }).then(done => {
+            createUtilityClock(clock.value, element.value.parentElement, {
+                max: props.max,
+                animate: (evt: { date: string }) => false
+            }).then(done => {
                 window.addEventListener('resize', done)
             })
         })
@@ -357,7 +360,7 @@ export default defineComponent({
     .fat-hand,
     :deep(.fat-hand) {
         width: 8px;
-        height: 57px;
+        height: 50px;
         border-radius: 10px;
         background: var(--text-color-base);
         transform: translate(-50%, -100%) translateY(-18px);

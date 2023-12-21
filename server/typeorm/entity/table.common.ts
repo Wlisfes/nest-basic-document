@@ -1,5 +1,5 @@
 import { PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm'
-import { moment } from '@/server/utils/utils-common'
+import { moment } from '@/utils/utils-common'
 
 export class TableCommon {
     @PrimaryGeneratedColumn({ comment: '自增长主键' })

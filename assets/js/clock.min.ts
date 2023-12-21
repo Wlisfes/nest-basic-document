@@ -3,7 +3,9 @@
  * https://www.jq22.com/jquery-info1257
  */
 //@ts-nocheck
-export async function createUtilityClock(container, app, option: { max: number; callback?: Function }) {
+import { moment } from '@/utils/utils-common'
+
+export async function createUtilityClock(container, app, option: { max: number; callback?: Function; animate?: Function }) {
     var dynamic = container.querySelector('.dynamic')
     var hourElement = container.querySelector('.hour')
     var minuteElement = container.querySelector('.minute')
@@ -48,6 +50,9 @@ export async function createUtilityClock(container, app, option: { max: number; 
         rotate(secondElement, time)
         rotate(minuteElement, time / 60)
         rotate(hourElement, time / 60 / 12)
+        option.animate?.({
+            date: moment(now).format('HH:mm:ss')
+        })
         requestAnimationFrame(animate)
     }
     for (var i = 1; i <= 60; i++) minute(i)
@@ -59,7 +64,11 @@ export async function createUtilityClock(container, app, option: { max: number; 
         const min = client > option.max ? option.max : client
         const scale = min / 350
         container.style.transform = container.style.webkitTransform = 'scale(' + scale.toFixed(3) + ')'
-        option.callback?.({ min, client })
+        option.callback?.({
+            min,
+            client,
+            date: moment().format('YYYY-MM-DD HH:mm:ss')
+        })
     }
     update()
 
