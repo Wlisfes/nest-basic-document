@@ -17,7 +17,7 @@ export async function createConnection() {
             password: 'ejDSRcLEtbT6tkPJ',
             database: 'document',
             synchronize: true,
-            logging: true,
+            logging: false,
             entities: BaseTables,
             subscribers: [],
             migrations: []
