@@ -1,11 +1,10 @@
 <script lang="tsx">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
+export default defineNuxtComponent({
     name: 'Index',
+    head: () => ({
+        titleTemplate: (title: string) => `${title} - 一个神奇的网站`
+    }),
     setup() {
-        useHead({ title: '一个神奇的网站' })
-
         return () => (
             <n-element class="layout-provider n-chunk n-column n-center n-auto no-select">
                 <common-clock max={960}></common-clock>
