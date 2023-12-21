@@ -21,6 +21,10 @@
     }
 }
 
-.no-select {
+.n-pointer {
+    cursor: pointer;
+}
+
+.no-selecter {
     user-select: none;
 }
