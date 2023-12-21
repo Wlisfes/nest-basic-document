@@ -48,7 +48,7 @@ export async function createUtilityClock(container, app, option: { max: number; 
         rotate(secondElement, time)
         rotate(minuteElement, time / 60)
         rotate(hourElement, time / 60 / 12)
-        requestAnimationFrame(animate)
+        // requestAnimationFrame(animate)
     }
     for (var i = 1; i <= 60; i++) minute(i)
     for (var i = 1; i <= 12; i++) hour(i)
@@ -57,7 +57,7 @@ export async function createUtilityClock(container, app, option: { max: number; 
     function update() {
         const client = Math.min(app.clientWidth, app.clientHeight)
         const min = client > option.max ? option.max : client
-        const scale = min / 300
+        const scale = min / 350
         container.style.transform = container.style.webkitTransform = 'scale(' + scale.toFixed(3) + ')'
         option.callback?.({ min, client })
     }
