@@ -30,16 +30,11 @@ export async function createConnection() {
 }
 
 /**自定义表实例**/
-export async function createBaser<T>(model: T) {
-    return await createConnection().then(base => {
-        return base.getRepository(model as never)
-    })
+export async function createBaser<T>(db: DataSource, model: T) {
+    return db.getRepository(model as never)
 }
 
 /**自定义查询实例**/
-export async function createBuilder<T, R>(model: T, callback: (qb: SelectQueryBuilder<ObjectLiteral>) => Promise<R>) {
-    return await createConnection().then(async base => {
-        const qb = base.getRepository(model as never).createQueryBuilder('tb')
-        return await callback(qb)
-    })
+export async function createBuilder<T, R>(db: DataSource, model: T, callback: (qb: SelectQueryBuilder<ObjectLiteral>) => Promise<R>) {
+    return await callback(db.getRepository(model as never).createQueryBuilder('tb'))
 }
