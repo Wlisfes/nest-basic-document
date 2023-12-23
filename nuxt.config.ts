@@ -36,6 +36,9 @@ export default defineNuxtConfig({
         transpile: createBuilderTranspile(process.env.NODE_ENV as string)
     },
     nitro: {
+        experimental: {
+            openAPI: true
+        },
         esbuild: {
             options: {
                 tsconfigRaw: {
