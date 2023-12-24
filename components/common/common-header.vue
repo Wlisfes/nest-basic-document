@@ -66,14 +66,17 @@ export default defineComponent({
                                     </nuxt-link>
                                 </n-space>
                             )}
+                            <n-button text focusable={false}>
+                                <common-wrapper size={28} name="Avatar"></common-wrapper>
+                            </n-button>
                             <n-popover
                                 trigger="click"
                                 placement="bottom-end"
-                                style={{ width: '200px', padding: '15px 15px' }}
+                                style={{ width: '280px', padding: '15px 15px' }}
                                 v-slots={{
                                     trigger: () => (
                                         <n-space class="n-pointer no-selecter" align="center" size={5} wrap-item={false}>
-                                            <n-avatar round size={34} src="https://oss.lisfes.cn/cloud/avatar/2021-08/1628499198955.jpg" />
+                                            <n-avatar round size={28} src="https://oss.lisfes.cn/cloud/avatar/2021-08/1628499198955.jpg" />
                                             <n-ellipsis tooltip={false} style={{ maxWidth: '80px' }}>
                                                 妖雨纯
                                             </n-ellipsis>
