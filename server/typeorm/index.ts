@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { DataSource, Entity, SelectQueryBuilder, ObjectLiteral } from 'typeorm'
+import { DataSource, SelectQueryBuilder, ObjectLiteral } from 'typeorm'
 import * as BaseTable from '@/server/typeorm/entity'
 
 /**数据库表实体**/
@@ -11,11 +11,11 @@ export async function createConnection() {
     if (!dataSource) {
         dataSource = new DataSource({
             type: 'mysql',
-            host: '121.199.41.193',
-            port: 3306,
-            username: 'document',
-            password: 'ejDSRcLEtbT6tkPJ',
-            database: 'document',
+            host: process.env.MYSQL_HOST,
+            port: Number(process.env.MYSQL_PORT ?? 3306),
+            username: process.env.MYSQL_USERNAME,
+            password: process.env.MYSQL_PASSWORD,
+            database: process.env.MYSQL_DATABASE,
             synchronize: true,
             logging: false,
             entities: BaseTables,
