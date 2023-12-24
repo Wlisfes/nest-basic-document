@@ -13,7 +13,7 @@ export async function divineEventWherer(nodeError: ValidationError) {
 
 /**验证包装**/
 export async function divineEventValidator<T>(cls: ClassConstructor<T>, state: { data: object; option?: ValidatorOptions }) {
-    const post = plainToInstance(cls, state.data)
+    const post = plainToInstance(cls, state.data ?? {})
     return await validateOrReject(post as never, {
         validationError: { target: false, value: true },
         ...state.option

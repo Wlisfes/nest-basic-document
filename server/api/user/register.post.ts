@@ -5,7 +5,7 @@ import { divineEventCatcher } from '@/server/utils/utils-handler'
 
 export default defineEventHandler(event => {
     return divineEventCatcher(event, async evt => {
-        const body = await readBody(evt)
+        const body = await readBody(event)
         await divineEventValidator(TableUser, {
             data: body,
             option: {

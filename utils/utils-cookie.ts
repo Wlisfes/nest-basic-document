@@ -1,4 +1,5 @@
 import JSCookie from 'js-cookie'
+import { divineHandler } from '@/utils/utils-common'
 
 /**存储**/
 export async function setStore(key: string, data: any, expire?: number) {
@@ -31,4 +32,19 @@ export function getToken() {
 
 export async function delToken() {
     return await delStore('APP_NUXT_TOKEN')
+}
+
+export async function useHeaders(headers: Record<string, string> = {}) {
+    await divineHandler(Boolean(getToken()), () => {
+        headers.Authorization = getToken()
+    })
+    return headers
+}
+
+export async function divineRequestCatcher<T>(result: T): Promise<T> {
+    try {
+        return result
+    } catch (err) {
+        throw err
+    }
 }
