@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     css: ['~/assets/scss/index.scss', '~/assets/scss/layout.scss', '~/assets/scss/common.scss'],
     ssr: true,
     devtools: {
-        enabled: false
+        enabled: process.env.NODE_ENV === 'development'
     },
     experimental: {
         writeEarlyHints: false
