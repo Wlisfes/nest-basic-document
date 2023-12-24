@@ -1,3 +1,4 @@
+import { type CSSProperties } from 'vue'
 import dayjs from 'dayjs'
 
 export function moment(date?: dayjs.ConfigType) {
@@ -12,4 +13,9 @@ export async function divineHandler<T>(value: boolean | Function, handler: Funct
         return await callback()
     }
     return undefined
+}
+
+/**条件样式返回值**/
+export function divineWherer<T = CSSProperties>(where: boolean, whereValue: T = {} as T, defaultValue: T = {} as T) {
+    return where ? whereValue : defaultValue
 }

@@ -1,13 +1,22 @@
 <script lang="tsx">
-import { defineComponent } from 'vue'
+import { defineComponent, Fragment } from 'vue'
 import { useProvider } from '@/hooks/hook-provider'
 import { useResize } from '@/hooks/hook-client'
+import { useState } from '@/hooks/hook-state'
+import { useUser } from '@/store/user'
+import { divineWherer } from '@/utils/utils-common'
 
 export default defineComponent({
     name: 'CommonHeader',
     setup() {
+        const user = useUser()
+        const { state, setState: done } = useState({ visible: false })
         const { inverted, setTheme } = useProvider()
         const { width } = useResize()
+
+        async function setState() {
+            return await done({ visible: !state.visible })
+        }
 
         return () => (
             <n-layout-header class="common-header" style={{ height: '60px' }}>
@@ -66,36 +75,84 @@ export default defineComponent({
                                     </nuxt-link>
                                 </n-space>
                             )}
-                            <n-button text focusable={false}>
-                                <common-wrapper size={28} name="Avatar"></common-wrapper>
-                            </n-button>
                             <n-popover
+                                style={{
+                                    width: divineWherer(Boolean(user.uid), '240px', '140px'),
+                                    padding: divineWherer(Boolean(user.uid), '15px', '8px')
+                                }}
+                                show={state.visible}
                                 trigger="click"
-                                placement="bottom-end"
-                                style={{ width: '280px', padding: '15px 15px' }}
+                                placement="bottom"
+                                onClickoutside={setState}
                                 v-slots={{
                                     trigger: () => (
-                                        <n-space class="n-pointer no-selecter" align="center" size={5} wrap-item={false}>
-                                            <n-avatar round size={28} src="https://oss.lisfes.cn/cloud/avatar/2021-08/1628499198955.jpg" />
-                                            <n-ellipsis tooltip={false} style={{ maxWidth: '80px' }}>
-                                                妖雨纯
-                                            </n-ellipsis>
-                                        </n-space>
+                                        <n-element class="n-pointer no-selecter" onClick={setState}>
+                                            {user.uid ? (
+                                                <n-space align="center" size={5} wrap-item={false}>
+                                                    <n-avatar
+                                                        round
+                                                        size={28}
+                                                        src="https://oss.lisfes.cn/cloud/avatar/2021-08/1628499198955.jpg"
+                                                    />
+                                                    <n-ellipsis tooltip={false} style={{ maxWidth: '80px' }}>
+                                                        妖雨纯
+                                                    </n-ellipsis>
+                                                </n-space>
+                                            ) : (
+                                                <n-button text focusable={false}>
+                                                    <common-wrapper size={28} name="Avatar"></common-wrapper>
+                                                </n-button>
+                                            )}
+                                        </n-element>
                                     ),
                                     default: () => (
                                         <n-element class="n-chunk n-column no-selecter">
-                                            <div style={{ paddingBottom: '10px' }}>
-                                                <n-h3 style={{ margin: 0 }}>
-                                                    <n-ellipsis tooltip={false}>妖雨纯</n-ellipsis>
-                                                </n-h3>
-                                                <n-text>账号ID: 1703172025710</n-text>
-                                            </div>
-                                            <n-button quaternary focusable={false} size="large">
-                                                <n-h4 style={{ margin: 0 }}>账号设置</n-h4>
-                                            </n-button>
-                                            <n-button quaternary focusable={false} size="large">
-                                                <n-h4 style={{ margin: 0 }}>退出登录</n-h4>
-                                            </n-button>
+                                            {user.uid ? (
+                                                <Fragment>
+                                                    <n-space align="center" size={10} wrap-item={false} style={{ marginBottom: '10px' }}>
+                                                        <n-avatar
+                                                            round
+                                                            size={40}
+                                                            src="https://oss.lisfes.cn/cloud/avatar/2021-08/1628499198955.jpg"
+                                                        />
+                                                        <div style={{ flex: 1, overflow: 'hidden' }}>
+                                                            <n-h3 style={{ margin: 0, fontSize: '16px' }}>
+                                                                <n-ellipsis tooltip={false}>妖雨纯</n-ellipsis>
+                                                            </n-h3>
+                                                            <n-text>账号ID: 17031720257101</n-text>
+                                                        </div>
+                                                    </n-space>
+                                                    <n-button quaternary focusable={false} size="large">
+                                                        <n-h4 style={{ margin: 0 }}>账号设置</n-h4>
+                                                    </n-button>
+                                                    <n-button quaternary focusable={false} size="large">
+                                                        <n-h4 style={{ margin: 0 }}>退出登录</n-h4>
+                                                    </n-button>
+                                                </Fragment>
+                                            ) : (
+                                                <Fragment>
+                                                    <n-button quaternary focusable={false} size="large" onClick={setState}>
+                                                        <nuxt-link
+                                                            to="/common/authorize"
+                                                            class="n-chunk n-center"
+                                                            style={{ gap: '5px', textDecoration: 'none', color: 'var(--text-color-2)' }}
+                                                        >
+                                                            <common-wrapper size={24} name="Safety"></common-wrapper>
+                                                            <n-h4 style={{ margin: 0, lineHeight: '20px' }}>登录</n-h4>
+                                                        </nuxt-link>
+                                                    </n-button>
+                                                    <n-button quaternary focusable={false} size="large" onClick={setState}>
+                                                        <nuxt-link
+                                                            to="/common/register"
+                                                            class="n-chunk n-center"
+                                                            style={{ gap: '5px', textDecoration: 'none', color: 'var(--text-color-2)' }}
+                                                        >
+                                                            <common-wrapper size={22} name="Meta"></common-wrapper>
+                                                            <n-h4 style={{ margin: 0, lineHeight: '20px' }}>注册</n-h4>
+                                                        </nuxt-link>
+                                                    </n-button>
+                                                </Fragment>
+                                            )}
                                         </n-element>
                                     )
                                 }}
