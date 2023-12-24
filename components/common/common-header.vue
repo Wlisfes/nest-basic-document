@@ -95,7 +95,7 @@ export default defineComponent({
                                                         src="https://oss.lisfes.cn/cloud/avatar/2021-08/1628499198955.jpg"
                                                     />
                                                     <n-ellipsis tooltip={false} style={{ maxWidth: '80px' }}>
-                                                        妖雨纯
+                                                        {user.nickname}
                                                     </n-ellipsis>
                                                 </n-space>
                                             ) : (
@@ -117,9 +117,9 @@ export default defineComponent({
                                                         />
                                                         <div style={{ flex: 1, overflow: 'hidden' }}>
                                                             <n-h3 style={{ margin: 0, fontSize: '16px' }}>
-                                                                <n-ellipsis tooltip={false}>妖雨纯</n-ellipsis>
+                                                                <n-ellipsis tooltip={false}>{user.nickname}</n-ellipsis>
                                                             </n-h3>
-                                                            <n-text>账号ID: 17031720257101</n-text>
+                                                            <n-text>{`账号ID: ${user.uid}`}</n-text>
                                                         </div>
                                                     </n-space>
                                                     <n-button quaternary focusable={false} size="large">
