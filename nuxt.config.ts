@@ -36,6 +36,22 @@ export default defineNuxtConfig({
     build: {
         transpile: createBuilderTranspile(process.env.NODE_ENV as string)
     },
+    runtimeConfig: {
+        app: {
+            //MySQL配置
+            MYSQL_HOST: process.env.MYSQL_HOST,
+            MYSQL_PORT: process.env.MYSQL_PORT,
+            MYSQL_USERNAME: process.env.MYSQL_USERNAME,
+            MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
+            MYSQL_DATABASE: process.env.MYSQL_DATABASE,
+            //谷歌验证码服务端配置
+            GOOGLE_CAPTCHA_SERVER_SITEKEY: process.env.GOOGLE_CAPTCHA_SERVER_SITEKEY
+        },
+        public: {
+            //谷歌验证码客户端配置
+            GOOGLE_CAPTCHA_CLIENT_SITEKEY: process.env.GOOGLE_CAPTCHA_CLIENT_SITEKEY
+        }
+    },
     nitro: {
         experimental: {
             openAPI: true

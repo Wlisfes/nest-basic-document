@@ -24,7 +24,7 @@ export class TableUser extends TableCommon {
 
     @IsMobile({ message: '手机号 格式错误', groups: ['mobile'] })
     @IsNotEmpty({ message: '手机号 必填', groups: ['mobile'] })
-    @Column({ type: 'varchar', comment: '手机号', nullable: false })
+    @Column({ type: 'varchar', comment: '手机号', nullable: true })
     mobile: string
 
     @Length(6, 18, { message: '密码格式错误', groups: ['password'] })

@@ -1,13 +1,11 @@
 <script lang="tsx">
 import { zhCN, dateZhCN } from 'naive-ui'
-import { defineComponent } from 'vue'
 import { useProvider } from '@/hooks/hook-provider'
 
-export default defineComponent({
+export default defineNuxtComponent({
     name: 'App',
-    setup(props, { slots }) {
+    setup() {
         const { theme, themeOverrides } = useProvider()
-
         return () => (
             <n-config-provider
                 abstract

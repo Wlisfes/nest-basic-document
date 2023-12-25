@@ -1,10 +1,24 @@
 <script lang="tsx">
+import { divineMaticChecker } from '@/utils/utils-plugin'
+import * as http from '@/api'
+
 export default defineNuxtComponent({
     name: 'Authorize',
-    head: () => ({
-        titleTemplate: (title: string) => `${title} - 登录`
+    head: (app: any) => ({
+        titleTemplate: (title: string) => `${title} - 登录`,
+        link: [
+            { rel: 'preconnect', href: 'https://www.google.com' },
+            { rel: 'preconnect', href: 'https://www.gstatic.com', crossorigin: 'anonymous' }
+        ],
+        script: [{ async: true, src: `https://www.google.com/recaptcha/api.js?render=${app.$config.public.GOOGLE_CAPTCHA_CLIENT_SITEKEY}` }]
     }),
     setup() {
+        /**登录**/
+        async function onSubmit(evt: Event) {
+            const token = await divineMaticChecker()
+            console.log(token)
+        }
+
         return () => (
             <n-element class="layout-provider n-chunk n-column n-center n-middle n-auto no-selecter">
                 <n-element class="chunk-element">
@@ -18,17 +32,11 @@ export default defineNuxtComponent({
                                 maxlength={18}
                                 type="password"
                                 show-password-on="mousedown"
-                                input-props={{ autocomplete: 'new-password' }}
+                                input-props={{ autocomplete: 'current-password' }}
                             ></n-input>
                         </n-form-item>
                         <n-form-item>
-                            <n-input-group>
-                                <n-input maxlength={4} style={{ flex: 1 }} />
-                                <n-skeleton width={130} height={40} sharp={false} />
-                            </n-input-group>
-                        </n-form-item>
-                        <n-form-item>
-                            <n-button type="info" style={{ width: '100%' }}>
+                            <n-button type="info" style={{ width: '100%' }} onClick={onSubmit}>
                                 立即登录
                             </n-button>
                         </n-form-item>
