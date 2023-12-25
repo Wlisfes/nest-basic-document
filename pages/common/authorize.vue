@@ -1,5 +1,6 @@
 <script lang="tsx">
 import { divineMaticChecker } from '@/utils/utils-plugin'
+import { useCustomize } from '@/hooks/hook-customize'
 import * as http from '@/api'
 
 export default defineNuxtComponent({
@@ -13,30 +14,70 @@ export default defineNuxtComponent({
         script: [{ async: true, src: `https://www.google.com/recaptcha/api.js?render=${app.$config.public.GOOGLE_CAPTCHA_CLIENT_SITEKEY}` }]
     }),
     setup() {
+        const { formRef, state, setLoading, setDisabled, divineFormValidater } = useCustomize({
+            loading: false,
+            form: {
+                account: 'limvcfast@gmail.com',
+                password: '123456'
+            },
+            rules: {
+                account: { required: true, trigger: ['blur', 'change'], message: '请输入邮箱/手机号' },
+                password: { required: true, trigger: ['blur', 'change'], message: '请输入登录密码' }
+            }
+        })
+
         /**登录**/
-        async function onSubmit(evt: Event) {
-            const token = await divineMaticChecker()
-            console.log(token)
+        function onSubmit(evt: Event) {
+            return divineFormValidater(async () => {
+                try {
+                    const token = await divineMaticChecker()
+                    await setDisabled(true)
+                    await setLoading(true)
+                    await http.fetchUserAuthorize({
+                        account: state.form.account,
+                        password: window.btoa(state.form.password),
+                        token: token
+                    })
+                } catch (e) {
+                    console.log(e)
+                }
+            })
         }
 
         return () => (
             <n-element class="layout-provider n-chunk n-column n-center n-middle n-auto no-selecter">
                 <n-element class="chunk-element">
                     <n-h1 style={{ textAlign: 'center' }}>欢迎回来</n-h1>
-                    <n-form size="large" label-placement="left">
-                        <n-form-item path="mobile">
-                            <n-input maxlength={11} type="text" input-props={{ autocomplete: 'off' }}></n-input>
+                    <n-form ref={formRef} model={state.form} rules={state.rules} size="large" label-placement="left">
+                        <n-form-item path="account">
+                            <n-input
+                                v-model:value={state.form.account}
+                                disabled={state.disabled || state.loading}
+                                maxlength={11}
+                                type="text"
+                                input-props={{ autocomplete: 'off' }}
+                                placeholder="请输入邮箱/手机号"
+                            ></n-input>
                         </n-form-item>
                         <n-form-item path="password">
                             <n-input
+                                v-model:value={state.form.password}
+                                disabled={state.disabled || state.loading}
                                 maxlength={18}
                                 type="password"
                                 show-password-on="mousedown"
                                 input-props={{ autocomplete: 'current-password' }}
+                                placeholder="请输入登录密码"
                             ></n-input>
                         </n-form-item>
                         <n-form-item>
-                            <n-button type="info" style={{ width: '100%' }} onClick={onSubmit}>
+                            <n-button
+                                type="info"
+                                style={{ width: '100%' }}
+                                disabled={state.disabled}
+                                loading={state.loading}
+                                onClick={onSubmit}
+                            >
                                 立即登录
                             </n-button>
                         </n-form-item>

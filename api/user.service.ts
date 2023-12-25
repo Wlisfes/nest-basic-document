@@ -12,7 +12,7 @@ export async function fetchUserRegister(data: { nickname: string; password: stri
 }
 
 /**登录**/
-export async function fetchUserAuthorize(data: { mobile: string; password: string; code: string }) {
+export async function fetchUserAuthorize(data: { account: string; password: string; token: string }) {
     return await divineRequestCatcher(
         await $fetch('/api/user/authorize', {
             headers: await useHeaders(),

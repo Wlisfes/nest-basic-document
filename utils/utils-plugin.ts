@@ -1,5 +1,5 @@
 /**开启谷歌验证**/
-export function divineMaticChecker() {
+export function divineMaticChecker(): Promise<string> {
     return new Promise((resolve, reject) => {
         try {
             const runtime = useRuntimeConfig()

@@ -1,24 +1,15 @@
 <script lang="tsx">
-import { zhCN, dateZhCN } from 'naive-ui'
-import { useProvider } from '@/hooks/hook-provider'
+import { useNotification, useLoadingBar, useDialog, useMessage } from 'naive-ui'
 
-export default defineNuxtComponent({
+export default defineComponent({
     name: 'App',
     setup() {
-        const { theme, themeOverrides } = useProvider()
         return () => (
-            <n-config-provider
-                abstract
-                inline-theme-disabled
-                locale={zhCN}
-                date-locale={dateZhCN}
-                theme={theme.value}
-                theme-overrides={themeOverrides.value}
-            >
+            <common-provider>
                 <nuxt-layout>
                     <nuxt-page />
                 </nuxt-layout>
-            </n-config-provider>
+            </common-provider>
         )
     }
 })

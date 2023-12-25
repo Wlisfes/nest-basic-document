@@ -19,3 +19,14 @@ export async function divineHandler<T>(value: boolean | Function, handler: Funct
 export function divineWherer<T = CSSProperties>(where: boolean, whereValue: T = {} as T, defaultValue: T = {} as T) {
     return where ? whereValue : defaultValue
 }
+
+/**延时方法**/
+export function divineDelay(delay = 100, handler?: Function) {
+    return new Promise(resolve => {
+        const timeout = setTimeout(() => {
+            handler?.()
+            resolve(undefined)
+            clearTimeout(timeout)
+        }, delay)
+    })
+}
