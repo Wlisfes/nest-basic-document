@@ -1,28 +1,20 @@
 import { defineNuxtPlugin } from '#app'
-import { computed, ref } from 'vue'
-import { createDiscreteApi, darkTheme, lightTheme, type ConfigProviderProps } from 'naive-ui'
 
 export default defineNuxtPlugin(nuxtApp => {
-    const loadiner = ref()
-    const themeRef = ref<'light' | 'dark'>('light')
-    const configProviderPropsRef = computed<ConfigProviderProps>(() => ({
-        theme: themeRef.value === 'light' ? lightTheme : darkTheme
-    }))
-    nuxtApp.hook('app:mounted', () => {
-        if (!loadiner.value) {
-            const { loadingBar } = createDiscreteApi(['loadingBar'], {
-                configProviderProps: configProviderPropsRef
-            })
-            loadiner.value = loadingBar
+    nuxtApp.hook('app:mounted', () => {})
+    nuxtApp.hook('page:start', () => {
+        if (process.client && window.$loadingBar) {
+            window.$loadingBar.start()
         }
     })
-    nuxtApp.hook('page:start', () => {
-        loadiner.value.start()
-    })
     nuxtApp.hook('page:finish', () => {
-        loadiner.value.finish()
+        if (process.client && window.$loadingBar) {
+            window.$loadingBar.finish()
+        }
     })
     nuxtApp.hook('app:error', () => {
-        loadiner.value.error()
+        if (process.client && window.$loadingBar) {
+            window.$loadingBar.error()
+        }
     })
 })

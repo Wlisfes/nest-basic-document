@@ -9,7 +9,7 @@ import { CookieStorage } from '@/utils/utils-cookie'
 declare global {
     interface Window {
         $message: MessageApiInjection
-        $loading: LoadingBarInst
+        $loadingBar: LoadingBarInst
         $notification: NotificationApiInjection
         $dialog: DialogApiInjection
         $cookie: CookieStorage
