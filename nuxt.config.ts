@@ -66,11 +66,11 @@ export default defineNuxtConfig({
     },
     app: {
         head: {
-            title: '妖雨录',
+            title: 'Wlisfes',
             meta: [
                 { charset: 'utf-8' },
                 { name: 'viewport', content: 'width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no' },
-                { name: 'description', content: '妖雨录|这是我的神奇网站，让我告诉你关于它的一切。' }
+                { name: 'description', content: '(Wlisfes) 这是我的神奇网站，让我告诉你关于它的一切。' }
             ]
         }
     }

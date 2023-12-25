@@ -22,10 +22,10 @@ export default defineComponent({
             <n-layout-header class="common-header" style={{ height: '60px' }}>
                 <n-element class="layout-pager n-chunk n-center">
                     <n-space size={20} wrap-item={false} align="center" justify="space-between" style={{ width: '100%' }}>
-                        <nuxt-link to="/">
+                        <nuxt-link to="/" style={{ textDecoration: 'none' }}>
                             <n-button text focusable={false}>
                                 <common-wrapper size={40} name="Nuxt"></common-wrapper>
-                                <n-h2 style={{ margin: 0, fontWeight: 600, padding: '8px 5px 0' }}>Wen</n-h2>
+                                <n-h2 style={{ margin: 0, fontWeight: 600, padding: '8px 5px 0' }}>Wlisfes</n-h2>
                             </n-button>
                         </nuxt-link>
                         {width.value >= 840 && (
