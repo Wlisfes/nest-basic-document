@@ -30,8 +30,10 @@ export class TableUser extends TableCommon {
 
     @IsNotEmpty({ message: '状态 必填' })
     @Column({
+        type: 'varchar',
         comment: '状态: 禁用-disable、启用-enable、删除-delete',
-        default: 'enable'
+        default: 'enable',
+        nullable: false
     })
     status: string
 

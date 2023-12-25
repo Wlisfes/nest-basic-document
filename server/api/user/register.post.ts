@@ -1,23 +1,21 @@
-import { IsNotEmpty } from 'class-validator'
 import { createBaser, createInserter } from '@/server/typeorm'
 import { TableUser } from '@/server/typeorm/database'
 import { divineEventValidator } from '@/server/utils/utils-validator'
 import { divineEventCatcher } from '@/server/utils/utils-handler'
 import { divineIntNumber } from '@/server/utils/utils-common'
+import { IsNotEmpty } from 'class-validator'
 
-export class IRegister extends TableUser {
-    @IsNotEmpty({ message: 'Token 验证码必填', groups: ['token'] })
-    token: string
+export class BodySchema extends TableUser {
+    @IsNotEmpty({ message: '验证码 必填', groups: ['code'] })
+    code: string
 }
 
 export default defineEventHandler(event => {
     return divineEventCatcher(event, async evt => {
-        const body = await readBody<IRegister>(event)
-        await divineEventValidator(TableUser, {
+        const body = await readBody<BodySchema>(event)
+        await divineEventValidator(BodySchema, {
             data: body,
-            option: {
-                groups: ['nickname', 'email', 'password', 'token']
-            }
+            option: { groups: ['nickname', 'email', 'password', 'code'] }
         })
         return await createBaser(event.context.db, TableUser).then(async model => {
             await createInserter(model, {

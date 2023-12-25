@@ -11,7 +11,7 @@ export async function divineEventCatcher(
         return {
             data: response || null,
             code: 200,
-            message: '请求成功',
+            message: response?.message ?? '请求成功',
             timestamp: moment().format('YYYY-MM-DD HH:mm:ss')
         }
     } catch (e: any) {
