@@ -1,5 +1,5 @@
 import { createBaser } from '@/server/typeorm'
-import { TableUser } from '@/server/typeorm/entity'
+import { TableUser } from '@/server/typeorm/database'
 import { divineEventValidator } from '@/server/utils/utils-validator'
 import { divineEventCatcher } from '@/server/utils/utils-handler'
 

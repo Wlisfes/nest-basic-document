@@ -1,7 +1,7 @@
 import { Entity, Column } from 'typeorm'
 import { IsNotEmpty, Length, IsEmail } from 'class-validator'
 import { IsMobile } from '@/server/utils/utils-decorator'
-import { TableCommon } from '@/server/typeorm/entity/table.common'
+import { TableCommon } from '@/server/typeorm/database/table.common'
 
 @Entity('table_user')
 export class TableUser extends TableCommon {
