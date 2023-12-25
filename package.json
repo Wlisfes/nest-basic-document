@@ -12,6 +12,7 @@
     "dependencies": {
         "@pinia/nuxt": "^0.5.1",
         "@vueuse/nuxt": "^10.7.0",
+        "bcryptjs": "^2.4.3",
         "class-transformer": "^0.5.1",
         "class-validator": "^0.14.0",
         "dayjs": "^1.11.10",
@@ -28,6 +29,7 @@
         "@css-render/vue3-ssr": "^0.15.12",
         "@nuxt/devtools": "latest",
         "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
+        "@types/bcryptjs": "^2.4.6",
         "@types/js-cookie": "^3.0.6",
         "nuxt": "^3.8.2",
         "sass": "^1.69.5",

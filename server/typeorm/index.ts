@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { DataSource, SelectQueryBuilder, ObjectLiteral } from 'typeorm'
+import { DataSource, SelectQueryBuilder, Repository, ObjectLiteral, DeepPartial } from 'typeorm'
 import * as BaseTable from '@/server/typeorm/database'
 
 /**数据库表实体**/
@@ -37,4 +37,10 @@ export async function createBaser<T>(db: DataSource, model: T) {
 /**自定义查询实例**/
 export async function createBuilder<T, R>(db: DataSource, model: T, callback: (qb: SelectQueryBuilder<ObjectLiteral>) => Promise<R>) {
     return await callback(db.getRepository(model as never).createQueryBuilder('tb'))
+}
+
+/**保存数据**/
+export async function createInserter<T>(model: Repository<T>, state: DeepPartial<T>) {
+    const node = await model.create(state)
+    return model.save(node as typeof state)
 }

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { httpUserResolver } from '@/api'
+import { fetchUserResolver } from '@/api'
 
 export const useUser = defineStore('user', {
     persist: process.client && { storage: localStorage },
@@ -13,10 +13,10 @@ export const useUser = defineStore('user', {
     }),
     actions: {
         async httpUserResolver() {
-            try {
-                const data = await httpUserResolver()
-                this.uid = data.uid
-            } catch (err) {}
+            // try {
+            //     const data = await fetchUserResolver()
+            //     this.uid = data.uid
+            // } catch (err) {}
         }
     }
 })

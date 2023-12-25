@@ -2,6 +2,7 @@ import { Entity, Column } from 'typeorm'
 import { IsNotEmpty, Length, IsEmail } from 'class-validator'
 import { IsMobile } from '@/server/utils/utils-decorator'
 import { TableCommon } from '@/server/typeorm/database/table.common'
+import bcrypt from 'bcryptjs'
 
 @Entity('table_user')
 export class TableUser extends TableCommon {
@@ -27,13 +28,21 @@ export class TableUser extends TableCommon {
     @Column({ type: 'varchar', comment: '手机号', nullable: true })
     mobile: string
 
+    @IsNotEmpty({ message: '状态 必填' })
+    @Column({
+        comment: '状态: 禁用-disable、启用-enable、删除-delete',
+        default: 'enable'
+    })
+    status: string
+
     @Length(6, 18, { message: '密码格式错误', groups: ['password'] })
     @IsNotEmpty({ message: '密码 必填', groups: ['password'] })
     @Column({
         type: 'varchar',
         comment: '密码',
         select: false,
-        nullable: false
+        nullable: false,
+        transformer: { from: value => value, to: value => bcrypt.hashSync(value) }
     })
     password: string
 }
