@@ -9,13 +9,14 @@ export let dataSource: DataSource
 
 export async function createConnection() {
     if (!dataSource) {
+        const config = useRuntimeConfig()
         dataSource = new DataSource({
             type: 'mysql',
-            host: process.env.MYSQL_HOST,
-            port: Number(process.env.MYSQL_PORT ?? 3306),
-            username: process.env.MYSQL_USERNAME,
-            password: process.env.MYSQL_PASSWORD,
-            database: process.env.MYSQL_DATABASE,
+            host: config.MYSQL_HOST,
+            port: Number(config.MYSQL_PORT ?? 3306),
+            username: config.MYSQL_USERNAME,
+            password: config.MYSQL_PASSWORD,
+            database: config.MYSQL_DATABASE,
             synchronize: true,
             logging: false,
             entities: BaseTables,
@@ -36,7 +37,8 @@ export async function createBaser<T>(db: DataSource, model: T) {
 
 /**自定义查询实例**/
 export async function createBuilder<T, R>(db: DataSource, model: T, callback: (qb: SelectQueryBuilder<ObjectLiteral>) => Promise<R>) {
-    return await callback(db.getRepository(model as never).createQueryBuilder('tb'))
+    const qb = db.getRepository(model as never).createQueryBuilder('tb')
+    return await callback(qb)
 }
 
 /**保存数据**/

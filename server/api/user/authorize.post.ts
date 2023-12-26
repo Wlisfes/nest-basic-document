@@ -1,8 +1,8 @@
-import { createBaser, createBuilder, createInserter } from '@/server/typeorm'
-import { TableUser } from '@/server/typeorm/database'
-import { divineEventValidator } from '@/server/utils/utils-validator'
-import { divineEventCatcher, divineCatchWherer } from '@/server/utils/utils-handler'
 import { IsNotEmpty } from 'class-validator'
+import { TableUser } from '@/server/typeorm/database'
+import { createBaser, createBuilder, createInserter } from '@/server/typeorm'
+import { divineJwtSignAuthorize } from '@/server/utils/utils-handler'
+import { divineEventValidator, divineEventCatcher, divineEventWhereCatcher } from '@/server/utils/utils-validator'
 import bcrypt from 'bcryptjs'
 
 export class BodySchema extends TableUser {
@@ -28,16 +28,21 @@ export default defineEventHandler(event => {
             qb.andWhere('tb.status IN(:...status)', { status: ['enable', 'disable'] })
             return await qb.getOne()
         }).then(async data => {
-            await divineCatchWherer(!Boolean(data), {
+            await divineEventWhereCatcher(!Boolean(data), {
                 message: '用户未注册'
             })
-            await divineCatchWherer(data.status === 'disable', {
+            await divineEventWhereCatcher(data.status === 'disable', {
                 message: '账户已被禁用'
             })
-            await divineCatchWherer(!bcrypt.compareSync(body.password, data.password), {
+            await divineEventWhereCatcher(!bcrypt.compareSync(body.password, data.password), {
                 message: '账户密码错误'
             })
-            return data
+            return await divineJwtSignAuthorize({
+                uid: data.uid,
+                nickname: data.nickname,
+                status: data.status,
+                password: data.password
+            })
         })
         return { message: '登录成功', node }
     })

@@ -1,7 +1,6 @@
 import { createBaser, createInserter } from '@/server/typeorm'
 import { TableUser } from '@/server/typeorm/database'
-import { divineEventValidator } from '@/server/utils/utils-validator'
-import { divineEventCatcher } from '@/server/utils/utils-handler'
+import { divineEventValidator, divineEventCatcher } from '@/server/utils/utils-validator'
 import { divineIntNumber } from '@/utils/utils-common'
 import { IsNotEmpty } from 'class-validator'
 

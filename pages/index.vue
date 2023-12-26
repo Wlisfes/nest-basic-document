@@ -1,6 +1,4 @@
 <script lang="tsx">
-import { httpUserRegister } from '@/api'
-
 export default defineNuxtComponent({
     name: 'Index',
     head: () => ({
