@@ -1,6 +1,7 @@
 import { plainToInstance, ClassConstructor } from 'class-transformer'
 import { validateOrReject, ValidatorOptions, ValidationError } from 'class-validator'
 import { H3Event, EventHandlerRequest } from 'h3'
+import { TableUser } from '@/server/typeorm/database'
 import { divineJwtVerifyAuthorize } from '@/server/utils/utils-handler'
 import { moment, divineHandler } from '@/utils/utils-common'
 
@@ -8,15 +9,18 @@ import { moment, divineHandler } from '@/utils/utils-common'
 export async function divineEventJwtTokenValidator(
     event: H3Event<EventHandlerRequest>,
     option: { next: boolean; code?: number; message?: string }
-) {
+): Promise<TableUser> {
     const token = getRequestHeader(event, 'authorization')
     if (token) {
         try {
-            return (event.context.user = await divineJwtVerifyAuthorize(token))
-        } catch (e) {
-            return await divineHandler(!option.next, () => {
-                throw createError({ statusCode: option.code ?? 401, message: option.message ?? '登录已过期' })
+            return await divineJwtVerifyAuthorize(token).then(user => {
+                event.context.user = user
+                return user
             })
+        } catch (e) {
+            return (await divineHandler(!option.next, () => {
+                throw createError({ statusCode: option.code ?? 401, message: option.message ?? '登录已过期' })
+            })) as never
         }
     } else if (!option.next) {
         throw createError({ statusCode: option.code ?? 401, message: option.message ?? '未登录' })

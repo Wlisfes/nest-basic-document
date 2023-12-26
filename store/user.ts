@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { fetchUserResolver } from '@/api'
 
 export const useUser = defineStore('user', {
-    persist: process.client && { storage: localStorage },
+    persist: false,
     state: () => ({
         keyId: undefined,
         uid: undefined,
@@ -12,11 +12,15 @@ export const useUser = defineStore('user', {
         mobile: undefined
     }),
     actions: {
-        async httpUserResolver() {
-            // try {
-            //     const data = await fetchUserResolver()
-            //     this.uid = data.uid
-            // } catch (err) {}
+        async fetchUserResolver() {
+            const { data } = await fetchUserResolver()
+            this.keyId = data.keyId
+            this.uid = data.uid
+            this.nickname = data.nickname
+            this.email = data.email
+            this.avatar = data.avatar
+            this.mobile = data.mobile
+            return data
         }
     }
 })

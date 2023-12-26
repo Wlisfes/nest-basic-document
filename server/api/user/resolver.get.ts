@@ -1,12 +1,19 @@
-import { createBaser, createInserter } from '@/server/typeorm'
+import { createBuilder } from '@/server/typeorm'
 import { TableUser } from '@/server/typeorm/database'
-import { divineEventValidator, divineEventCatcher, divineEventJwtTokenValidator } from '@/server/utils/utils-validator'
+import { divineEventCatcher, divineEventJwtTokenValidator } from '@/server/utils/utils-validator'
 
 export default defineEventHandler(event => {
     return divineEventCatcher(event, async evt => {
-        const token = getRequestHeader(event, 'authorization')
         await divineEventJwtTokenValidator(event, { next: false })
-
-        return { token, code: 200 }
+        return await createBuilder(event.context.db, TableUser, async qb => {
+            qb.orWhere('tb.uid = :uid', { uid: event.context.user.uid })
+            qb.andWhere('tb.status IN(:...status)', { status: ['enable', 'disable'] })
+            return await qb.getOne()
+        }).then(async data => {
+            await divineEventWhereCatcher(data.status === 'disable', {
+                message: '账户已被禁用'
+            })
+            return data
+        })
     })
 })

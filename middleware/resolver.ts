@@ -1,6 +1,5 @@
 import { useUser } from '@/store/user'
 import { divineHandler } from '@/utils/utils-common'
-import * as http from '@/api'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const token = getToken()
@@ -8,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         const store = useUser()
         return await divineHandler(!store.uid, async () => {
             try {
-                await http.fetchUserResolver()
+                await store.fetchUserResolver()
             } catch (err) {
                 return await navigateTo('/')
             }

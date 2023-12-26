@@ -4,6 +4,8 @@ import { defineComponent } from 'vue'
 export default defineComponent({
     name: 'Issues',
     setup(props, { slots }) {
+        definePageMeta({ middleware: 'resolver' })
+
         return () => <div>Issues</div>
     }
 })
