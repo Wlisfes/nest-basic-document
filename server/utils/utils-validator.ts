@@ -1,7 +1,27 @@
 import { plainToInstance, ClassConstructor } from 'class-transformer'
 import { validateOrReject, ValidatorOptions, ValidationError } from 'class-validator'
 import { H3Event, EventHandlerRequest } from 'h3'
+import { divineJwtVerifyAuthorize } from '@/server/utils/utils-handler'
 import { moment, divineHandler } from '@/utils/utils-common'
+
+/**token验证**/
+export async function divineEventJwtTokenValidator(
+    event: H3Event<EventHandlerRequest>,
+    option: { next: boolean; code?: number; message?: string }
+) {
+    const token = getRequestHeader(event, 'authorization')
+    if (token) {
+        try {
+            return (event.context.user = await divineJwtVerifyAuthorize(token))
+        } catch (e) {
+            return await divineHandler(!option.next, () => {
+                throw createError({ statusCode: option.code ?? 401, message: option.message ?? '登录已过期' })
+            })
+        }
+    } else if (!option.next) {
+        throw createError({ statusCode: option.code ?? 401, message: option.message ?? '未登录' })
+    }
+}
 
 /**验证包装**/
 export async function divineEventValidator<T>(cls: ClassConstructor<T>, state: { data: object; option?: ValidatorOptions }) {

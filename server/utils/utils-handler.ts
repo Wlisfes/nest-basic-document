@@ -15,5 +15,5 @@ export async function divineJwtSignAuthorize(data: Partial<TableUser>): Promise<
 /**jwt解密**/
 export async function divineJwtVerifyAuthorize(token: string): Promise<TableUser> {
     const config = useRuntimeConfig()
-    return (await jwt.verify(token, 'mysecrettoken')) as TableUser
+    return (await jwt.verify(token, config.JWT_SECRET)) as TableUser
 }
