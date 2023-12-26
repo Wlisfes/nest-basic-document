@@ -16,6 +16,7 @@ export default defineNuxtComponent({
         script: [{ async: true, src: `https://www.google.com/recaptcha/api.js?render=${app.$config.public.GOOGLE_CAPTCHA_CLIENT_SITEKEY}` }]
     }),
     setup() {
+        definePageMeta({ middleware: 'cancel' })
         const { formRef, state, setLoading, setDisabled, divineFormValidater } = useCustomize({
             loading: false,
             form: {

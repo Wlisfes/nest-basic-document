@@ -5,6 +5,8 @@ export default defineNuxtComponent({
         titleTemplate: (title: string) => `${title} - 注册`
     }),
     setup() {
+        definePageMeta({ middleware: 'cancel' })
+
         return () => (
             <n-element class="layout-provider n-chunk n-column n-center n-middle n-auto no-selecter">
                 <n-element class="chunk-element">
