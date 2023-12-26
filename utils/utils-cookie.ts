@@ -1,5 +1,12 @@
 import JSCookie from 'js-cookie'
 import { divineHandler } from '@/utils/utils-common'
+import { Response } from '@/interface/common.resolver'
+
+/**存储字段名称**/
+export enum APP_NUXT {
+    APP_NUXT_TOKEN = 'APP_NUXT_TOKEN',
+    APP_NUXT_REDIRECT = 'APP_NUXT_REDIRECT'
+}
 
 /**存储**/
 export async function setStore(key: string, data: any, expire?: number) {
@@ -23,15 +30,15 @@ export async function delStore(key: string) {
 }
 
 export async function setToken(token: string, expire: number = 7200 * 1000) {
-    return await setStore('APP_NUXT_TOKEN', token, expire)
+    return await setStore(APP_NUXT.APP_NUXT_TOKEN, token, expire)
 }
 
 export function getToken() {
-    return getStore<string>('APP_NUXT_TOKEN')
+    return getStore<string>(APP_NUXT.APP_NUXT_TOKEN)
 }
 
 export async function delToken() {
-    return await delStore('APP_NUXT_TOKEN')
+    return await delStore(APP_NUXT.APP_NUXT_TOKEN)
 }
 
 export async function useHeaders(headers: Record<string, string> = {}) {
@@ -41,9 +48,9 @@ export async function useHeaders(headers: Record<string, string> = {}) {
     return headers
 }
 
-export async function divineRequestCatcher<T>(result: T): Promise<T> {
+export async function divineRequestCatcher<T>(result: T): Promise<Response<T>> {
     try {
-        return result
+        return result as Response<T>
     } catch (err) {
         throw err
     }

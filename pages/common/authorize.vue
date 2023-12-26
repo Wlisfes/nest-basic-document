@@ -1,6 +1,8 @@
 <script lang="tsx">
 import { divineMaticChecker } from '@/utils/utils-plugin'
 import { useCustomize } from '@/hooks/hook-customize'
+import { createNotice } from '@/utils/utils-naive'
+import { APP_NUXT, setToken, getStore } from '@/utils/utils-cookie'
 import * as http from '@/api'
 
 export default defineNuxtComponent({
@@ -30,16 +32,27 @@ export default defineNuxtComponent({
         function onSubmit(evt: Event) {
             return divineFormValidater(async () => {
                 try {
-                    const token = await divineMaticChecker()
                     await setDisabled(true)
                     await setLoading(true)
-                    await http.fetchUserAuthorize({
+                    const token = await divineMaticChecker()
+                    const { data, message } = await http.fetchUserAuthorize({
                         account: state.form.account,
                         password: window.btoa(state.form.password),
                         token: token
                     })
+                    await setToken(data.token, data.expire)
+                    return await createNotice({
+                        type: 'success',
+                        title: message,
+                        onAfterEnter: async () => {
+                            await setLoading(false)
+                            await navigateTo({ path: getStore(APP_NUXT.APP_NUXT_REDIRECT, '/') })
+                        }
+                    })
                 } catch (e) {
-                    console.log(e)
+                    await createNotice({ type: 'error', title: e.message })
+                    await setLoading(false)
+                    return await setDisabled(false)
                 }
             })
         }

@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator'
 import { TableUser } from '@/server/typeorm/database'
-import { createBaser, createBuilder, createInserter } from '@/server/typeorm'
+import { createBuilder } from '@/server/typeorm'
 import { divineJwtSignAuthorize } from '@/server/utils/utils-handler'
 import { divineEventValidator, divineEventCatcher, divineEventWhereCatcher } from '@/server/utils/utils-validator'
 import bcrypt from 'bcryptjs'
@@ -13,12 +13,12 @@ export class BodySchema extends TableUser {
     token: string
 }
 
-export default defineEventHandler(event => {
-    return divineEventCatcher(event, async evt => {
+export default defineEventHandler(async event => {
+    return await divineEventCatcher(event, async evt => {
         const body = await readBody<BodySchema>(event)
         await divineEventValidator(BodySchema, {
             data: body,
-            option: { groups: ['account', 'password'] }
+            option: { groups: ['account', 'password', 'token'] }
         })
         /**查询登录用户**/
         const node = await createBuilder(event.context.db, TableUser, async qb => {
@@ -37,13 +37,15 @@ export default defineEventHandler(event => {
             await divineEventWhereCatcher(!bcrypt.compareSync(body.password, data.password), {
                 message: '账户密码错误'
             })
-            return await divineJwtSignAuthorize({
-                uid: data.uid,
-                nickname: data.nickname,
-                status: data.status,
-                password: data.password
-            })
+            return data
         })
-        return { message: '登录成功', node }
+        return await divineJwtSignAuthorize({
+            uid: node.uid,
+            nickname: node.nickname,
+            status: node.status,
+            password: node.password
+        }).then(({ token, expire }) => {
+            return { token, expire, message: '登录成功' }
+        })
     })
 })

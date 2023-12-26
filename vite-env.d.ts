@@ -4,7 +4,6 @@ import { LoadingBarInst } from 'naive-ui/lib/loading-bar'
 import { NotificationApiInjection } from 'naive-ui/lib/notification'
 import { DialogApiInjection } from 'naive-ui/lib/dialog'
 import { MessageApiInjection } from 'naive-ui/lib/message'
-import { CookieStorage } from '@/utils/utils-cookie'
 
 declare global {
     interface Window {
@@ -12,7 +11,6 @@ declare global {
         $loadingBar: LoadingBarInst
         $notification: NotificationApiInjection
         $dialog: DialogApiInjection
-        $cookie: CookieStorage
         grecaptcha: {
             ready: (handler: Function) => void
             execute: (key: string, opt: { action: 'submit' }) => Promise<string>
