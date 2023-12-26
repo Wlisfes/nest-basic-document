@@ -1,5 +1,16 @@
 import { H3Event, EventHandlerRequest } from 'h3'
-import { moment } from '@/utils/utils-common'
+import { moment, divineHandler } from '@/utils/utils-common'
+
+/**条件捕获、异常抛出**/
+export async function divineCatchWherer(where: boolean, option: { message: string; code?: number; data?: any }) {
+    return await divineHandler(where, () => {
+        throw createError({
+            statusCode: option.code ?? 400,
+            message: option.message,
+            data: option.data
+        })
+    })
+}
 
 /**错误捕获函数**/
 export async function divineEventCatcher(

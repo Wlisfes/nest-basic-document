@@ -1,8 +1,16 @@
 import { type CSSProperties } from 'vue'
 import dayjs from 'dayjs'
 
+/**时间处理函数**/
 export function moment(date?: dayjs.ConfigType) {
     return dayjs(date)
+}
+
+/**生成时间戳组合数字**/
+export async function divineIntNumber(pad: number = 16) {
+    const date = Math.floor(Date.now() / 1000)
+    const suffix = [Math.random(), Math.random()].map(x => x.toString().slice(2))
+    return [date, ...suffix].join('').slice(0, pad)
 }
 
 /**条件函数执行**/
