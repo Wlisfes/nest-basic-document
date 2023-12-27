@@ -4,6 +4,11 @@ import { H3Event, EventHandlerRequest } from 'h3'
 import { divineJwtVerifyAuthorize } from '@/server/utils/utils-handler'
 import { moment, divineHandler } from '@/utils/utils-common'
 
+/**参数聚合**/
+export async function divineEventParameter<T extends Record<string, any>>(data: T) {
+    return data
+}
+
 /**token验证**/
 export async function divineEventJwtTokenValidator(
     event: H3Event<EventHandlerRequest>,

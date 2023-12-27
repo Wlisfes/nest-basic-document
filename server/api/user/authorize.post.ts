@@ -32,10 +32,10 @@ export default defineEventHandler(async event => {
 
         /**查询登录用户**/
         const node = await createBuilder(event.context.db, TableUser, async qb => {
-            qb.addSelect('tb.password')
-            qb.where('tb.email = :email', { email: body.account })
-            qb.orWhere('tb.mobile = :mobile', { mobile: body.account })
-            qb.andWhere('tb.status IN(:...status)', { status: ['enable', 'disable'] })
+            qb.addSelect('t.password')
+            qb.where('t.email = :email', { email: body.account })
+            qb.orWhere('t.mobile = :mobile', { mobile: body.account })
+            qb.andWhere('t.status IN(:...status)', { status: ['enable', 'disable'] })
             return await qb.getOne()
         }).then(async data => {
             await divineEventWhereCatcher(!Boolean(data), {

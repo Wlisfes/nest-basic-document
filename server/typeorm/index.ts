@@ -37,7 +37,7 @@ export async function createBaser<T>(db: DataSource, model: T) {
 
 /**自定义查询实例**/
 export async function createBuilder<T, R>(db: DataSource, model: T, callback: (qb: SelectQueryBuilder<ObjectLiteral>) => Promise<R>) {
-    const qb = db.getRepository(model as never).createQueryBuilder('tb')
+    const qb = db.getRepository(model as never).createQueryBuilder('t')
     return await callback(qb)
 }
 
