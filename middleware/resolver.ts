@@ -10,6 +10,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             try {
                 await store.fetchUserResolver()
             } catch (err) {
+                await store.logout()
                 await setStore(APP_NUXT.APP_NUXT_REDIRECT, to.fullPath)
                 return await navigateTo('/')
             }

@@ -4,9 +4,9 @@ import { divineEventCatcher, divineEventJwtTokenValidator } from '@/server/utils
 
 export default defineEventHandler(event => {
     return divineEventCatcher(event, async evt => {
-        await divineEventJwtTokenValidator(event, { next: false })
+        const { uid } = await divineEventJwtTokenValidator(event, { next: false })
         return await createBuilder(event.context.db, TableUser, async qb => {
-            qb.orWhere('tb.uid = :uid', { uid: event.context.user.uid })
+            qb.orWhere('tb.uid = :uid', { uid })
             qb.andWhere('tb.status IN(:...status)', { status: ['enable', 'disable'] })
             return await qb.getOne()
         }).then(async data => {

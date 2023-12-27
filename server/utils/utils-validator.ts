@@ -1,7 +1,6 @@
 import { plainToInstance, ClassConstructor } from 'class-transformer'
 import { validateOrReject, ValidatorOptions, ValidationError } from 'class-validator'
 import { H3Event, EventHandlerRequest } from 'h3'
-import { TableUser } from '@/server/typeorm/database'
 import { divineJwtVerifyAuthorize } from '@/server/utils/utils-handler'
 import { moment, divineHandler } from '@/utils/utils-common'
 
@@ -9,7 +8,7 @@ import { moment, divineHandler } from '@/utils/utils-common'
 export async function divineEventJwtTokenValidator(
     event: H3Event<EventHandlerRequest>,
     option: { next: boolean; code?: number; message?: string }
-): Promise<TableUser> {
+): ReturnType<typeof divineJwtVerifyAuthorize> {
     const token = getRequestHeader(event, 'authorization')
     if (token) {
         try {
