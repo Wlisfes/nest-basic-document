@@ -3,7 +3,6 @@
     "extends": "./.nuxt/tsconfig.json",
     "compilerOptions": {
         "useUnknownInCatchVariables": false,
-        "verbatimModuleSyntax": false,
         "esModuleInterop": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,

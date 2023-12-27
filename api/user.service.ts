@@ -1,5 +1,5 @@
+import type { Result, Notice, IUser } from '@/interface/instance.resolver'
 import { useHeaders, divineRequestCatcher } from '@/utils/utils-cookie'
-import { Result, Notice, IUser } from '@/interface/instance.resolver'
 
 /**用户注册**/
 export async function fetchUserRegister(data: { nickname: string; password: string; mobile: string; code: string }) {
