@@ -12,7 +12,7 @@ export class BodySchema {
 
 export function customNodemailer(transporter: any, option: any) {
     return new Promise((resolve, reject) => {
-        return transporter.sendMail(option, (error: any, info: any) => {
+        return transporter.sendMail(option, async (error: any, info: any) => {
             if (error) {
                 reject(error)
             } else {
@@ -22,6 +22,7 @@ export function customNodemailer(transporter: any, option: any) {
     })
 }
 
+//prettier-ignore
 export default defineEventHandler(async event => {
     return await divineEventCatcher(event, async evt => {
         const state = await readBody<BodySchema>(event)
@@ -37,6 +38,10 @@ export default defineEventHandler(async event => {
                 message: '发送失败',
                 data: err
             })
+        }).then(result => {
+
+
+            return result
         })
     })
 })

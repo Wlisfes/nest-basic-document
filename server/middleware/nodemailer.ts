@@ -5,7 +5,7 @@ export default defineEventHandler(async event => {
     event.context.transporter = new nodemailer.createTransport({
         host: config.NODEMAILER_HOST,
         port: config.NODEMAILER_PORT,
-        secure: false,
+        secure: config.NODEMAILER_SECURE,
         auth: {
             user: config.NODEMAILER_USER,
             pass: config.NODEMAILER_PASSWORD
