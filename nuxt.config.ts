@@ -47,7 +47,12 @@ export default defineNuxtConfig({
         MYSQL_DATABASE: process.env.MYSQL_DATABASE,
         GOOGLE_CAPTCHA_SERVER_SITEKEY: process.env.GOOGLE_CAPTCHA_SERVER_SITEKEY,
         JWT_EXPIRE: process.env.JWT_EXPIRE,
-        JWT_SECRET: process.env.JWT_SECRET
+        JWT_SECRET: process.env.JWT_SECRET,
+        NODEMAILER_HOST: process.env.NODEMAILER_HOST,
+        NODEMAILER_PORT: process.env.NODEMAILER_PORT,
+        NODEMAILER_SECURE: process.env.NODEMAILER_SECURE,
+        NODEMAILER_USER: process.env.NODEMAILER_USER,
+        NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD
     },
     $production: {
         nitro: {
