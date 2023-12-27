@@ -49,20 +49,37 @@ export default defineNuxtConfig({
         JWT_EXPIRE: process.env.JWT_EXPIRE,
         JWT_SECRET: process.env.JWT_SECRET
     },
-    // nitro: {
-    //     experimental: {
-    //         openAPI: true
-    //     },
-    //     esbuild: {
-    //         options: {
-    //             tsconfigRaw: {
-    //                 compilerOptions: {
-    //                     experimentalDecorators: true
-    //                 }
-    //             }
-    //         }
-    //     }
-    // },
+    $production: {
+        nitro: {
+            preset: 'vercel',
+            experimental: {
+                openAPI: true
+            },
+            esbuild: {
+                options: {
+                    tsconfigRaw: {
+                        compilerOptions: {
+                            experimentalDecorators: true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    nitro: {
+        experimental: {
+            openAPI: true
+        },
+        esbuild: {
+            options: {
+                tsconfigRaw: {
+                    compilerOptions: {
+                        experimentalDecorators: true
+                    }
+                }
+            }
+        }
+    },
     vite: {
         plugins: [
             Components({
