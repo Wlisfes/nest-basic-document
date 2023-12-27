@@ -8,12 +8,12 @@ import * as http from '@/api'
 export default defineNuxtComponent({
     name: 'Authorize',
     head: (app: any) => ({
-        titleTemplate: (title: string) => `${title} - 登录`,
-        link: [
-            { rel: 'preconnect', href: 'https://www.google.com' },
-            { rel: 'preconnect', href: 'https://www.gstatic.com', crossorigin: 'anonymous' }
-        ],
-        script: [{ async: true, src: `https://www.google.com/recaptcha/api.js?render=${app.$config.public.GOOGLE_CAPTCHA_CLIENT_SITEKEY}` }]
+        titleTemplate: (title: string) => `${title} - 登录`
+        // link: [
+        //     { rel: 'preconnect', href: 'https://www.google.com' },
+        //     { rel: 'preconnect', href: 'https://www.gstatic.com', crossorigin: 'anonymous' }
+        // ],
+        // script: [{ async: true, src: `https://www.google.com/recaptcha/api.js?render=${app.$config.public.GOOGLE_CAPTCHA_CLIENT_SITEKEY}` }]
     }),
     setup() {
         definePageMeta({ middleware: 'cancel' })
@@ -35,7 +35,7 @@ export default defineNuxtComponent({
                 try {
                     await setDisabled(true)
                     await setLoading(true)
-                    const token = await divineMaticChecker()
+                    const token = await divineMaticChecker({ action: 'login' })
                     const { data, message } = await http.fetchUserAuthorize({
                         account: state.form.account,
                         password: window.btoa(state.form.password),

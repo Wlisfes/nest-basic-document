@@ -13,7 +13,7 @@ declare global {
         $dialog: DialogApiInjection
         grecaptcha: {
             ready: (handler: Function) => void
-            execute: (key: string, opt: { action: 'submit' }) => Promise<string>
+            execute: (key: string, opt: { action: string }) => Promise<string>
         }
         AliyunUpload: {
             Vod: new (option) => any

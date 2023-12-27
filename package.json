@@ -24,6 +24,7 @@
         "reflect-metadata": "^0.2.1",
         "typeorm": "^0.3.17",
         "vue": "^3.3.10",
+        "vue-recaptcha-v3": "^2.0.1",
         "vue-router": "^4.2.5"
     },
     "devDependencies": {

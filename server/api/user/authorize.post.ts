@@ -20,6 +20,14 @@ export default defineEventHandler(async event => {
             data: body,
             option: { groups: ['account', 'password', 'token'] }
         })
+        const config = useRuntimeConfig()
+        const response = await $fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+            method: 'POST',
+            query: {
+                secret: config.GOOGLE_CAPTCHA_SERVER_SITEKEY,
+                response: body.token
+            }
+        })
         /**查询登录用户**/
         const node = await createBuilder(event.context.db, TableUser, async qb => {
             qb.addSelect('tb.password')
@@ -45,7 +53,7 @@ export default defineEventHandler(async event => {
             status: node.status,
             password: node.password
         }).then(({ token, expire }) => {
-            return { token, expire, message: '登录成功' }
+            return { token, expire, message: '登录成功', response }
         })
     })
 })
