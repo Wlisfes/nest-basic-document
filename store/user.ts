@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { fetchUserResolver } from '@/api'
+import { fetchUserResolver } from '@/interface'
 import { delToken } from '@/utils/utils-cookie'
 
 export const useUser = defineStore('user', {

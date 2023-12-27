@@ -1,6 +1,6 @@
 import JSCookie from 'js-cookie'
 import { divineHandler } from '@/utils/utils-common'
-import { Response } from '@/interface/common.resolver'
+import { Response } from '~/types/common.resolver'
 
 /**存储字段名称**/
 export enum APP_NUXT {

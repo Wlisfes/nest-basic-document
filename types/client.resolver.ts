@@ -1,4 +1,4 @@
-import { Base } from '@/interface/common.resolver'
+import { Base } from '~/types/common.resolver'
 
 export interface IUser extends Base {
     uid: string

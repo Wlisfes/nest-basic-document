@@ -3,7 +3,7 @@ import { divineMaticChecker } from '@/utils/utils-plugin'
 import { useCustomize } from '@/hooks/hook-customize'
 import { createNotice } from '@/utils/utils-naive'
 import { APP_NUXT, setToken, getStore } from '@/utils/utils-cookie'
-import * as http from '@/api'
+import * as http from '@/interface'
 
 export default defineNuxtComponent({
     name: 'Authorize',
