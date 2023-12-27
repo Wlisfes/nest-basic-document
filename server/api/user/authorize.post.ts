@@ -21,13 +21,15 @@ export default defineEventHandler(async event => {
             option: { groups: ['account', 'password', 'token'] }
         })
         const config = useRuntimeConfig()
-        const response = await $fetch(`https://www.google.com/recaptcha/api/siteverify`, {
-            method: 'POST',
-            query: {
-                secret: config.GOOGLE_CAPTCHA_SERVER_SITEKEY,
-                response: body.token
-            }
+        const response = await $fetch<{ success: boolean }>(
+            `https://www.google.com/recaptcha/api/siteverify?secret=${config.GOOGLE_CAPTCHA_SERVER_SITEKEY}&response=${body.token}`,
+            { method: 'POST' }
+        )
+        await divineEventWhereCatcher(!response.success, {
+            code: 401,
+            message: 'token验证错误'
         })
+
         /**查询登录用户**/
         const node = await createBuilder(event.context.db, TableUser, async qb => {
             qb.addSelect('tb.password')
@@ -37,12 +39,15 @@ export default defineEventHandler(async event => {
             return await qb.getOne()
         }).then(async data => {
             await divineEventWhereCatcher(!Boolean(data), {
+                code: 401,
                 message: '用户未注册'
             })
             await divineEventWhereCatcher(data.status === 'disable', {
+                code: 401,
                 message: '账户已被禁用'
             })
             await divineEventWhereCatcher(!bcrypt.compareSync(body.password, data.password), {
+                code: 401,
                 message: '账户密码错误'
             })
             return data

@@ -1,5 +1,6 @@
 <script lang="tsx">
 import { defineComponent, computed, type CSSProperties } from 'vue'
+import { Analytics } from '@vercel/analytics/react'
 
 export default defineComponent({
     name: 'BaseLayout',
@@ -23,6 +24,7 @@ export default defineComponent({
                         <common-footer></common-footer>
                     </n-layout-content>
                 </n-layout>
+                <Analytics></Analytics>
             </client-only>
         )
     }
