@@ -1,8 +1,6 @@
 import { IsNotEmpty } from 'class-validator'
 import { TableUser } from '@/server/typeorm/database'
 import { createBuilder } from '@/server/typeorm'
-import { divineJwtSignAuthorize } from '@/server/utils/utils-handler'
-import { divineEventValidator, divineEventCatcher, divineEventWhereCatcher } from '@/server/utils/utils-validator'
 import bcrypt from 'bcryptjs'
 
 export class BodySchema extends TableUser {
@@ -15,18 +13,18 @@ export class BodySchema extends TableUser {
 
 export default defineEventHandler(async event => {
     return await divineEventCatcher(event, async evt => {
-        const body = await readBody<BodySchema>(event)
+        const state = await readBody<BodySchema>(event)
         await divineEventValidator(BodySchema, {
-            data: body,
+            data: state,
             option: { groups: ['account', 'password', 'token'] }
         })
-        const config = useRuntimeConfig()
+        await divineEventSlideTokenValidator(event, state.token)
 
         /**查询登录用户**/
         const node = await createBuilder(event.context.db, TableUser, async qb => {
             qb.addSelect('t.password')
-            qb.where('t.email = :email', { email: body.account })
-            qb.orWhere('t.mobile = :mobile', { mobile: body.account })
+            qb.where('t.email = :email', { email: state.account })
+            qb.orWhere('t.mobile = :mobile', { mobile: state.account })
             qb.andWhere('t.status IN(:...status)', { status: ['enable', 'disable'] })
             return await qb.getOne()
         }).then(async data => {
@@ -38,7 +36,7 @@ export default defineEventHandler(async event => {
                 code: 401,
                 message: '账户已被禁用'
             })
-            await divineEventWhereCatcher(!bcrypt.compareSync(body.password, data.password), {
+            await divineEventWhereCatcher(!bcrypt.compareSync(state.password, data.password), {
                 code: 401,
                 message: '账户密码错误'
             })

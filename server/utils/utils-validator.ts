@@ -1,3 +1,4 @@
+import NodeRSA from 'node-rsa'
 import { plainToInstance, ClassConstructor } from 'class-transformer'
 import { validateOrReject, ValidatorOptions, ValidationError } from 'class-validator'
 import { H3Event, EventHandlerRequest } from 'h3'
@@ -9,7 +10,34 @@ export async function divineEventParameter<T extends Record<string, any>>(data: 
     return data
 }
 
-/**token验证**/
+/**滑动验证码token解析**/
+export async function divineEventTokenDecrypt(
+    token: string
+): Promise<{ action: string; session: string; referer: string; timestamp: number }> {
+    try {
+        const config = useRuntimeConfig()
+        const privateKey = new NodeRSA(config.CAPTCHA_PRIVATE_SITEKEY)
+        privateKey.setOptions({ encryptionScheme: 'pkcs1' })
+        return JSON.parse(privateKey.decrypt(token, 'utf8'))
+    } catch (e) {
+        throw createError({ statusCode: 400, message: '验证码错误' })
+    }
+}
+
+/**滑动验证码token验证**/
+export async function divineEventSlideTokenValidator(event: H3Event<EventHandlerRequest>, token: string) {
+    const node = await divineEventTokenDecrypt(token)
+    const origin = getRequestHeader(event, 'origin')
+    await divineEventWhereCatcher(node.referer !== origin, {
+        message: '地址不合法'
+    })
+    await divineEventWhereCatcher(Date.now() - 180000 > node.timestamp, {
+        message: '验证码已过期'
+    })
+    return node
+}
+
+/**JWT token验证**/
 export async function divineEventJwtTokenValidator(
     event: H3Event<EventHandlerRequest>,
     option: { next: boolean; code?: number; message?: string }

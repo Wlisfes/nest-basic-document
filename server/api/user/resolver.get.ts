@@ -1,6 +1,5 @@
 import { createBuilder } from '@/server/typeorm'
 import { TableUser } from '@/server/typeorm/database'
-import { divineEventCatcher, divineEventJwtTokenValidator } from '@/server/utils/utils-validator'
 
 export default defineEventHandler(event => {
     return divineEventCatcher(event, async evt => {

@@ -1212,6 +1212,13 @@
   resolved "https://registry.npmmirror.com/@types/lodash/-/lodash-4.14.202.tgz#f09dbd2fb082d507178b2f2a5c7e74bd72ff98f8"
   integrity sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==
 
+"@types/node-rsa@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.npmmirror.com/@types/node-rsa/-/node-rsa-1.1.4.tgz#6d2e06f8ca3619550be4fd5c12db5f2267048e20"
+  integrity sha512-dB0ECel6JpMnq5ULvpUTunx3yNm8e/dIkv8Zu9p2c8me70xIRUUG3q+qXRwcSf9rN3oqamv4116iHy90dJGRpA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/node@*":
   version "20.10.5"
   resolved "https://registry.npmmirror.com/@types/node/-/node-20.10.5.tgz#47ad460b514096b7ed63a1dae26fad0914ed3ab2"
@@ -1685,6 +1692,13 @@ array-unique@^0.3.2:
   version "0.3.2"
   resolved "https://registry.npmmirror.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha512-SleRWjh9JUud2wH1hPs9rZBZ33H6T9HOiL0uwGnGx9FpE6wKGyfWugmbkEOIs6qWrZhg0LWeLziLrEwQJhs5mQ==
+
+asn1@^0.2.4:
+  version "0.2.6"
+  resolved "https://registry.npmmirror.com/asn1/-/asn1-0.2.6.tgz#0d3a7bb6e64e02a90c0303b31f292868ea09a08d"
+  integrity sha512-ix/FxPn0MDjeyJ7i/yoHGFt/EX6LyNbxSEhPPXODPL+KB0VPk86UYfL0lMdy+KCnv+fmvIzySwaK5COwqVbWTQ==
+  dependencies:
+    safer-buffer "~2.1.0"
 
 assign-symbols@^1.0.0:
   version "1.0.0"
@@ -4543,6 +4557,13 @@ node-releases@^2.0.14:
   resolved "https://registry.npmmirror.com/node-releases/-/node-releases-2.0.14.tgz#2ffb053bceb8b2be8495ece1ab6ce600c4461b0b"
   integrity sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==
 
+node-rsa@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmmirror.com/node-rsa/-/node-rsa-1.1.1.tgz#efd9ad382097782f506153398496f79e4464434d"
+  integrity sha512-Jd4cvbJMryN21r5HgxQOpMEqv+ooke/korixNNK3mGqfGJmy0M77WDDzo/05969+OkMy3XW1UuZsSmW9KQm7Fw==
+  dependencies:
+    asn1 "^0.2.4"
+
 nodemailer@^6.9.7:
   version "6.9.7"
   resolved "https://registry.npmmirror.com/nodemailer/-/nodemailer-6.9.7.tgz#ec2f488f62ba1558e7b19239b62778df4a5c4397"
@@ -5596,7 +5617,7 @@ safe-regex@^1.1.0:
   dependencies:
     ret "~0.1.10"
 
-"safer-buffer@>= 2.1.2 < 3.0.0":
+"safer-buffer@>= 2.1.2 < 3.0.0", safer-buffer@~2.1.0:
   version "2.1.2"
   resolved "https://registry.npmmirror.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==

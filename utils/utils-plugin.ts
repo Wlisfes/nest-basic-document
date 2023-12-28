@@ -11,7 +11,7 @@ export async function divineMaticChecker(opts: { action: string }): Promise<stri
             action: opts.action,
             session: await divineIntNumber(16),
             referer: window.location.origin,
-            expire: Date.now() + 180000
+            timestamp: Date.now()
         })
     ) as string
 }

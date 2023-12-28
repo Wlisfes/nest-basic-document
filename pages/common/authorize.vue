@@ -51,15 +51,17 @@ export default defineNuxtComponent({
                     password: window.btoa(state.form.password),
                     token: evt.token
                 })
-                await setToken(data.token, data.expire)
-                return await createNotice({
-                    type: 'success',
-                    title: message,
-                    onAfterEnter: async () => {
-                        await setLoading(false)
-                        await navigateTo({ path: getStore(APP_NUXT.APP_NUXT_REDIRECT, '/') })
-                    }
-                })
+                await setLoading(false)
+                return await setDisabled(false)
+                // await setToken(data.token, data.expire)
+                // return await createNotice({
+                //     type: 'success',
+                //     title: message,
+                //     onAfterEnter: async () => {
+                //         await setLoading(false)
+                //         await navigateTo({ path: getStore(APP_NUXT.APP_NUXT_REDIRECT, '/') })
+                //     }
+                // })
             } catch (e) {
                 await createNotice({ type: 'error', title: e.message })
                 await setLoading(false)
