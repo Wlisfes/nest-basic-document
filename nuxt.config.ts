@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import { loadEnv } from 'vite'
 import Components from 'unplugin-vue-components/vite'
 import path from 'path'
 
@@ -53,23 +52,6 @@ export default defineNuxtConfig({
         NODEMAILER_SECURE: process.env.NODEMAILER_SECURE,
         NODEMAILER_USER: process.env.NODEMAILER_USER,
         NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD
-    },
-    $production: {
-        nitro: {
-            preset: 'vercel',
-            experimental: {
-                openAPI: true
-            },
-            esbuild: {
-                options: {
-                    tsconfigRaw: {
-                        compilerOptions: {
-                            experimentalDecorators: true
-                        }
-                    }
-                }
-            }
-        }
     },
     nitro: {
         experimental: {
