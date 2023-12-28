@@ -1,23 +1,21 @@
 <script lang="tsx">
+import { OnClickOutside } from '@vueuse/components'
 import { divineMaticChecker } from '@/utils/utils-plugin'
 import { useCustomize } from '@/hooks/hook-customize'
 import { createNotice } from '@/utils/utils-naive'
+import { stop } from '@/utils/utils-common'
 import { APP_NUXT, setToken, getStore } from '@/utils/utils-cookie'
 import * as http from '@/interface'
 
 export default defineNuxtComponent({
     name: 'Authorize',
-    head: (app: any) => ({
+    components: { OnClickOutside },
+    head: () => ({
         titleTemplate: (title: string) => `${title} - 登录`
-        // link: [
-        //     { rel: 'preconnect', href: 'https://www.google.com' },
-        //     { rel: 'preconnect', href: 'https://www.gstatic.com', crossorigin: 'anonymous' }
-        // ],
-        // script: [{ async: true, src: `https://www.google.com/recaptcha/api.js?render=${app.$config.public.GOOGLE_CAPTCHA_CLIENT_SITEKEY}` }]
     }),
     setup() {
         definePageMeta({ middleware: 'cancel' })
-        const { formRef, state, setLoading, setDisabled, divineFormValidater } = useCustomize({
+        const { formRef, state, setLoading, setDisabled, setVisible, divineFormValidater } = useCustomize({
             loading: false,
             form: {
                 account: 'limvcfast@gmail.com',
@@ -28,6 +26,25 @@ export default defineNuxtComponent({
                 password: { required: true, trigger: ['blur', 'change'], message: '请输入登录密码' }
             }
         })
+
+        /**关闭验证码**/
+        async function onOutsideCloser(evt: PointerEvent) {
+            await setVisible(false)
+            return await setDisabled(false)
+        }
+
+        /**验证表单**/
+        async function onChecker() {
+            return divineFormValidater(async () => {
+                await setDisabled(true)
+                await setVisible(true)
+            })
+        }
+
+        /**登录**/
+        async function fetchUserAuthorize(e: any) {
+            console.log(e)
+        }
 
         /**登录**/
         function onSubmit(evt: Event) {
@@ -85,15 +102,26 @@ export default defineNuxtComponent({
                             ></n-input>
                         </n-form-item>
                         <n-form-item>
-                            <n-button
-                                type="info"
-                                style={{ width: '100%' }}
-                                disabled={state.disabled}
-                                loading={state.loading}
-                                onClick={onSubmit}
-                            >
-                                立即登录
-                            </n-button>
+                            <n-popover trigger="manual" style={{ padding: 0 }} show={state.visible}>
+                                {{
+                                    default: () => (
+                                        <onClickOutside onTrigger={onOutsideCloser}>
+                                            <common-captchar onSuccess={fetchUserAuthorize}></common-captchar>
+                                        </onClickOutside>
+                                    ),
+                                    trigger: () => (
+                                        <n-button
+                                            type="info"
+                                            style={{ width: '100%' }}
+                                            disabled={state.disabled}
+                                            loading={state.loading}
+                                            onClick={(e: Event) => stop(e, onChecker)}
+                                        >
+                                            立即登录
+                                        </n-button>
+                                    )
+                                }}
+                            </n-popover>
                         </n-form-item>
                         <n-space justify="space-between" style={{ width: '100%', marginBottom: '5px' }}>
                             <nuxt-link to="/common/register" style={{ textDecoration: 'none' }}>

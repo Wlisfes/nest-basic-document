@@ -6,6 +6,19 @@ export function moment(date?: dayjs.ConfigType) {
     return dayjs(date)
 }
 
+/**事件默认处理**/
+export function prevent(e: Event, handler?: Function) {
+    e.preventDefault()
+    return handler?.(e)
+}
+
+/**事件阻止处理**/
+export function stop(e: Event, handler?: Function) {
+    e.preventDefault()
+    e.stopPropagation()
+    return handler?.(e)
+}
+
 /**生成时间戳组合数字**/
 export async function divineIntNumber(pad: number = 16) {
     const date = Math.floor(Date.now() / 1000)
