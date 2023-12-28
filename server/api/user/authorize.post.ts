@@ -21,14 +21,6 @@ export default defineEventHandler(async event => {
             option: { groups: ['account', 'password', 'token'] }
         })
         const config = useRuntimeConfig()
-        const response = await $fetch<{ success: boolean }>(
-            `https://www.google.com/recaptcha/api/siteverify?secret=${config.GOOGLE_CAPTCHA_SERVER_SITEKEY}&response=${body.token}`,
-            { method: 'POST' }
-        )
-        await divineEventWhereCatcher(!response.success, {
-            code: 401,
-            message: 'token验证错误'
-        })
 
         /**查询登录用户**/
         const node = await createBuilder(event.context.db, TableUser, async qb => {
@@ -58,7 +50,7 @@ export default defineEventHandler(async event => {
             status: node.status,
             password: node.password
         }).then(({ token, expire }) => {
-            return { token, expire, message: '登录成功', response }
+            return { token, expire, message: '登录成功' }
         })
     })
 })
