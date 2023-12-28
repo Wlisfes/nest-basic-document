@@ -1,6 +1,5 @@
 <script lang="tsx">
 import { OnClickOutside } from '@vueuse/components'
-import { divineMaticChecker } from '@/utils/utils-plugin'
 import { useCustomize } from '@/hooks/hook-customize'
 import { createNotice } from '@/utils/utils-naive'
 import { stop } from '@/utils/utils-common'
@@ -34,45 +33,38 @@ export default defineNuxtComponent({
         }
 
         /**验证表单**/
-        async function onChecker() {
+        async function onEventChecker() {
             return divineFormValidater(async () => {
                 await setDisabled(true)
-                await setVisible(true)
+                return await setVisible(true)
             })
         }
 
         /**登录**/
-        async function fetchUserAuthorize(evt: { token: string; distance: string; reset: Function }) {
-            console.log(evt)
-        }
-
-        /**登录**/
-        function onSubmit(evt: Event) {
-            return divineFormValidater(async () => {
-                try {
-                    await setDisabled(true)
-                    await setLoading(true)
-                    const token = await divineMaticChecker({ action: 'login' })
-                    const { data, message } = await http.fetchUserAuthorize({
-                        account: state.form.account,
-                        password: window.btoa(state.form.password),
-                        token: token
-                    })
-                    await setToken(data.token, data.expire)
-                    return await createNotice({
-                        type: 'success',
-                        title: message,
-                        onAfterEnter: async () => {
-                            await setLoading(false)
-                            await navigateTo({ path: getStore(APP_NUXT.APP_NUXT_REDIRECT, '/') })
-                        }
-                    })
-                } catch (e) {
-                    await createNotice({ type: 'error', title: e.message })
-                    await setLoading(false)
-                    return await setDisabled(false)
-                }
-            })
+        async function onSubmit(evt: { token: string; distance: string; reset: Function }) {
+            try {
+                await setLoading(true)
+                await setDisabled(true)
+                await setVisible(false)
+                const { data, message } = await http.fetchUserAuthorize({
+                    account: state.form.account,
+                    password: window.btoa(state.form.password),
+                    token: evt.token
+                })
+                await setToken(data.token, data.expire)
+                return await createNotice({
+                    type: 'success',
+                    title: message,
+                    onAfterEnter: async () => {
+                        await setLoading(false)
+                        await navigateTo({ path: getStore(APP_NUXT.APP_NUXT_REDIRECT, '/') })
+                    }
+                })
+            } catch (e) {
+                await createNotice({ type: 'error', title: e.message })
+                await setLoading(false)
+                return await setDisabled(false)
+            }
         }
 
         return () => (
@@ -106,7 +98,7 @@ export default defineNuxtComponent({
                                 {{
                                     default: () => (
                                         <onClickOutside onTrigger={onOutsideCloser}>
-                                            <common-captchar onSuccess={fetchUserAuthorize}></common-captchar>
+                                            <common-captchar onSuccess={onSubmit}></common-captchar>
                                         </onClickOutside>
                                     ),
                                     trigger: () => (
@@ -115,7 +107,7 @@ export default defineNuxtComponent({
                                             style={{ width: '100%' }}
                                             disabled={state.disabled}
                                             loading={state.loading}
-                                            onClick={(e: Event) => stop(e, onChecker)}
+                                            onClick={(e: Event) => stop(e, onEventChecker)}
                                         >
                                             立即登录
                                         </n-button>
