@@ -22,8 +22,16 @@ export function stop(e: Event, handler?: Function) {
 /**生成时间戳组合数字**/
 export async function divineIntNumber(pad: number = 16) {
     const date = Math.floor(Date.now() / 1000)
-    const suffix = [Math.random(), Math.random()].map(x => x.toString().slice(2))
+    const suffix = Array.from({ length: pad }, e => Math.floor(Math.random() * 9).toString())
     return [date, ...suffix].join('').slice(0, pad)
+}
+
+/**生成N位随机符串**/
+export async function divineIntCharacter(
+    pad: number = 16,
+    character: string = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`
+) {
+    return Array.from({ length: pad }, e => character.charAt(Math.floor(Math.random() * character.length))).join('')
 }
 
 /**条件函数执行**/

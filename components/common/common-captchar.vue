@@ -1,6 +1,7 @@
 <script lang="tsx">
 import { defineComponent, ref, computed, onMounted, onUnmounted, Fragment } from 'vue'
 import { divineDelay, stop } from '@/utils/utils-common'
+import { divineMaticChecker } from '@/utils/utils-plugin'
 import { useState } from '@/hooks/hook-state'
 
 export default defineComponent({
@@ -12,6 +13,7 @@ export default defineComponent({
         sliderSize: { type: Number, default: 40 }, // 滑块的大小
         range: { type: Number, default: 10 }, // 允许的偏差值
         cover: { type: Array, default: () => [] as Array<string> },
+        action: { type: String, default: 'login' },
         successText: { type: String, default: '验证通过！' },
         failText: { type: String, default: '验证失败，请重试' },
         sliderText: { type: String, default: '拖动滑块完成拼图' }
@@ -251,7 +253,7 @@ export default defineComponent({
                 const ctx = canvas1.value?.getContext('2d') as CanvasRenderingContext2D
                 const ctx2 = canvas2.value?.getContext('2d') as CanvasRenderingContext2D
                 const ctx3 = canvas3.value?.getContext('2d') as CanvasRenderingContext2D
-                const isFirefox = navigator.userAgent.indexOf('Firefox') >= 0 && navigator.userAgent.indexOf('Windows') >= 0 // 是windows版火狐
+                const isFirefox = false//navigator.userAgent.indexOf('Firefox') >= 0 && navigator.userAgent.indexOf('Windows') >= 0 // 是windows版火狐
                 const image = new Image()
                 ctx.fillStyle = 'rgba(255,255,255,1)'
                 ctx3.fillStyle = 'rgba(255,255,255,1)'
@@ -397,8 +399,9 @@ export default defineComponent({
 
                 if (distance < props.range) {
                     //成功
-                    // await fetchAuthorize()
+                    const token = await divineMaticChecker({ action: props.action })
                     await setState({
+                        token,
                         infoText: props.successText,
                         infoBoxFail: false,
                         infoBoxShow: true,
@@ -406,12 +409,7 @@ export default defineComponent({
                         isSuccess: true
                     })
                     setState({ isSubmting: false, spiner: false }).finally(() => {
-                        emit('success', {
-                            distance,
-                            token: state.token,
-                            session: state.session,
-                            reset: reset
-                        })
+                        emit('success', { distance, token: token, reset: reset })
                     })
                 } else {
                     //失败
@@ -445,7 +443,7 @@ export default defineComponent({
         }
 
         return () => (
-            <n-el tag="div" class="common-captchar" style={{ width: props.canvasWidth + 32 + 'px' }}>
+            <n-element tag="div" class="common-captchar" style={{ width: props.canvasWidth + 32 + 'px' }}>
                 <div class="common-captchar__container" onMousedown={stop} onTouchstart={stop}>
                     <div class="common-captchar__context" style={{ height: props.canvasHeight + 'px' }}>
                         <canvas
@@ -545,7 +543,7 @@ export default defineComponent({
                         </div>
                     </div>
                 </div>
-            </n-el>
+            </n-element>
         )
     }
 })

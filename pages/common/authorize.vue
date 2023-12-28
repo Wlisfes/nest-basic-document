@@ -42,8 +42,8 @@ export default defineNuxtComponent({
         }
 
         /**登录**/
-        async function fetchUserAuthorize(e: any) {
-            console.log(e)
+        async function fetchUserAuthorize(evt: { token: string; distance: string; reset: Function }) {
+            console.log(evt)
         }
 
         /**登录**/

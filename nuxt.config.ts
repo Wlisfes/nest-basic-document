@@ -38,16 +38,16 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            GOOGLE_CAPTCHA_CLIENT_SITEKEY: process.env.GOOGLE_CAPTCHA_CLIENT_SITEKEY
+            CAPTCHA_PUBLIC_SITEKEY: process.env.CAPTCHA_PUBLIC_SITEKEY
         },
         MYSQL_HOST: process.env.MYSQL_HOST,
         MYSQL_PORT: process.env.MYSQL_PORT,
         MYSQL_USERNAME: process.env.MYSQL_USERNAME,
         MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
         MYSQL_DATABASE: process.env.MYSQL_DATABASE,
-        GOOGLE_CAPTCHA_SERVER_SITEKEY: process.env.GOOGLE_CAPTCHA_SERVER_SITEKEY,
         JWT_EXPIRE: process.env.JWT_EXPIRE,
         JWT_SECRET: process.env.JWT_SECRET,
+        CAPTCHA_PRIVATE_SITEKEY: process.env.CAPTCHA_PRIVATE_SITEKEY,
         NODEMAILER_HOST: process.env.NODEMAILER_HOST,
         NODEMAILER_PORT: process.env.NODEMAILER_PORT,
         NODEMAILER_SECURE: process.env.NODEMAILER_SECURE,
