@@ -3,19 +3,18 @@ import { OnClickOutside } from '@vueuse/components'
 import { useCustomize } from '@/hooks/hook-customize'
 import { createNotice } from '@/utils/utils-naive'
 import { stop } from '@/utils/utils-common'
+import { useUser } from '@/store/user'
 import { APP_NUXT, setToken, getStore } from '@/utils/utils-cookie'
 import * as http from '@/interface'
 
 export default defineNuxtComponent({
     name: 'Authorize',
     components: { OnClickOutside },
-    head() {
-        return {
-            titleTemplate: (title: string) => `${title} - 登录 | 一个神奇的网站`
-        }
+    head: {
+        titleTemplate: (title: string) => `${title} - 登录 | 一个神奇的网站`
     },
     setup() {
-        definePageMeta({ middleware: 'cancel' })
+        const user = useUser()
         const { formRef, state, setLoading, setDisabled, setVisible, divineFormValidater } = useCustomize({
             loading: false,
             form: {
@@ -53,7 +52,9 @@ export default defineNuxtComponent({
                     password: window.btoa(state.form.password),
                     token: evt.token
                 })
-                await setToken(data.token, data.expire)
+                await setToken(data.token, data.expire).then(async () => {
+                    return await user.fetchUserResolver()
+                })
                 return await createNotice({
                     type: 'success',
                     title: message,

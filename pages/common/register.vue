@@ -1,14 +1,10 @@
 <script lang="tsx">
 export default defineNuxtComponent({
     name: 'Register',
-    head() {
-        return {
-            titleTemplate: (title: string) => `${title} - 注册 | 一个神奇的网站`
-        }
+    head: {
+        titleTemplate: (title: string) => `${title} - 注册 | 一个神奇的网站`
     },
     setup() {
-        definePageMeta({ middleware: 'cancel' })
-
         return () => (
             <n-element class="layout-provider n-chunk n-column n-center n-middle n-auto no-selecter">
                 <n-element class="chunk-element">
