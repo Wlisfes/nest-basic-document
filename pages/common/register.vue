@@ -1,9 +1,11 @@
 <script lang="tsx">
 export default defineNuxtComponent({
     name: 'Register',
-    head: () => ({
-        titleTemplate: (title: string) => `${title} - 注册`
-    }),
+    head() {
+        return {
+            titleTemplate: (title: string) => `${title} - 注册 | 一个神奇的网站`
+        }
+    },
     setup() {
         definePageMeta({ middleware: 'cancel' })
 

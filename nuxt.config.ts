@@ -89,9 +89,8 @@ export default defineNuxtConfig({
                 { name: 'viewport', content: 'width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no' },
                 { name: 'description', content: '(Wlisfes) 这是我的神奇网站，让我告诉你关于它的一切。' }
             ],
-            htmlAttrs: {
-                lang: 'zh-CN'
-            }
+            htmlAttrs: { lang: 'zh-CN' },
+            script: [{ src: `https://cdn.bootcdn.net/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js` }]
         }
     }
 })

@@ -1,9 +1,11 @@
 <script lang="tsx">
 export default defineNuxtComponent({
     name: 'Index',
-    head: () => ({
-        titleTemplate: (title: string) => `${title} - 一个神奇的网站`
-    }),
+    head() {
+        return {
+            titleTemplate: (title: string) => `${title} - 一个神奇的网站`
+        }
+    },
     setup() {
         definePageMeta({ middleware: 'resolver' })
 

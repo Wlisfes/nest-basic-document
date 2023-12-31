@@ -9,9 +9,11 @@ import * as http from '@/interface'
 export default defineNuxtComponent({
     name: 'Authorize',
     components: { OnClickOutside },
-    head: () => ({
-        titleTemplate: (title: string) => `${title} - 登录`
-    }),
+    head() {
+        return {
+            titleTemplate: (title: string) => `${title} - 登录 | 一个神奇的网站`
+        }
+    },
     setup() {
         definePageMeta({ middleware: 'cancel' })
         const { formRef, state, setLoading, setDisabled, setVisible, divineFormValidater } = useCustomize({
