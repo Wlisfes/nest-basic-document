@@ -6,9 +6,11 @@ export default defineNuxtComponent({
     },
     setup() {
         return () => (
-            <n-element class="layout-provider n-chunk n-column n-center n-auto no-selecter">
-                <common-clock max={960}></common-clock>
-            </n-element>
+            <nuxt-layout name="client">
+                <n-element class="layout-provider n-chunk n-column n-center n-auto no-selecter">
+                    <common-clock max={960}></common-clock>
+                </n-element>
+            </nuxt-layout>
         )
     }
 })

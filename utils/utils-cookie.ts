@@ -1,6 +1,6 @@
 import JSCookie from 'js-cookie'
 import { divineHandler } from '@/utils/utils-common'
-import { Response } from '~/types/common.resolver'
+import type { Response } from '@/types/common.resolver'
 
 /**存储字段名称**/
 export enum APP_NUXT {
@@ -48,10 +48,17 @@ export async function useHeaders(headers: Record<string, string> = {}) {
     return headers
 }
 
-export async function divineRequestCatcher<T>(result: T): Promise<Response<T>> {
+export async function divineRequestCatcher<T>(response: T): Promise<Response<T>> {
     try {
-        return result as Response<T>
+        console.log(response)
+        if (200 === (response as Response<T>).code) {
+            return response as Response<T>
+        } else {
+            console.log(window.$dialog)
+        }
+        return response as Response<T>
     } catch (err) {
+        console.log(err)
         throw err
     }
 }
