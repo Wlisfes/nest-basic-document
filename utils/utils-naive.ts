@@ -1,4 +1,6 @@
-import type { DialogOptions, DialogReactive, NotificationOptions, NotificationReactive } from 'naive-ui'
+import type { DialogOptions, DialogReactive, NotificationOptions, NotificationReactive, ButtonProps } from 'naive-ui'
+import { createDiscreteApi } from 'naive-ui'
+import { divineHandler } from '@/utils/utils-common'
 
 /**对话弹窗二次封装**/
 export function createDiscover(
@@ -11,11 +13,15 @@ export function createDiscover(
         onPositiveClick?: (e: MouseEvent, x: DialogReactive, done: (loading: boolean) => Promise<boolean>) => boolean | Promise<boolean>
     }
 ): Promise<DialogReactive> {
-    return new Promise(resolve => {
-        const vm = window.$dialog.create({
+    return new Promise(async resolve => {
+        const instance = await divineHandler<typeof window.$dialog>(!window.$dialog, () => {
+            const { dialog } = createDiscreteApi(['dialog'])
+            return dialog
+        })
+        const vm = instance.create({
             ...option,
-            negativeButtonProps: { size: 'medium', ...option.negativeButtonProps },
-            positiveButtonProps: { size: 'medium', ...option.positiveButtonProps },
+            negativeButtonProps: { size: 'medium', ...(option.negativeButtonProps as ButtonProps) },
+            positiveButtonProps: { size: 'medium', ...(option.positiveButtonProps as ButtonProps) },
             maskClosable: option.maskClosable ?? false,
             autoFocus: option.autoFocus ?? false,
             onAfterEnter: (e: HTMLElement) => {
@@ -52,8 +58,17 @@ export function createNotice(
         onLeave?: (x: NotificationReactive) => void | any | undefined
     }
 ): Promise<NotificationReactive> {
-    return new Promise(resolve => {
-        const vm = window.$notification.create({
+    return new Promise(async resolve => {
+        console.log(`1111111111111`)
+        // const instance = await divineHandler<typeof window.$notification>(!window.$notification, () => {
+        //     const { notification } = createDiscreteApi(['notification'])
+        //     return notification
+        // }).then(notice => {
+        //     return window.$notification || notice
+        // })
+        const { notification } = createDiscreteApi(['notification'])
+        console.log(notification)
+        const vm = notification.create({
             ...option,
             type: option.type ?? 'success',
             duration: option.duration ?? 2500,

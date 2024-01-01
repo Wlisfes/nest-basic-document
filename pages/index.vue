@@ -1,8 +1,17 @@
 <script lang="tsx">
+import { useUser } from '@/store/user'
+import { beforeResolver } from '@/utils/utils-router'
+
 export default defineNuxtComponent({
     name: 'Index',
     head: {
         titleTemplate: (title: string) => `${title} - 一个神奇的网站`
+    },
+    async beforeRouteEnter(to, form, next) {
+        // const store = useUser()
+
+        // console.log(store)
+        return await beforeResolver(to, form, next)
     },
     setup() {
         return () => (

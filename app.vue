@@ -2,7 +2,11 @@
 export default defineNuxtComponent({
     name: 'App',
     setup() {
-        return () => <nuxt-page />
+        return () => (
+            <layout-provider>
+                <nuxt-page />
+            </layout-provider>
+        )
     }
 })
 </script>

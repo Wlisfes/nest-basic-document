@@ -44,7 +44,7 @@ export async function divineHandler<T>(value: boolean | Function, handler: Funct
     return undefined
 }
 
-/**条件样式返回值**/
+/**条件返回值**/
 export function divineWherer<T = CSSProperties>(where: boolean, whereValue: T = {} as T, defaultValue: T = {} as T) {
     return where ? whereValue : defaultValue
 }

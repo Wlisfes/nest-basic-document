@@ -1,5 +1,6 @@
 import JSCookie from 'js-cookie'
-import { divineHandler } from '@/utils/utils-common'
+import { divineHandler, divineDelay } from '@/utils/utils-common'
+import { createNotice } from '@/utils/utils-naive'
 import type { Response } from '@/types/common.resolver'
 
 /**存储字段名称**/
@@ -50,11 +51,12 @@ export async function useHeaders(headers: Record<string, string> = {}) {
 
 export async function divineRequestCatcher<T>(response: T): Promise<Response<T>> {
     try {
-        console.log(response)
-        if (200 === (response as Response<T>).code) {
-            return response as Response<T>
+        const result = response as Response<T>
+        console.log(result)
+        if (200 === result.code) {
+            return result
         } else {
-            console.log(window.$dialog)
+            await createNotice({ type: 'error', title: result.message })
         }
         return response as Response<T>
     } catch (err) {
