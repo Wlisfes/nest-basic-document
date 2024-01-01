@@ -1,10 +1,11 @@
 import JSCookie from 'js-cookie'
-import { divineHandler, divineDelay } from '@/utils/utils-common'
+import { divineHandler } from '@/utils/utils-common'
 import { createNotice } from '@/utils/utils-naive'
 import type { Response } from '@/types/common.resolver'
 
 /**存储字段名称**/
 export enum APP_NUXT {
+    APP_NUXT_UID = 'APP_NUXT_UID',
     APP_NUXT_TOKEN = 'APP_NUXT_TOKEN',
     APP_NUXT_REDIRECT = 'APP_NUXT_REDIRECT'
 }
@@ -49,18 +50,20 @@ export async function useHeaders(headers: Record<string, string> = {}) {
     return headers
 }
 
-export async function divineRequestCatcher<T>(response: T): Promise<Response<T>> {
-    try {
-        const result = response as Response<T>
-        console.log(result)
-        if (200 === result.code) {
-            return result
-        } else {
-            await createNotice({ type: 'error', title: result.message })
+export function divineRequestCatcher<T>(result: Response<T>, option: Partial<{ notice: boolean }> = {}): Promise<Response<T>> {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (200 === result.code) {
+                return resolve(result)
+            } else {
+                return await divineHandler(option.notice ?? true, async () => {
+                    return await createNotice({ type: 'error', title: result.message })
+                }).then(() => {
+                    return reject(result)
+                })
+            }
+        } catch (err) {
+            reject(err)
         }
-        return response as Response<T>
-    } catch (err) {
-        console.log(err)
-        throw err
-    }
+    })
 }

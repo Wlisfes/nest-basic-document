@@ -1,6 +1,7 @@
 import type { DialogOptions, DialogReactive, NotificationOptions, NotificationReactive, ButtonProps } from 'naive-ui'
 import { createDiscreteApi } from 'naive-ui'
 import { divineHandler } from '@/utils/utils-common'
+import { useProvider } from '@/hooks/hook-provider'
 
 /**对话弹窗二次封装**/
 export function createDiscover(
@@ -15,9 +16,12 @@ export function createDiscover(
 ): Promise<DialogReactive> {
     return new Promise(async resolve => {
         const instance = await divineHandler<typeof window.$dialog>(!window.$dialog, () => {
-            const { dialog } = createDiscreteApi(['dialog'])
+            const { theme } = useProvider()
+            const { dialog } = createDiscreteApi(['dialog'], {
+                configProviderProps: { theme: theme.value }
+            })
             return dialog
-        })
+        }).then(dialog => window.$dialog || dialog)
         const vm = instance.create({
             ...option,
             negativeButtonProps: { size: 'medium', ...(option.negativeButtonProps as ButtonProps) },
@@ -59,16 +63,14 @@ export function createNotice(
     }
 ): Promise<NotificationReactive> {
     return new Promise(async resolve => {
-        console.log(`1111111111111`)
-        // const instance = await divineHandler<typeof window.$notification>(!window.$notification, () => {
-        //     const { notification } = createDiscreteApi(['notification'])
-        //     return notification
-        // }).then(notice => {
-        //     return window.$notification || notice
-        // })
-        const { notification } = createDiscreteApi(['notification'])
-        console.log(notification)
-        const vm = notification.create({
+        const instance = await divineHandler<typeof window.$notification>(!window.$notification, () => {
+            const { theme } = useProvider()
+            const { notification } = createDiscreteApi(['notification'], {
+                configProviderProps: { theme: theme.value }
+            })
+            return notification
+        }).then(notice => window.$notification || notice)
+        const vm = instance.create({
             ...option,
             type: option.type ?? 'success',
             duration: option.duration ?? 2500,
