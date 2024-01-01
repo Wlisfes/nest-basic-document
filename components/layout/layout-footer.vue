@@ -2,10 +2,10 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'CommonFooter',
+    name: 'LayoutFooter',
     setup(props) {
         return () => (
-            <n-layout-footer class="common-footer" style={{ height: '50px' }}>
+            <n-layout-footer class="layout-footer" style={{ height: '50px' }}>
                 <n-element class="layout-pager n-chunk n-center n-middle">
                     <n-p style={{ textAlign: 'center', fontSize: '12px' }}>
                         <n-text style={{ margin: '0 8px' }}>
@@ -38,7 +38,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.common-footer {
+.layout-footer {
     position: relative;
     a {
         position: relative;

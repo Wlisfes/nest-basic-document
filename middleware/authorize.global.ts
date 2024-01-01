@@ -2,32 +2,20 @@ import { useUser } from '@/store/user'
 import { divineHandler } from '@/utils/utils-common'
 import { APP_NUXT, setStore } from '@/utils/utils-cookie'
 
-/**白名单页面：未登录可进入**/
-enum APP_NUXT_WHITE {
-    HOME = '/',
-    DOCUMENT = '/document',
-    ISSUES = '/issues',
-    VIDEO = '/video',
-    STAR = '/star',
-    LIFER = '/lifer'
-}
-
 /**黑名单页面：已登录不可进入**/
-enum APP_NUXT_BLACK {
-    AUTHORIZE = '/common/authorize',
-    REGISTER = '/common/register'
+const APP_NUXT_BLACK: Record<string, string> = {
+    AUTHORIZE: '/common/authorize',
+    REGISTER: '/common/register'
 }
 
 /**授权页面：未登录不可进入**/
-enum APP_NUXT_AUTHORIZE {}
+const APP_NUXT_AUTHORIZE: Record<string, string> = {}
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const token = getToken()
     const store = useUser()
     const AppNuxtBlack = Object.values(APP_NUXT_BLACK) as Array<string>
-    const AppNuxtWhite = Object.values(APP_NUXT_WHITE) as Array<string>
     const AppNuxtAuthorize = Object.values(APP_NUXT_AUTHORIZE) as Array<string>
-
     if (process.client && token) {
         /**存在token禁止进入黑名单页面**/
         if (AppNuxtBlack.includes(to.path)) {

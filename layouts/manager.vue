@@ -2,7 +2,7 @@
 import { defineComponent, computed, type CSSProperties } from 'vue'
 
 export default defineComponent({
-    name: 'BaseLayout',
+    name: 'ManagerLayout',
     setup(props, { slots }) {
         const contentStyle = computed<CSSProperties>(() => ({
             overflow: 'hidden',
@@ -16,11 +16,8 @@ export default defineComponent({
         return () => (
             <client-only>
                 <n-layout class="layout-provider" content-style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                    <common-ribbon></common-ribbon>
-                    <layout-header></layout-header>
                     <n-layout-content content-style={contentStyle.value} native-scrollbar={false} scrollbar-props={{ trigger: 'none' }}>
                         <n-element class="layout-pager n-chunk n-column n-auto">{slots.default?.()}</n-element>
-                        <layout-footer></layout-footer>
                     </n-layout-content>
                 </n-layout>
             </client-only>

@@ -7,7 +7,7 @@ import { useUser } from '@/store/user'
 import { divineWherer } from '@/utils/utils-common'
 
 export default defineComponent({
-    name: 'CommonHeader',
+    name: 'LayoutHeader',
     setup() {
         const user = useUser()
         const { state, setState: done } = useState({ visible: false })
@@ -19,7 +19,7 @@ export default defineComponent({
         }
 
         return () => (
-            <n-layout-header class="common-header" style={{ height: '60px' }}>
+            <n-layout-header class="layout-header" style={{ height: '60px' }}>
                 <n-element class="layout-pager n-chunk n-center">
                     <n-space size={20} wrap-item={false} align="center" justify="space-between" style={{ width: '100%' }}>
                         <nuxt-link to="/" style={{ textDecoration: 'none' }}>
@@ -29,42 +29,42 @@ export default defineComponent({
                             </n-button>
                         </nuxt-link>
                         {width.value >= 840 && (
-                            <n-space class="common-header__nav" size={20} wrap-item={false} align="center">
+                            <n-space class="layout-header__nav" size={20} wrap-item={false} align="center">
                                 <nuxt-link to="/">
                                     <n-button text focusable={false} style={{ fontSize: '18px' }}>
-                                        Home
+                                        首页
                                     </n-button>
                                 </nuxt-link>
                                 <nuxt-link to="/document">
                                     <n-button text focusable={false} style={{ fontSize: '18px' }}>
-                                        Document
+                                        归档
                                     </n-button>
                                 </nuxt-link>
                                 <nuxt-link to="/issues">
                                     <n-button text focusable={false} style={{ fontSize: '18px' }}>
-                                        Issues
+                                        记录
                                     </n-button>
                                 </nuxt-link>
                                 <nuxt-link to="/video">
                                     <n-button text focusable={false} style={{ fontSize: '18px' }}>
-                                        Video
+                                        视频
                                     </n-button>
                                 </nuxt-link>
                                 <nuxt-link to="/star">
                                     <n-button text focusable={false} style={{ fontSize: '18px' }}>
-                                        Star
+                                        收藏
                                     </n-button>
                                 </nuxt-link>
                                 <nuxt-link to="/lifer">
                                     <n-button text focusable={false} style={{ fontSize: '18px' }}>
-                                        Lifer
+                                        生活
                                     </n-button>
                                 </nuxt-link>
                             </n-space>
                         )}
                         <n-space size={16} wrap-item={false} align="center">
                             {width.value >= 375 && (
-                                <n-space class="common-header__cause" size={16} wrap-item={false} align="center">
+                                <n-space class="layout-header__cause" size={16} wrap-item={false} align="center">
                                     <n-button text focusable={false} onClick={(e: Event) => setTheme(inverted.value ? 'light' : 'dark')}>
                                         <common-wrapper size={28} name={inverted.value ? 'ThemeDark' : 'ThemeLight'}></common-wrapper>
                                     </n-button>
@@ -122,10 +122,19 @@ export default defineComponent({
                                                             <n-text>{`账号ID: ${user.uid}`}</n-text>
                                                         </div>
                                                     </n-space>
-                                                    <n-button quaternary focusable={false} size="large">
-                                                        <n-h4 style={{ margin: 0 }}>账号设置</n-h4>
-                                                    </n-button>
-                                                    <n-button quaternary focusable={false} size="large">
+                                                    <div class="n-chunk" style={{ columnGap: '12px', marginBottom: '12px' }}>
+                                                        <n-button quaternary focusable={false} size="large" style={{ flex: 1 }}>
+                                                            <nuxt-link to="/star" style={{ textDecoration: 'none' }}>
+                                                                <n-h4 style={{ margin: 0 }}>账号设置</n-h4>
+                                                            </nuxt-link>
+                                                        </n-button>
+                                                        <n-button quaternary focusable={false} size="large" style={{ flex: 1 }}>
+                                                            <nuxt-link to="/manager" style={{ textDecoration: 'none' }}>
+                                                                <n-h4 style={{ margin: 0 }}>控制台</n-h4>
+                                                            </nuxt-link>
+                                                        </n-button>
+                                                    </div>
+                                                    <n-button focusable={false} size="large">
                                                         <n-h4 style={{ margin: 0 }}>退出登录</n-h4>
                                                     </n-button>
                                                 </Fragment>
@@ -167,7 +176,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.common-header {
+.layout-header {
     position: relative;
     &__nav {
         position: relative;
