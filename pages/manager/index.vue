@@ -2,16 +2,12 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'Manager',
+    name: 'Home',
     head: {
         titleTemplate: (title: string) => `${title} - 常见问题 | 一个神奇的网站`
     },
     setup(props, { slots }) {
-        return () => (
-            <nuxt-layout name="manager">
-                <n-element class="layout-provider n-chunk n-column n-center n-auto no-selecter">video</n-element>
-            </nuxt-layout>
-        )
+        return () => <n-element class="layout-provider n-chunk n-column n-center n-auto no-selecter">Home</n-element>
     }
 })
 </script>

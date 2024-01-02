@@ -4,7 +4,8 @@ import { useProvider } from '@/hooks/hook-provider'
 import { useResize } from '@/hooks/hook-client'
 import { useState } from '@/hooks/hook-state'
 import { useUser } from '@/store/user'
-import { divineWherer } from '@/utils/utils-common'
+import { divineWherer, divineDelay } from '@/utils/utils-common'
+import { createDiscover } from '@/utils/utils-naive'
 
 export default defineComponent({
     name: 'LayoutHeader',
@@ -16,6 +17,26 @@ export default defineComponent({
 
         async function setState() {
             return await done({ visible: !state.visible })
+        }
+
+        async function logout() {
+            await setState()
+            return await createDiscover({
+                type: 'warning',
+                title: '提示',
+                negativeText: '取消',
+                positiveText: '确定',
+                content: () => <n-h3>确定要退出登录吗？</n-h3>,
+                positiveButtonProps: { type: 'error' },
+                onAfterEnter: (e: HTMLElement) => transfer(e),
+                onPositiveClick: async (evt, vm, done: Function) => {
+                    await done(true)
+                    await divineDelay(500)
+                    return await user.logout().then(() => {
+                        return true
+                    })
+                }
+            })
         }
 
         return () => (
@@ -134,7 +155,7 @@ export default defineComponent({
                                                             </nuxt-link>
                                                         </n-button>
                                                     </div>
-                                                    <n-button focusable={false} size="large">
+                                                    <n-button focusable={false} size="large" onClick={logout}>
                                                         <n-h4 style={{ margin: 0 }}>退出登录</n-h4>
                                                     </n-button>
                                                 </Fragment>

@@ -1,6 +1,6 @@
 <script lang="tsx">
 export default defineNuxtComponent({
-    name: 'BasicIndex',
+    name: 'BasicCommon',
     setup() {
         return () => (
             <nuxt-layout name="client">

@@ -16,10 +16,10 @@ export async function divineMaticChecker(opts: { action: string }): Promise<stri
 }
 
 /**更新头部seo优化**/
-export async function createSeoMeta(name: string, suffix: string = '一个神奇的网站') {
+export async function createSeoMeta(name: string) {
     return useSeoMeta({
         title: 'Wlisfes',
-        titleTemplate: `Wlisfes - ${name}` + suffix ? ` | ${suffix}` : '',
+        titleTemplate: `Wlisfes - ${name}`,
         ogTitle: 'Wlisfes',
         description: `Wlisfes - ${name} | 一个神奇的网站，让我告诉你关于它的一切。`,
         ogDescription: `Wlisfes - ${name} | 一个神奇的网站，让我告诉你关于它的一切。`,

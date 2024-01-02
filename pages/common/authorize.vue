@@ -69,70 +69,68 @@ export default defineNuxtComponent({
         }
 
         return () => (
-            <nuxt-layout name="client">
-                <n-element class="layout-provider n-chunk n-column n-center n-middle n-auto no-selecter">
-                    <n-element class="chunk-element">
-                        <n-h1 style={{ textAlign: 'center' }}>欢迎回来</n-h1>
-                        <n-form ref={formRef} model={state.form} rules={state.rules} size="large" label-placement="left">
-                            <n-form-item path="account">
-                                <n-input
-                                    v-model:value={state.form.account}
-                                    disabled={state.disabled || state.loading}
-                                    maxlength={11}
-                                    type="text"
-                                    input-props={{ autocomplete: 'off' }}
-                                    placeholder="请输入邮箱/手机号"
-                                ></n-input>
-                            </n-form-item>
-                            <n-form-item path="password">
-                                <n-input
-                                    v-model:value={state.form.password}
-                                    disabled={state.disabled || state.loading}
-                                    maxlength={18}
-                                    type="password"
-                                    show-password-on="mousedown"
-                                    input-props={{ autocomplete: 'current-password' }}
-                                    placeholder="请输入登录密码"
-                                ></n-input>
-                            </n-form-item>
-                            <n-form-item>
-                                <n-popover trigger="manual" style={{ padding: 0 }} show={state.visible}>
-                                    {{
-                                        default: () => (
-                                            <onClickOutside onTrigger={onOutsideCloser}>
-                                                <common-captchar onSuccess={onSubmit}></common-captchar>
-                                            </onClickOutside>
-                                        ),
-                                        trigger: () => (
-                                            <n-button
-                                                type="info"
-                                                style={{ width: '100%' }}
-                                                disabled={state.disabled}
-                                                loading={state.loading}
-                                                onClick={(e: Event) => stop(e, onEventChecker)}
-                                            >
-                                                立即登录
-                                            </n-button>
-                                        )
-                                    }}
-                                </n-popover>
-                            </n-form-item>
-                            <n-space justify="space-between" style={{ width: '100%', marginBottom: '5px' }}>
-                                <nuxt-link to="/common/register" style={{ textDecoration: 'none' }}>
-                                    <n-button text focusable={false} style={{ fontSize: '18px' }}>
-                                        忘记密码
-                                    </n-button>
-                                </nuxt-link>
-                                <nuxt-link to="/common/register" style={{ textDecoration: 'none' }}>
-                                    <n-button text focusable={false} style={{ fontSize: '18px' }}>
-                                        注册
-                                    </n-button>
-                                </nuxt-link>
-                            </n-space>
-                        </n-form>
-                    </n-element>
+            <n-element class="layout-provider n-chunk n-column n-center n-middle n-auto no-selecter">
+                <n-element class="chunk-element">
+                    <n-h1 style={{ textAlign: 'center' }}>欢迎回来</n-h1>
+                    <n-form ref={formRef} model={state.form} rules={state.rules} size="large" label-placement="left">
+                        <n-form-item path="account">
+                            <n-input
+                                v-model:value={state.form.account}
+                                disabled={state.disabled || state.loading}
+                                maxlength={11}
+                                type="text"
+                                input-props={{ autocomplete: 'off' }}
+                                placeholder="请输入邮箱/手机号"
+                            ></n-input>
+                        </n-form-item>
+                        <n-form-item path="password">
+                            <n-input
+                                v-model:value={state.form.password}
+                                disabled={state.disabled || state.loading}
+                                maxlength={18}
+                                type="password"
+                                show-password-on="mousedown"
+                                input-props={{ autocomplete: 'current-password' }}
+                                placeholder="请输入登录密码"
+                            ></n-input>
+                        </n-form-item>
+                        <n-form-item>
+                            <n-popover trigger="manual" style={{ padding: 0 }} show={state.visible}>
+                                {{
+                                    default: () => (
+                                        <onClickOutside onTrigger={onOutsideCloser}>
+                                            <common-captchar onSuccess={onSubmit}></common-captchar>
+                                        </onClickOutside>
+                                    ),
+                                    trigger: () => (
+                                        <n-button
+                                            type="info"
+                                            style={{ width: '100%' }}
+                                            disabled={state.disabled}
+                                            loading={state.loading}
+                                            onClick={(e: Event) => stop(e, onEventChecker)}
+                                        >
+                                            立即登录
+                                        </n-button>
+                                    )
+                                }}
+                            </n-popover>
+                        </n-form-item>
+                        <n-space justify="space-between" style={{ width: '100%', marginBottom: '5px' }}>
+                            <nuxt-link to="/common/register" style={{ textDecoration: 'none' }}>
+                                <n-button text focusable={false} style={{ fontSize: '18px' }}>
+                                    忘记密码
+                                </n-button>
+                            </nuxt-link>
+                            <nuxt-link to="/common/register" style={{ textDecoration: 'none' }}>
+                                <n-button text focusable={false} style={{ fontSize: '18px' }}>
+                                    注册
+                                </n-button>
+                            </nuxt-link>
+                        </n-space>
+                    </n-form>
                 </n-element>
-            </nuxt-layout>
+            </n-element>
         )
     }
 })
