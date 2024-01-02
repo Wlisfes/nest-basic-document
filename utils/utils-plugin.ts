@@ -14,3 +14,16 @@ export async function divineMaticChecker(opts: { action: string }): Promise<stri
         })
     ) as string
 }
+
+/**更新头部seo优化**/
+export async function createSeoMeta(name: string, suffix: string = '一个神奇的网站') {
+    return useSeoMeta({
+        title: 'Wlisfes',
+        titleTemplate: `Wlisfes - ${name}` + suffix ? ` | ${suffix}` : '',
+        ogTitle: 'Wlisfes',
+        description: `Wlisfes - ${name} | 一个神奇的网站，让我告诉你关于它的一切。`,
+        ogDescription: `Wlisfes - ${name} | 一个神奇的网站，让我告诉你关于它的一切。`,
+        ogImage: 'https://lisfes.cn/favicon.ico',
+        twitterCard: 'summary_large_image'
+    })
+}

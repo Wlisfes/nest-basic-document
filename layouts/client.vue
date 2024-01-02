@@ -3,6 +3,12 @@ import { defineComponent, computed, type CSSProperties } from 'vue'
 
 export default defineComponent({
     name: 'ClientLayout',
+    beforeRouteEnter(to, form, next) {
+        console.log({ to, form, next })
+        return next(vm => {
+            console.log({ vm })
+        })
+    },
     setup(props, { slots }) {
         const contentStyle = computed<CSSProperties>(() => ({
             overflow: 'hidden',

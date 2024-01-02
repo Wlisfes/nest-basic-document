@@ -55,7 +55,7 @@ export default defineNuxtConfig({
     },
     nitro: {
         experimental: {
-            openAPI: true
+            openAPI: process.env.NODE_ENV === 'development'
         },
         esbuild: {
             options: {
