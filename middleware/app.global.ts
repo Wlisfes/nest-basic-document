@@ -54,6 +54,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                 await setToken(undefined)
                 await setRedirect(to.fullPath)
                 await logout()
+                return await navigateTo({ path: '/' })
             }
         })
     }

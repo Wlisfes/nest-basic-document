@@ -14,7 +14,7 @@ export enum APP_NUXT {
 export function useStore() {
     const uid = useCookie(APP_NUXT.APP_NUXT_UID, { watch: true })
     const token = useCookie(APP_NUXT.APP_NUXT_TOKEN, { watch: true, maxAge: 7200 })
-    const redirect = useCookie(APP_NUXT.APP_NUXT_REDIRECT, { watch: true })
+    const redirect = useCookie(APP_NUXT.APP_NUXT_REDIRECT, { watch: true, default: () => '/' })
     const theme = useCookie(APP_NUXT.APP_NUXT_THEME, { watch: true, default: () => 'dark' })
     const primaryColor = useCookie(APP_NUXT.APP_NUXT_PRIMARY_COLOR, { watch: true, default: () => '#18a058' })
 
