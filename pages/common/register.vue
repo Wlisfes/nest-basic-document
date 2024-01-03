@@ -1,9 +1,7 @@
 <script lang="tsx">
 export default defineNuxtComponent({
     name: 'Register',
-    async setup() {
-        await createSeoMeta('注册')
-
+    setup() {
         return () => (
             <n-element class="layout-provider n-chunk n-column n-center n-middle n-auto no-selecter">
                 <n-element class="chunk-element">

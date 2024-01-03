@@ -63,7 +63,7 @@ export default defineComponent({
                                 </nuxt-link>
                                 <nuxt-link to="/issues">
                                     <n-button text focusable={false} style={{ fontSize: '18px' }}>
-                                        记录
+                                        问题
                                     </n-button>
                                 </nuxt-link>
                                 <nuxt-link to="/video">

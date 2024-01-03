@@ -10,8 +10,7 @@ import * as http from '@/interface'
 export default defineNuxtComponent({
     name: 'Authorize',
     components: { OnClickOutside },
-    async setup() {
-        await createSeoMeta('登录')
+    setup() {
         const user = useUser()
         const { formRef, state, setLoading, setDisabled, setVisible, divineFormValidater } = useCustomize({
             loading: false,

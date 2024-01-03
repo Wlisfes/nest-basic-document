@@ -3,8 +3,7 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
     name: 'Issues',
-    async setup(props, { slots }) {
-        await createSeoMeta('常见问题')
+    setup(props, { slots }) {
         return () => <n-element class="layout-provider n-chunk n-column n-center n-auto no-selecter">Issues</n-element>
     }
 })
