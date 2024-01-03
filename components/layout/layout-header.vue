@@ -50,7 +50,7 @@ export default defineComponent({
                             </n-button>
                         </nuxt-link>
                         {width.value >= 840 && (
-                            <n-space class="layout-header__nav" size={20} wrap-item={false} align="center">
+                            <n-space class="layout-header__nav" size={30} wrap-item={false} align="center">
                                 <nuxt-link to="/">
                                     <n-button text focusable={false} style={{ fontSize: '18px' }}>
                                         首页
@@ -203,6 +203,8 @@ export default defineComponent({
         position: relative;
         a {
             position: relative;
+            line-height: 28px;
+            padding: 0 5px;
             &::after {
                 content: '';
                 position: absolute;

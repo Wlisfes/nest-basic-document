@@ -1,4 +1,20 @@
-export const BaseRoute = [
+export interface BaseRoute {
+    url: string
+    name: string
+}
+
+export const common: Array<BaseRoute> = [
+    {
+        url: '/common/authorize',
+        name: '登录'
+    },
+    {
+        url: '/common/register',
+        name: '注册'
+    }
+]
+
+export const client: Array<BaseRoute> = [
     {
         url: '/',
         name: '一个神奇的网站'
@@ -25,6 +41,10 @@ export const BaseRoute = [
     }
 ]
 
+export const manager: Array<BaseRoute> = []
+
+export const routes: Array<BaseRoute> = [].concat(common, client, manager)
+
 export async function findSeoRoute(path: string) {
-    return BaseRoute.find(item => item.url.indexOf(path) == 0)
+    return routes.find(item => item.url.indexOf(path) == 0)
 }
