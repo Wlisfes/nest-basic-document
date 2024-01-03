@@ -43,8 +43,9 @@ export const client: Array<BaseRoute> = [
 
 export const manager: Array<BaseRoute> = []
 
-export const routes: Array<BaseRoute> = [].concat(common, client, manager)
+export const routes: Array<BaseRoute> = [].concat(client, common, manager)
 
 export async function findSeoRoute(path: string) {
-    return routes.find(item => item.url.indexOf(path) == 0)
+    const node = routes.find(item => item.url === path)
+    return node
 }

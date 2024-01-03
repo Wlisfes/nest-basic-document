@@ -1,5 +1,7 @@
+import { useUser } from '@/store/user'
 import { findSeoRoute } from '@/assets/resource/route'
 import { divineHandler, divineWherer } from '@/utils/utils-common'
+import { APP_NUXT, setStore, delStore } from '@/utils/utils-cookie'
 
 async function createUseSeoMeta(title: string) {
     const name = 'Wlisfes'
@@ -30,7 +32,27 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const node = await findSeoRoute(to.path)
     await divineHandler(
         Boolean(node),
-        async () => await createUseSeoMeta(node.name),
-        async () => await createUseSeoMeta('')
+        async () => {
+            return await createUseSeoMeta(node.name)
+        },
+        async () => {
+            return await createUseSeoMeta('')
+        }
     )
+
+    const token = getToken()
+    if (process.client && token) {
+        const store = useUser()
+        return await divineHandler(!store.uid, async () => {
+            try {
+                await store.fetchUserResolver()
+                await delStore(APP_NUXT.APP_NUXT_REDIRECT)
+            } catch (err) {
+                await delStore(APP_NUXT.APP_NUXT_TOKEN)
+                await delStore(APP_NUXT.APP_NUXT_UID)
+                await setStore(APP_NUXT.APP_NUXT_REDIRECT, to.fullPath)
+                await store.logout()
+            }
+        })
+    }
 })
