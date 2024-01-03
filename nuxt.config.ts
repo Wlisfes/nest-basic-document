@@ -4,6 +4,9 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import Components from 'unplugin-vue-components/vite'
 import path from 'path'
 
+const APP_NUXT_TITLE = `Wlisfes`
+const APP_NUXT_DESCRIPTIOM = `${APP_NUXT_TITLE} - 一个神奇的网站，包括归档、问题、视频、收藏、生活等模块，让我告诉你关于它的一切。`
+
 function createBuilderTranspile(NODE_ENV: string) {
     if (NODE_ENV === 'production') {
         return ['naive-ui', 'vueuc', '@css-render/vue3-ssr', '@juggle/resize-observer']
@@ -37,6 +40,8 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
+            APP_NUXT_TITLE: APP_NUXT_TITLE,
+            APP_NUXT_DESCRIPTIOM: APP_NUXT_DESCRIPTIOM,
             CAPTCHA_PUBLIC_SITEKEY: process.env.CAPTCHA_PUBLIC_SITEKEY
         },
         MYSQL_HOST: process.env.MYSQL_HOST,
@@ -83,13 +88,20 @@ export default defineNuxtConfig({
     },
     app: {
         head: {
-            title: 'Wlisfes',
-            meta: [
-                { charset: 'utf-8' },
-                { name: 'viewport', content: 'width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no' },
-                { name: 'description', content: '(Wlisfes) 这是我的神奇网站，让我告诉你关于它的一切。' }
-            ],
+            title: APP_NUXT_TITLE,
+            charset: 'utf-8',
+            viewport: 'width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no',
             htmlAttrs: { lang: 'zh-CN' },
+            meta: [
+                { name: 'content-type', content: 'text/html;charset=utf-8' },
+                { name: 'keywords', content: APP_NUXT_DESCRIPTIOM },
+                { name: 'description', content: APP_NUXT_DESCRIPTIOM },
+                { ['http-equiv']: 'x-ua-compatible', content: 'ie=edge,chrome=1' },
+                { name: 'baidu-site-verification', content: '' },
+                { property: 'og:title', content: APP_NUXT_TITLE },
+                { property: 'og:keywords', content: APP_NUXT_DESCRIPTIOM },
+                { property: 'og:description', content: APP_NUXT_DESCRIPTIOM }
+            ],
             script: [{ src: `https://cdn.bootcdn.net/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js` }]
         }
     }

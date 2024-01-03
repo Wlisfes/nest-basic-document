@@ -3,16 +3,16 @@ import { findSeoRoute } from '@/assets/resource/route'
 import { divineHandler, divineWherer } from '@/utils/utils-common'
 import { APP_NUXT, setStore, delStore } from '@/utils/utils-cookie'
 
-async function createUseSeoMeta(title: string) {
+async function createUseSeoMeta(evt: Partial<{ title: string }> = {}) {
     const name = 'Wlisfes'
-    const prefix = divineWherer(Boolean(title), `${name} - ${title}`, title)
+    const prefix = divineWherer(Boolean(evt.title) && evt.title !== '一个神奇的网站', `${name} - ${evt.title}`, name)
     return useSeoMeta({
         title: prefix,
         keywords: prefix,
-        description: `${prefix} | 一个神奇的网站，让我告诉你关于它的一切。`,
+        description: `${prefix} | 一个神奇的网站，包括归档、问题、视频、收藏、生活等模块，让我告诉你关于它的一切。`,
         //og
         ogTitle: prefix,
-        ogDescription: `${prefix} | 一个神奇的网站，让我告诉你关于它的一切。`,
+        ogDescription: `${prefix} | 一个神奇的网站，包括归档、问题、视频、收藏、生活等模块，让我告诉你关于它的一切。`,
         ogSiteName: name,
         ogType: 'website',
         ogImage: '/logo.png',
@@ -33,10 +33,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     await divineHandler(
         Boolean(node),
         async () => {
-            return await createUseSeoMeta(node.name)
+            return await createUseSeoMeta({ title: node.name })
         },
         async () => {
-            return await createUseSeoMeta('')
+            return await createUseSeoMeta({ title: '' })
         }
     )
 

@@ -89,7 +89,7 @@ export default defineComponent({
                                     <n-button text focusable={false} onClick={(e: Event) => setTheme(inverted.value ? 'light' : 'dark')}>
                                         <common-wrapper size={28} name={inverted.value ? 'ThemeDark' : 'ThemeLight'}></common-wrapper>
                                     </n-button>
-                                    <nuxt-link target="_blank" href="https://github.com/Wlisfes/nest-basic-document">
+                                    <nuxt-link target="_blank" href="https://github.com/Wlisfes">
                                         <n-button text focusable={false}>
                                             <common-wrapper size={28} name="Github"></common-wrapper>
                                         </n-button>
