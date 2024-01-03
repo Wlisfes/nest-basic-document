@@ -3,24 +3,22 @@ import { findSeoRoute } from '@/assets/resource/route'
 import { divineHandler, divineWherer } from '@/utils/utils-common'
 import { APP_NUXT, setStore, delStore } from '@/utils/utils-cookie'
 
-async function createUseSeoMeta(evt: Partial<{ title: string }> = {}) {
-    const name = 'Wlisfes'
-    const prefix = divineWherer(Boolean(evt.title) && evt.title !== '一个神奇的网站', `${name} - ${evt.title}`, name)
+async function createUseSeoMeta(evt: Partial<{ title: string; prefix: string }> = {}) {
     return useSeoMeta({
-        title: prefix,
-        keywords: prefix,
-        description: `${prefix} | 一个神奇的网站，包括归档、问题、视频、收藏、生活等模块，让我告诉你关于它的一切。`,
+        title: evt.title,
+        keywords: evt.prefix,
+        description: `${evt.prefix} | 一个神奇的网站，包括归档、问题、视频、收藏、生活等模块，让我告诉你关于它的一切。`,
         //og
-        ogTitle: prefix,
-        ogDescription: `${prefix} | 一个神奇的网站，包括归档、问题、视频、收藏、生活等模块，让我告诉你关于它的一切。`,
-        ogSiteName: name,
+        ogTitle: evt.prefix,
+        ogDescription: `${evt.prefix} | 一个神奇的网站，包括归档、问题、视频、收藏、生活等模块，让我告诉你关于它的一切。`,
+        ogSiteName: evt.title,
         ogType: 'website',
         ogImage: '/logo.png',
         ogImageType: 'image/png',
         ogImageWidth: 1200,
         ogImageHeight: 630,
         //twitter
-        twitterSite: name,
+        twitterSite: evt.title,
         twitterCard: 'summary_large_image',
         twitterImage: '/logo.png',
         twitterImageWidth: 1200,
@@ -29,19 +27,22 @@ async function createUseSeoMeta(evt: Partial<{ title: string }> = {}) {
 }
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
+    const config = useRuntimeConfig()
+    const title = config.public.APP_NUXT_TITLE
     const node = await findSeoRoute(to.path)
-    await divineHandler(
-        Boolean(node),
-        async () => {
-            return await createUseSeoMeta({ title: node.name })
-        },
-        async () => {
-            return await createUseSeoMeta({ title: '' })
-        }
-    )
+    if (to.path === '/' || !node) {
+        await createUseSeoMeta({
+            title: `${title} - 一个神奇的网站`,
+            prefix: title
+        })
+    } else if (node) {
+        await createUseSeoMeta({
+            title: `${title} - ${node.name}`,
+            prefix: `${title} - ${node.name}`
+        })
+    }
 
-    const token = getToken()
-    if (process.client && token) {
+    if (process.client && getToken()) {
         const store = useUser()
         return await divineHandler(!store.uid, async () => {
             try {
