@@ -3,26 +3,27 @@ import { useThemeVars, darkTheme, lightTheme, type GlobalThemeOverrides } from '
 import { useConfiger } from '@/store/configer'
 
 export function useProvider() {
-    const configer = useConfiger()
+    const { configer, setTheme, setPrimaryColor } = useConfiger()
+
     const vars = useThemeVars()
-    const inverted = computed(() => configer.theme === 'dark')
+    const inverted = computed(() => configer.value.theme === 'dark')
     const lightThemeOverrides = computed<GlobalThemeOverrides>(() => ({
         common: {
-            primaryColor: configer.primaryColor
+            primaryColor: configer.value.primaryColor
         }
     }))
     const darkThemeOverrides = computed<GlobalThemeOverrides>(() => ({
         common: {
-            primaryColor: configer.primaryColor,
-            primaryColorSuppl: configer.primaryColor
+            primaryColor: configer.value.primaryColor,
+            primaryColorSuppl: configer.value.primaryColor
         }
     }))
     const theme = computed(() => {
-        return configer.theme === 'light' ? lightTheme : darkTheme
+        return configer.value.theme === 'light' ? lightTheme : darkTheme
     })
     const themeOverrides = computed(() => {
-        return configer.theme === 'light' ? lightThemeOverrides.value : darkThemeOverrides.value
+        return configer.value.theme === 'light' ? lightThemeOverrides.value : darkThemeOverrides.value
     })
 
-    return { vars, inverted, theme, themeOverrides, setTheme: configer.setTheme, setPrimaryColor: configer.setPrimaryColor }
+    return { vars, inverted, theme, themeOverrides, setTheme, setPrimaryColor }
 }

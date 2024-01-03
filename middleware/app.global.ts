@@ -43,16 +43,16 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }
 
     if (process.client && getToken()) {
-        const store = useUser()
-        return await divineHandler(!store.uid, async () => {
+        const { user, logout, fetchUserResolver } = useUser()
+        return await divineHandler(!user.value.uid, async () => {
             try {
-                await store.fetchUserResolver()
+                await fetchUserResolver()
                 await delStore(APP_NUXT.APP_NUXT_REDIRECT)
             } catch (err) {
                 await delStore(APP_NUXT.APP_NUXT_TOKEN)
                 await delStore(APP_NUXT.APP_NUXT_UID)
                 await setStore(APP_NUXT.APP_NUXT_REDIRECT, to.fullPath)
-                await store.logout()
+                await logout()
             }
         })
     }

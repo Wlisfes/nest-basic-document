@@ -1,17 +1,16 @@
-import { defineStore } from 'pinia'
-
-export const useConfiger = defineStore('configer', {
-    persist: process.client && { storage: localStorage },
-    state: () => ({
+export const useConfiger = () => {
+    const configer = useState('configer', () => ({
         theme: 'dark',
         primaryColor: '#18a058'
-    }),
-    actions: {
-        async setTheme(theme: 'light' | 'dark') {
-            return (this.theme = theme)
-        },
-        async setPrimaryColor(primaryColor: string) {
-            return (this.primaryColor = primaryColor)
-        }
+    }))
+
+    async function setTheme(theme: 'light' | 'dark') {
+        return (configer.value.theme = theme)
     }
-})
+
+    async function setPrimaryColor(primaryColor: string) {
+        return (configer.value.primaryColor = primaryColor)
+    }
+
+    return { configer, setTheme, setPrimaryColor }
+}

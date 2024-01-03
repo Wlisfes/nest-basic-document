@@ -11,7 +11,7 @@ export default defineNuxtComponent({
     name: 'Authorize',
     components: { OnClickOutside },
     setup() {
-        const user = useUser()
+        const { fetchUserResolver } = useUser()
         const { formRef, state, setLoading, setDisabled, setVisible, divineFormValidater } = useCustomize({
             loading: false,
             form: {
@@ -50,7 +50,7 @@ export default defineNuxtComponent({
                     token: evt.token
                 })
                 await setToken(data.token, data.expire).then(async () => {
-                    return await user.fetchUserResolver()
+                    return await fetchUserResolver()
                 })
                 return await createNotice({
                     type: 'success',

@@ -22,7 +22,7 @@ function createViteOptimizeInclude(NODE_ENV: string) {
 }
 
 export default defineNuxtConfig({
-    modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@vueuse/nuxt'],
+    modules: ['@vueuse/nuxt'],
     css: ['~/assets/scss/index.scss', '~/assets/scss/layout.scss', '~/assets/scss/common.scss'],
     ssr: true,
     devtools: {
