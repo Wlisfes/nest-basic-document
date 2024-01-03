@@ -4,7 +4,6 @@ import { useConfiger } from '@/store/configer'
 
 export function useProvider() {
     const { configer, setTheme, setPrimaryColor } = useConfiger()
-
     const vars = useThemeVars()
     const inverted = computed(() => configer.value.theme === 'dark')
     const lightThemeOverrides = computed<GlobalThemeOverrides>(() => ({

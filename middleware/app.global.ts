@@ -1,7 +1,7 @@
 import { useUser } from '@/store/user'
 import { findSeoRoute } from '@/assets/resource/route'
-import { divineHandler, divineWherer } from '@/utils/utils-common'
-import { APP_NUXT, setStore, delStore } from '@/utils/utils-cookie'
+import { divineHandler } from '@/utils/utils-common'
+import { useStore } from '@/utils/utils-cookie'
 
 async function createUseSeoMeta(evt: Partial<{ title: string; prefix: string }> = {}) {
     return useSeoMeta({
@@ -42,16 +42,17 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         })
     }
 
-    if (process.client && getToken()) {
+    const { store, setRedirect, setUid, setToken } = useStore()
+    if (process.client && store.value.uid) {
         const { user, logout, fetchUserResolver } = useUser()
         return await divineHandler(!user.value.uid, async () => {
             try {
                 await fetchUserResolver()
-                await delStore(APP_NUXT.APP_NUXT_REDIRECT)
+                await setRedirect(undefined)
             } catch (err) {
-                await delStore(APP_NUXT.APP_NUXT_TOKEN)
-                await delStore(APP_NUXT.APP_NUXT_UID)
-                await setStore(APP_NUXT.APP_NUXT_REDIRECT, to.fullPath)
+                await setUid(undefined)
+                await setToken(undefined)
+                await setRedirect(to.fullPath)
                 await logout()
             }
         })

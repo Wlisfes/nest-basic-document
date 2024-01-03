@@ -1,4 +1,3 @@
-import JSCookie from 'js-cookie'
 import { divineHandler } from '@/utils/utils-common'
 import { createNotice } from '@/utils/utils-naive'
 import type { Response } from '@/types/common.resolver'
@@ -7,45 +6,63 @@ import type { Response } from '@/types/common.resolver'
 export enum APP_NUXT {
     APP_NUXT_UID = 'APP_NUXT_UID',
     APP_NUXT_TOKEN = 'APP_NUXT_TOKEN',
-    APP_NUXT_REDIRECT = 'APP_NUXT_REDIRECT'
+    APP_NUXT_REDIRECT = 'APP_NUXT_REDIRECT',
+    APP_NUXT_THEME = 'APP_NUXT_THEME',
+    APP_NUXT_PRIMARY_COLOR = 'APP_NUXT_PRIMARY_COLOR'
 }
 
-/**存储**/
-export async function setStore(key: string, data: any, expire?: number) {
-    if (expire) {
-        return JSCookie.set(key, JSON.stringify(data), {
-            expires: Date.now() + expire
+export function useStore() {
+    const uid = useCookie(APP_NUXT.APP_NUXT_UID, { watch: true })
+    const token = useCookie(APP_NUXT.APP_NUXT_TOKEN, { watch: true, maxAge: 7200 })
+    const redirect = useCookie(APP_NUXT.APP_NUXT_REDIRECT, { watch: true })
+    const theme = useCookie(APP_NUXT.APP_NUXT_THEME, { watch: true, default: () => 'dark' })
+    const primaryColor = useCookie(APP_NUXT.APP_NUXT_PRIMARY_COLOR, { watch: true, default: () => '#18a058' })
+
+    const store = computed(() => ({
+        uid: uid.value,
+        token: token.value,
+        redirect: redirect.value,
+        theme: theme.value,
+        primaryColor: primaryColor.value
+    }))
+
+    async function setUid(value?: string, handler?: Function) {
+        await divineHandler(Boolean(handler), () => handler(value)).then(() => {
+            return (uid.value = value)
         })
     }
-    return JSCookie.set(key, JSON.stringify(data))
-}
 
-/**读取**/
-export function getStore<T>(key: string, devaultValue?: T): T {
-    const node = JSCookie.get(key)
-    return node ? JSON.parse(node) : devaultValue
-}
+    async function setToken(value?: string, handler?: Function) {
+        await divineHandler(Boolean(handler), () => handler(value)).then(() => {
+            return (token.value = value)
+        })
+    }
 
-/**删除**/
-export async function delStore(key: string) {
-    return JSCookie.remove(key)
-}
+    async function setRedirect(value?: string, handler?: Function) {
+        await divineHandler(Boolean(handler), () => handler(value)).then(() => {
+            return (redirect.value = value)
+        })
+    }
 
-export async function setToken(token: string, expire: number = 7200 * 1000) {
-    return await setStore(APP_NUXT.APP_NUXT_TOKEN, token, expire)
-}
+    async function setTheme(value: 'light' | 'dark', handler?: Function) {
+        await divineHandler(Boolean(handler), () => handler(value)).then(() => {
+            return (theme.value = value)
+        })
+    }
 
-export function getToken() {
-    return getStore<string>(APP_NUXT.APP_NUXT_TOKEN)
-}
+    async function setPrimaryColor(value: string, handler?: Function) {
+        return await divineHandler(Boolean(handler), handler(value)).then(() => {
+            return (primaryColor.value = value)
+        })
+    }
 
-export async function delToken() {
-    return await delStore(APP_NUXT.APP_NUXT_TOKEN)
+    return { store, setUid, setToken, setRedirect, setTheme, setPrimaryColor }
 }
 
 export async function useHeaders(headers: Record<string, string> = {}) {
-    await divineHandler(Boolean(getToken()), () => {
-        headers.Authorization = getToken()
+    const { store } = useStore()
+    await divineHandler(Boolean(store.value.token), () => {
+        headers.Authorization = store.value.token
     })
     return headers
 }

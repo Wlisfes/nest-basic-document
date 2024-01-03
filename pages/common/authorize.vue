@@ -4,13 +4,14 @@ import { useCustomize } from '@/hooks/hook-customize'
 import { createNotice } from '@/utils/utils-naive'
 import { stop } from '@/utils/utils-common'
 import { useUser } from '@/store/user'
-import { APP_NUXT, setToken, getStore } from '@/utils/utils-cookie'
+import { useStore } from '@/utils/utils-cookie'
 import * as http from '@/interface'
 
 export default defineNuxtComponent({
     name: 'Authorize',
     components: { OnClickOutside },
     setup() {
+        const { store, setToken } = useStore()
         const { fetchUserResolver } = useUser()
         const { formRef, state, setLoading, setDisabled, setVisible, divineFormValidater } = useCustomize({
             loading: false,
@@ -49,7 +50,7 @@ export default defineNuxtComponent({
                     password: window.btoa(state.form.password),
                     token: evt.token
                 })
-                await setToken(data.token, data.expire).then(async () => {
+                await setToken(data.token).then(async () => {
                     return await fetchUserResolver()
                 })
                 return await createNotice({
@@ -57,7 +58,7 @@ export default defineNuxtComponent({
                     title: message,
                     onAfterEnter: async () => {
                         await setLoading(false)
-                        await navigateTo({ path: getStore(APP_NUXT.APP_NUXT_REDIRECT, '/') })
+                        await navigateTo({ path: store.value.redirect })
                     }
                 })
             } catch (e) {

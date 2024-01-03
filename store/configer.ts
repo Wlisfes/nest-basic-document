@@ -1,16 +1,15 @@
+import { useStore } from '@/utils/utils-cookie'
+
 export const useConfiger = () => {
+    const { store, setTheme, setPrimaryColor } = useStore()
     const configer = useState('configer', () => ({
-        theme: 'dark',
-        primaryColor: '#18a058'
+        theme: store.value.theme,
+        primaryColor: store.value.primaryColor
     }))
 
-    async function setTheme(theme: 'light' | 'dark') {
-        return (configer.value.theme = theme)
+    return {
+        configer,
+        setTheme: async (value: 'light' | 'dark') => await setTheme(value, () => (configer.value.theme = value)),
+        setPrimaryColor: async (value: string) => await setPrimaryColor(value, () => (configer.value.primaryColor = value))
     }
-
-    async function setPrimaryColor(primaryColor: string) {
-        return (configer.value.primaryColor = primaryColor)
-    }
-
-    return { configer, setTheme, setPrimaryColor }
 }

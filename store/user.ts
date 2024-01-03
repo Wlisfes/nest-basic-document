@@ -1,8 +1,8 @@
-import { divineHandler } from '@/utils/utils-common'
-import { APP_NUXT, setStore, delStore, delToken } from '@/utils/utils-cookie'
+import { useStore } from '@/utils/utils-cookie'
 import * as http from '@/interface'
 
 export function useUser() {
+    const { setUid, setToken } = useStore()
     const user = useState('user', () => ({
         keyId: undefined,
         uid: undefined,
@@ -14,24 +14,21 @@ export function useUser() {
 
     /**更新用户信息**/
     async function setUser(data: Record<string, any> = {}) {
-        await delStore(APP_NUXT.APP_NUXT_UID)
         user.value.keyId = data.keyId ?? undefined
         user.value.uid = data.uid ?? undefined
         user.value.nickname = data.nickname ?? undefined
         user.value.email = data.email ?? undefined
         user.value.avatar = data.avatar ?? undefined
         user.value.mobile = data.mobile ?? undefined
-        return await divineHandler(data.uid, () => {
-            return setStore(APP_NUXT.APP_NUXT_UID, data.uid)
-        }).then(() => {
+        return await setUid(data.uid ?? undefined).then(() => {
             return data
         })
     }
 
     /**退出登录**/
     async function logout() {
-        await delToken()
-        await delStore(APP_NUXT.APP_NUXT_UID)
+        await setToken()
+        await setUid()
         return await setUser()
     }
 
