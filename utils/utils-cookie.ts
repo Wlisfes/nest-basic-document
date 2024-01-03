@@ -80,7 +80,11 @@ export function divineRequestCatcher<T>(result: Response<T>, option: Partial<{ n
                 })
             }
         } catch (err) {
-            reject(err)
+            return await divineHandler(option.notice ?? true, async () => {
+                return await createNotice({ type: 'error', title: err.message })
+            }).then(() => {
+                return reject(err)
+            })
         }
     })
 }
