@@ -36,7 +36,8 @@ export default defineEventHandler(async event => {
         const state = await readBody<BodySchema>(event)
         await divineEventValidator(BodySchema, { data: state })
         const config = useRuntimeConfig()
-        const content = await readNodemailer({ code: '123456', ttl: '5' })
+        const code = [0, 0, 0, 0, 0, 0].map(e => Math.floor(Math.random() * 9).toString()).join('')
+        const content = await readNodemailer({ code: code, ttl: '5' })
         return await customNodemailer(event.context.transporter, {
             from: `"Wlisfes" <${config.NODEMAILER_USER}>`,
             to: state.email,
