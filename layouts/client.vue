@@ -22,7 +22,7 @@ export default defineNuxtComponent({
 
         return () => (
             <n-layout class="layout-provider" content-style={layout.value}>
-                <n-layout-header style={{ height: '60px' }} bordered inverted={inverted.value}>
+                <n-layout-header style={{ height: '60px', borderBottomColor: 'transparent' }} bordered inverted={inverted.value}>
                     <layout-header width={width.value} inverted={inverted.value}></layout-header>
                 </n-layout-header>
                 <n-layout-content
