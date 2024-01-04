@@ -1,28 +1,41 @@
 import { computed } from 'vue'
-import { useThemeVars, darkTheme, lightTheme, type GlobalThemeOverrides } from 'naive-ui'
-import { useConfiger } from '@/store/configer'
+import { useThemeVars, darkTheme, lightTheme, type GlobalThemeOverrides, type ConfigProviderProps } from 'naive-ui'
 
 export function useProvider() {
-    const { configer, setTheme, setPrimaryColor } = useConfiger()
+    const { $configer } = useNuxtApp()
     const vars = useThemeVars()
-    const inverted = computed(() => configer.value.theme === 'dark')
+    const inverted = computed(() => $configer.configer.value.theme === 'dark')
     const lightThemeOverrides = computed<GlobalThemeOverrides>(() => ({
         common: {
-            primaryColor: configer.value.primaryColor
+            primaryColor: $configer.configer.value.primaryColor
         }
     }))
+
     const darkThemeOverrides = computed<GlobalThemeOverrides>(() => ({
         common: {
-            primaryColor: configer.value.primaryColor,
-            primaryColorSuppl: configer.value.primaryColor
+            primaryColor: $configer.configer.value.primaryColor,
+            primaryColorSuppl: $configer.configer.value.primaryColor
         }
     }))
+
     const theme = computed(() => {
-        return configer.value.theme === 'light' ? lightTheme : darkTheme
-    })
-    const themeOverrides = computed(() => {
-        return configer.value.theme === 'light' ? lightThemeOverrides.value : darkThemeOverrides.value
+        return $configer.configer.value.theme === 'light' ? lightTheme : darkTheme
     })
 
-    return { vars, inverted, theme, themeOverrides, setTheme, setPrimaryColor }
+    const themeOverrides = computed(() => {
+        return $configer.configer.value.theme === 'light' ? lightThemeOverrides.value : darkThemeOverrides.value
+    })
+
+    const configProvider = computed<ConfigProviderProps>(() => ({
+        theme: theme.value,
+        themeOverrides: themeOverrides.value
+    }))
+
+    return {
+        vars,
+        inverted,
+        theme,
+        themeOverrides,
+        configProvider
+    }
 }

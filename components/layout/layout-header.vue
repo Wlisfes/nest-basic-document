@@ -3,16 +3,15 @@ import { defineComponent, Fragment } from 'vue'
 import { useProvider } from '@/hooks/hook-provider'
 import { useResize } from '@/hooks/hook-client'
 import { useState } from '@/hooks/hook-state'
-import { useUser } from '@/store/user'
 import { divineWherer, divineDelay } from '@/utils/utils-common'
 import { createDiscover } from '@/utils/utils-naive'
 
 export default defineComponent({
     name: 'LayoutHeader',
     setup() {
-        const { user, logout } = useUser()
+        const { $user, $configer } = useNuxtApp()
         const { state, setState: done } = useState({ visible: false })
-        const { inverted, setTheme } = useProvider()
+        const { inverted } = useProvider()
         const { width } = useResize()
 
         async function setState() {
@@ -32,7 +31,7 @@ export default defineComponent({
                 onPositiveClick: async (evt, vm, done: Function) => {
                     await done(true)
                     await divineDelay(500)
-                    return await logout().then(() => {
+                    return await $user.logout().then(() => {
                         return true
                     })
                 }
@@ -86,7 +85,11 @@ export default defineComponent({
                         <n-space size={16} wrap-item={false} align="center">
                             {width.value >= 375 && (
                                 <n-space class="layout-header__cause" size={16} wrap-item={false} align="center">
-                                    <n-button text focusable={false} onClick={(e: Event) => setTheme(inverted.value ? 'light' : 'dark')}>
+                                    <n-button
+                                        text
+                                        focusable={false}
+                                        onClick={(e: Event) => $configer.setTheme(inverted.value ? 'light' : 'dark')}
+                                    >
                                         <common-wrapper size={28} name={inverted.value ? 'ThemeDark' : 'ThemeLight'}></common-wrapper>
                                     </n-button>
                                     <nuxt-link target="_blank" href="https://github.com/Wlisfes">
@@ -98,8 +101,8 @@ export default defineComponent({
                             )}
                             <n-popover
                                 style={{
-                                    width: divineWherer(Boolean(user.value.uid), '240px', '140px'),
-                                    padding: divineWherer(Boolean(user.value.uid), '15px', '8px')
+                                    width: divineWherer(Boolean($user.user.value.uid), '240px', '140px'),
+                                    padding: divineWherer(Boolean($user.user.value.uid), '15px', '8px')
                                 }}
                                 show={state.visible}
                                 trigger="click"
@@ -108,7 +111,7 @@ export default defineComponent({
                                 v-slots={{
                                     trigger: () => (
                                         <n-element class="n-pointer no-selecter" onClick={setState}>
-                                            {user.value.uid ? (
+                                            {$user.user.value.uid ? (
                                                 <n-space align="center" size={5} wrap-item={false}>
                                                     <n-avatar
                                                         round
@@ -116,7 +119,7 @@ export default defineComponent({
                                                         src="https://oss.lisfes.cn/cloud/avatar/2021-08/1628499198955.jpg"
                                                     />
                                                     <n-ellipsis tooltip={false} style={{ maxWidth: '80px' }}>
-                                                        {user.value.nickname}
+                                                        {$user.user.value.nickname}
                                                     </n-ellipsis>
                                                 </n-space>
                                             ) : (
@@ -128,7 +131,7 @@ export default defineComponent({
                                     ),
                                     default: () => (
                                         <n-element class="n-chunk n-column no-selecter">
-                                            {user.value.uid ? (
+                                            {$user.user.value.uid ? (
                                                 <Fragment>
                                                     <n-space align="center" size={10} wrap-item={false} style={{ marginBottom: '10px' }}>
                                                         <n-avatar
@@ -138,9 +141,9 @@ export default defineComponent({
                                                         />
                                                         <div style={{ flex: 1, overflow: 'hidden' }}>
                                                             <n-h3 style={{ margin: 0, fontSize: '16px' }}>
-                                                                <n-ellipsis tooltip={false}>{user.value.nickname}</n-ellipsis>
+                                                                <n-ellipsis tooltip={false}>{$user.user.value.nickname}</n-ellipsis>
                                                             </n-h3>
-                                                            <n-text>{`账号ID: ${user.value.uid}`}</n-text>
+                                                            <n-text>{`账号ID: ${$user.user.value.uid}`}</n-text>
                                                         </div>
                                                     </n-space>
                                                     <div class="n-chunk" style={{ columnGap: '12px', marginBottom: '12px' }}>

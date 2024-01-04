@@ -15,21 +15,15 @@ export function createDiscover(
     }
 ): Promise<DialogReactive> {
     return new Promise(async resolve => {
-        const instance = await divineHandler<typeof window.$dialog>(!window.$dialog, () => {
-            const { theme } = useProvider()
-            const { dialog } = createDiscreteApi(['dialog'], {
-                configProviderProps: { theme: theme.value }
-            })
-            return dialog
-        }).then(dialog => window.$dialog || dialog)
-        const vm = instance.create({
+        const { $dialog } = useNuxtApp()
+        const vm = $dialog.create({
             ...option,
             negativeButtonProps: { size: 'medium', ...(option.negativeButtonProps as ButtonProps) },
             positiveButtonProps: { size: 'medium', ...(option.positiveButtonProps as ButtonProps) },
             maskClosable: option.maskClosable ?? false,
             autoFocus: option.autoFocus ?? false,
             onAfterEnter: (e: HTMLElement) => {
-                return option.onAfterEnter ? option.onAfterEnter(e, vm) : undefined
+                option.onAfterEnter ? option.onAfterEnter(e, vm) : undefined
             },
             onAfterLeave: () => {
                 return option.onAfterLeave ? option.onAfterLeave(vm) : undefined
@@ -46,7 +40,7 @@ export function createDiscover(
             onPositiveClick: (e: MouseEvent) => {
                 return option.onPositiveClick ? option.onPositiveClick(e, vm, async loading => (vm.loading = loading)) : true
             }
-        })
+        } as DialogOptions)
         resolve(vm)
     })
 }
@@ -63,14 +57,8 @@ export function createNotice(
     }
 ): Promise<NotificationReactive> {
     return new Promise(async resolve => {
-        const instance = await divineHandler<typeof window.$notification>(!window.$notification, () => {
-            const { theme } = useProvider()
-            const { notification } = createDiscreteApi(['notification'], {
-                configProviderProps: { theme: theme.value }
-            })
-            return notification
-        }).then(notice => window.$notification || notice)
-        const vm = instance.create({
+        const { $notification } = useNuxtApp()
+        const vm = $notification.create({
             ...option,
             type: option.type ?? 'success',
             duration: option.duration ?? 2500,
@@ -86,7 +74,7 @@ export function createNotice(
             onLeave: () => {
                 return option.onLeave ? option.onLeave(vm) : undefined
             }
-        })
+        } as NotificationOptions)
         resolve(vm)
     })
 }

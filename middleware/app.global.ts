@@ -1,7 +1,5 @@
-import { useUser } from '@/store/user'
 import { findSeoRoute } from '@/assets/resource/route'
 import { divineHandler } from '@/utils/utils-common'
-import { useStore } from '@/utils/utils-cookie'
 
 async function createUseSeoMeta(evt: Partial<{ title: string; prefix: string }> = {}) {
     return useSeoMeta({
@@ -42,18 +40,17 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         })
     }
 
-    const { store, setRedirect, setUid, setToken } = useStore()
-    if (process.client && store.value.uid) {
-        const { user, logout, fetchUserResolver } = useUser()
-        return await divineHandler(!user.value.uid, async () => {
+    const { $store, $user } = useNuxtApp()
+    if (process.client && $store.store.value.token) {
+        return await divineHandler(!$user.user.value.uid, async () => {
             try {
-                await fetchUserResolver()
-                await setRedirect(undefined)
+                await $user.fetchUserResolver()
+                await $store.setRedirect(undefined)
             } catch (err) {
-                await setUid(undefined)
-                await setToken(undefined)
-                await setRedirect(to.fullPath)
-                await logout()
+                await $store.setUid(undefined)
+                await $store.setToken(undefined)
+                await $store.setRedirect(to.fullPath)
+                await $user.logout()
                 return await navigateTo({ path: '/' })
             }
         })

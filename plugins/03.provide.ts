@@ -1,22 +1,23 @@
-import { createDiscreteApi } from 'naive-ui'
-import { useStore } from '@/utils/utils-cookie'
-import { useConfiger } from '@/store/configer'
-import { useUser } from '@/store/user'
+import { createDiscreteApi, type ConfigProviderProps } from 'naive-ui'
 import { useProvider } from '@/hooks/hook-provider'
 
+const configProviderRef = ref<ConfigProviderProps>({})
 export default defineNuxtPlugin(nuxtApp => {
-    const store = useStore()
-    const configer = useConfiger()
-    const user = useUser()
-    const { theme } = useProvider()
+    const { $configer } = useNuxtApp()
+    const { configProvider } = useProvider()
     const { message, notification, dialog, loadingBar } = createDiscreteApi(['message', 'dialog', 'notification', 'loadingBar'], {
-        configProviderProps: { theme: theme.value }
+        configProviderProps: configProviderRef as ConfigProviderProps
     })
+
+    //prettier-ignore
+    watch(() => $configer.configer.value.theme, () => {
+        //@ts-ignore
+        configProviderRef.value = configProvider.value
+    },
+    { immediate: true })
+
     return {
         provide: {
-            store,
-            configer,
-            user,
             message,
             notification,
             dialog,

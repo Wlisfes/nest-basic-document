@@ -1,8 +1,7 @@
 import { useStore } from '@/utils/utils-cookie'
 import * as http from '@/interface'
 
-export function useUser() {
-    const { setUid, setToken } = useStore()
+export function useUser(store: ReturnType<typeof useStore>) {
     const user = useState('user', () => ({
         keyId: undefined,
         uid: undefined,
@@ -20,15 +19,15 @@ export function useUser() {
         user.value.email = data.email ?? undefined
         user.value.avatar = data.avatar ?? undefined
         user.value.mobile = data.mobile ?? undefined
-        return await setUid(data.uid ?? undefined).then(() => {
+        return await store.setUid(data.uid ?? undefined).then(() => {
             return data
         })
     }
 
     /**退出登录**/
     async function logout() {
-        await setToken()
-        await setUid()
+        await store.setToken()
+        await store.setUid()
         return await setUser()
     }
 

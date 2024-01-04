@@ -3,16 +3,14 @@ import { OnClickOutside } from '@vueuse/components'
 import { useCustomize } from '@/hooks/hook-customize'
 import { createNotice } from '@/utils/utils-naive'
 import { stop } from '@/utils/utils-common'
-import { useUser } from '@/store/user'
-import { useStore } from '@/utils/utils-cookie'
+
 import * as http from '@/interface'
 
 export default defineNuxtComponent({
     name: 'Authorize',
     components: { OnClickOutside },
     setup() {
-        const { store, setToken } = useStore()
-        const { fetchUserResolver } = useUser()
+        const { $store, $user } = useNuxtApp()
         const { formRef, state, setLoading, setDisabled, setVisible, divineFormValidater } = useCustomize({
             loading: false,
             form: {
@@ -50,15 +48,15 @@ export default defineNuxtComponent({
                     password: window.btoa(state.form.password),
                     token: evt.token
                 })
-                await setToken(data.token).then(async () => {
-                    return await fetchUserResolver()
+                await $store.setToken(data.token).then(async () => {
+                    return await $user.fetchUserResolver()
                 })
                 return await createNotice({
                     type: 'success',
                     title: message,
                     onAfterEnter: async () => {
                         await setLoading(false)
-                        await navigateTo({ path: store.value.redirect })
+                        await navigateTo({ path: $store.store.value.redirect })
                     }
                 })
             } catch (e) {
