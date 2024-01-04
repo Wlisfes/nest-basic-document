@@ -23,7 +23,7 @@ function createViteOptimizeInclude(NODE_ENV: string) {
 
 export default defineNuxtConfig({
     modules: ['@vueuse/nuxt'],
-    css: ['~/assets/scss/index.scss', '~/assets/scss/layout.scss', '~/assets/scss/common.scss'],
+    css: ['~/assets/scss/index.scss', '~/assets/scss/layout.scss', '~/assets/scss/customize.scss', '~/assets/scss/common.scss'],
     ssr: true,
     devtools: {
         enabled: process.env.NODE_ENV === 'development'

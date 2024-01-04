@@ -1,0 +1,12 @@
+.n-scrollbar {
+    .n-scrollbar-rail {
+        z-index: 10;
+    }
+    .n-scrollbar-content {
+        position: relative;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+}
