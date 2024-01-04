@@ -1,12 +1,14 @@
 <script lang="tsx">
 import { defineComponent, computed, type CSSProperties } from 'vue'
 import { useProvider } from '@/hooks/hook-provider'
+import { useResize } from '@/hooks/hook-client'
 
 export default defineComponent({
     name: 'ManagerLayout',
     setup(props, { slots }) {
         const { $configer } = useNuxtApp()
         const { inverted } = useProvider()
+        const { mobile } = useResize()
         const layout = computed<CSSProperties>(() => ({
             position: 'relative',
             display: 'flex',
@@ -22,13 +24,13 @@ export default defineComponent({
             <client-only>
                 <n-layout class="layout-provider" has-sider content-style={layout.value}>
                     <n-layout-sider
-                        collapsed={$configer.configer.value.collapse}
-                        inverted={inverted.value}
-                        width={240}
-                        collapsed-width={$configer.configer.value.device === 'MOBILE' ? 0 : 64}
-                        native-scrollbar={false}
                         bordered
-                        show-trigger={$configer.configer.value.device === 'MOBILE' ? false : 'bar'}
+                        width={240}
+                        native-scrollbar={false}
+                        collapsed-width={mobile.value ? 0 : 64}
+                        inverted={inverted.value}
+                        show-trigger={mobile.value ? false : 'bar'}
+                        collapsed={$configer.configer.value.collapse}
                         collapse-mode="width"
                         expanded-keys={[]}
                         onUpdateCollapsed={() => $configer.setCollapse(!$configer.configer.value.collapse)}
