@@ -1,5 +1,5 @@
-import { createBaser, createInserter } from '@/server/typeorm'
-import { TableUser } from '@/server/typeorm/database'
+import { createBaser, createInserter } from '@/server/lib/typeorm'
+import { TableUser } from '@/server/database'
 import { divineIntNumber } from '@/utils/utils-common'
 import { IsNotEmpty } from 'class-validator'
 

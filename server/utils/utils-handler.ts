@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { TableUser } from '@/server/typeorm/database'
+import { TableUser } from '@/server/database'
 
 /**jwt加密**/
 export async function divineJwtSignAuthorize(data: Partial<TableUser>): Promise<{ token: string; expire: number }> {

@@ -1,18 +1,17 @@
 import { defineNuxtPlugin } from '#app'
-import type { LoadingBarApi } from 'naive-ui'
 
 export default defineNuxtPlugin(nuxtApp => {
-    const loadingBar = nuxtApp.$loadingBar as LoadingBarApi
+    const { $loadingBar } = useNuxtApp()
     nuxtApp.hook('app:beforeMount', () => {
-        loadingBar.start()
+        $loadingBar.start()
     })
     nuxtApp.hook('page:start', () => {
-        loadingBar.start()
+        $loadingBar.start()
     })
     nuxtApp.hook('page:finish', () => {
-        loadingBar.finish()
+        $loadingBar.finish()
     })
     nuxtApp.hook('app:error', () => {
-        loadingBar.error()
+        $loadingBar.error()
     })
 })

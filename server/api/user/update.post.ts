@@ -1,5 +1,5 @@
-import { createBaser } from '@/server/typeorm'
-import { TableUser } from '@/server/typeorm/database'
+import { createBuilder } from '@/server/lib/typeorm'
+import { TableUser } from '@/server/database'
 
 export default defineEventHandler(async event => {
     return divineEventCatcher(event, async evt => {

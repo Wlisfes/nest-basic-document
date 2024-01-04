@@ -1,7 +1,7 @@
 import { IsNumber, Min } from 'class-validator'
 import { Type } from 'class-transformer'
-import { createBuilder } from '@/server/typeorm'
-import { TableUser } from '@/server/typeorm/database'
+import { createBuilder } from '@/server/lib/typeorm'
+import { TableUser } from '@/server/database'
 import { divineHandler } from '@/utils/utils-common'
 
 export class QuerySchema {

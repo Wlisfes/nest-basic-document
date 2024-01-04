@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { DataSource, SelectQueryBuilder, Repository, ObjectLiteral, DeepPartial } from 'typeorm'
-import * as BaseTable from '@/server/typeorm/database'
+import * as BaseTable from '@/server/database'
 
 /**数据库表实体**/
 export const BaseTables = Object.values(BaseTable)

@@ -56,7 +56,16 @@ export default defineNuxtConfig({
         NODEMAILER_PORT: process.env.NODEMAILER_PORT,
         NODEMAILER_SECURE: process.env.NODEMAILER_SECURE,
         NODEMAILER_USER: process.env.NODEMAILER_USER,
-        NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD
+        NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
+        OSS_REGION: process.env.OSS_REGION,
+        OSS_ENDPOINT: process.env.OSS_ENDPOINT,
+        OSS_ACCESSKEYID: process.env.OSS_ACCESSKEYID,
+        OSS_ACCESSKEYSECRET: process.env.OSS_ACCESSKEYSECRET,
+        OSS_BUCKET: process.env.OSS_BUCKET,
+        OSS_TIMEOUT: process.env.OSS_TIMEOUT,
+        OSS_DOMAIN: process.env.OSS_DOMAIN,
+        OSS_ROLEARN: process.env.OSS_ROLEARN,
+        OSS_SESSIONNAME: process.env.OSS_SESSIONNAME
     },
     nitro: {
         experimental: {

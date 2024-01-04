@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator'
-import { TableUser } from '@/server/typeorm/database'
-import { createBuilder } from '@/server/typeorm'
+import { TableUser } from '@/server/database'
+import { createBuilder } from '@/server/lib/typeorm'
 import bcrypt from 'bcryptjs'
 
 export class BodySchema extends TableUser {
