@@ -1,20 +1,7 @@
 /// <reference types="vite/client" />
 
-import { LoadingBarInst } from 'naive-ui/lib/loading-bar'
-import { NotificationApiInjection } from 'naive-ui/lib/notification'
-import { DialogApiInjection } from 'naive-ui/lib/dialog'
-import { MessageApiInjection } from 'naive-ui/lib/message'
-
 declare global {
     interface Window {
-        $message: MessageApiInjection
-        $loadingBar: LoadingBarInst
-        $notification: NotificationApiInjection
-        $dialog: DialogApiInjection
-        grecaptcha: {
-            ready: (handler: Function) => void
-            execute: (key: string, opt: { action: string }) => Promise<string>
-        }
         AliyunUpload: {
             Vod: new (option) => any
         }
