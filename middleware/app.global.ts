@@ -42,7 +42,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
     const { $store, $user } = useNuxtApp()
     if (process.client && $store.store.value.token) {
-        return await divineHandler(!$user.user.value.uid, async () => {
+        /**加载用户信息**/
+        await divineHandler(!$user.user.value.uid, async () => {
             try {
                 await $user.fetchUserResolver()
                 await $store.setRedirect(undefined)
@@ -54,5 +55,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                 return await navigateTo({ path: '/' })
             }
         })
+    } else if (process.client) {
+        console.log()
     }
 })

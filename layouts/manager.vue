@@ -8,7 +8,7 @@ export default defineNuxtComponent({
     setup(props, { slots }) {
         const { $configer } = useNuxtApp()
         const { inverted } = useProvider()
-        const { mobile } = useResize()
+        const { mobile, width } = useResize()
         const layout = computed<CSSProperties>(() => ({
             position: 'relative',
             display: 'flex',
@@ -21,33 +21,33 @@ export default defineNuxtComponent({
         }))
 
         return () => (
-            <client-only>
-                <n-layout class="layout-provider" content-style={layout.value}>
-                    <n-layout-header style={{ height: '60px' }} bordered inverted={inverted.value}></n-layout-header>
-                    <n-layout class="layout-provider" has-sider style={{ flex: 1 }} content-style={layout.value}>
-                        <n-layout-sider
-                            bordered
-                            width={240}
-                            native-scrollbar={false}
-                            collapsed-width={mobile.value ? 0 : 64}
-                            inverted={inverted.value}
-                            show-trigger={mobile.value ? false : 'bar'}
-                            collapsed={$configer.configer.value.collapse}
-                            collapse-mode="width"
-                            expanded-keys={[]}
-                            onUpdateCollapsed={() => $configer.setCollapse(!$configer.configer.value.collapse)}
-                        ></n-layout-sider>
-                        <n-layout-content
-                            style={{ flex: 1 }}
-                            content-style={content.value}
-                            native-scrollbar={false}
-                            scrollbar-props={{ trigger: 'none' }}
-                        >
-                            {{ default: slots.default }}
-                        </n-layout-content>
-                    </n-layout>
+            <n-layout class="layout-provider" content-style={layout.value}>
+                <n-layout-header style={{ height: '60px' }} bordered inverted={inverted.value}>
+                    <manager-header width={width.value} inverted={inverted.value}></manager-header>
+                </n-layout-header>
+                <n-layout class="layout-provider" has-sider style={{ flex: 1 }} content-style={layout.value}>
+                    <n-layout-sider
+                        bordered
+                        width={240}
+                        native-scrollbar={false}
+                        collapsed-width={mobile.value ? 0 : 64}
+                        inverted={inverted.value}
+                        show-trigger={mobile.value ? false : 'bar'}
+                        collapsed={$configer.configer.value.collapse}
+                        collapse-mode="width"
+                        expanded-keys={[]}
+                        onUpdateCollapsed={() => $configer.setCollapse(!$configer.configer.value.collapse)}
+                    ></n-layout-sider>
+                    <n-layout-content
+                        style={{ flex: 1 }}
+                        content-style={content.value}
+                        native-scrollbar={false}
+                        scrollbar-props={{ trigger: 'none' }}
+                    >
+                        {{ default: slots.default }}
+                    </n-layout-content>
                 </n-layout>
-            </client-only>
+            </n-layout>
         )
     }
 })
