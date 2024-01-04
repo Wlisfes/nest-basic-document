@@ -1,9 +1,8 @@
 <script lang="tsx">
-import { defineComponent, onMounted } from 'vue'
 import { useCurrentElement } from '@vueuse/core'
 import { createRibboner } from '@/assets/js/ribbon.min'
 
-export default defineComponent({
+export default defineNuxtComponent({
     name: 'CommonRibbon',
     setup(props) {
         const element = useCurrentElement()

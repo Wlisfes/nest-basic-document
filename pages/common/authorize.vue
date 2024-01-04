@@ -3,7 +3,6 @@ import { OnClickOutside } from '@vueuse/components'
 import { useCustomize } from '@/hooks/hook-customize'
 import { createNotice } from '@/utils/utils-naive'
 import { stop } from '@/utils/utils-common'
-
 import * as http from '@/interface'
 
 export default defineNuxtComponent({

@@ -1,12 +1,12 @@
 <script lang="tsx">
-import { defineComponent, Fragment } from 'vue'
+import { Fragment } from 'vue'
 import { useProvider } from '@/hooks/hook-provider'
 import { useResize } from '@/hooks/hook-client'
 import { useState } from '@/hooks/hook-state'
 import { divineWherer, divineDelay } from '@/utils/utils-common'
 import { createDiscover } from '@/utils/utils-naive'
 
-export default defineComponent({
+export default defineNuxtComponent({
     name: 'LayoutHeader',
     setup() {
         const { $user, $configer } = useNuxtApp()

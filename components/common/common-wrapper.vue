@@ -1,7 +1,7 @@
 <script lang="tsx">
-import { createVNode, defineComponent } from 'vue'
+import { createVNode } from 'vue'
 
-export default defineComponent({
+export default defineNuxtComponent({
     name: 'CommonWrapper',
     props: {
         name: { type: String, required: true },

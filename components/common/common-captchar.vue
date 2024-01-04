@@ -1,10 +1,10 @@
 <script lang="tsx">
-import { defineComponent, ref, computed, onMounted, onUnmounted, Fragment } from 'vue'
+import { ref, computed, onMounted, onUnmounted, Fragment } from 'vue'
 import { divineDelay, stop } from '@/utils/utils-common'
 import { divineMaticChecker } from '@/utils/utils-plugin'
 import { useState } from '@/hooks/hook-state'
 
-export default defineComponent({
+export default defineNuxtComponent({
     name: 'CommonCaptchar',
     props: {
         canvasWidth: { type: Number, default: 310 }, // 主canvas的宽

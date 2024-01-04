@@ -1,7 +1,7 @@
 <script lang="tsx">
-import { defineComponent, computed, type CSSProperties } from 'vue'
+import type { CSSProperties } from 'vue'
 
-export default defineComponent({
+export default defineNuxtComponent({
     name: 'ClientLayout',
     setup(props, { slots }) {
         const layout = computed<CSSProperties>(() => ({

@@ -1,7 +1,5 @@
 <script lang="tsx">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
+export default defineNuxtComponent({
     name: 'Home',
     setup(props, { slots }) {
         return () => (

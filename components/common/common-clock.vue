@@ -1,9 +1,8 @@
 <script lang="tsx">
-import { defineComponent, onMounted, ref } from 'vue'
 import { useCurrentElement } from '@vueuse/core'
 import { createUtilityClock } from '@/assets/js/clock.min'
 
-export default defineComponent({
+export default defineNuxtComponent({
     name: 'CommonClock',
     props: {
         max: { type: Number, default: 680 }

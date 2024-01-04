@@ -1,9 +1,9 @@
 <script lang="tsx">
-import { defineComponent, computed, type CSSProperties } from 'vue'
+import type { CSSProperties } from 'vue'
 import { useProvider } from '@/hooks/hook-provider'
 import { useResize } from '@/hooks/hook-client'
 
-export default defineComponent({
+export default defineNuxtComponent({
     name: 'ManagerLayout',
     setup(props, { slots }) {
         const { $configer } = useNuxtApp()
@@ -22,21 +22,21 @@ export default defineComponent({
 
         return () => (
             <client-only>
-                <n-layout class="layout-provider" has-sider content-style={layout.value}>
-                    <n-layout-sider
-                        bordered
-                        width={240}
-                        native-scrollbar={false}
-                        collapsed-width={mobile.value ? 0 : 64}
-                        inverted={inverted.value}
-                        show-trigger={mobile.value ? false : 'bar'}
-                        collapsed={$configer.configer.value.collapse}
-                        collapse-mode="width"
-                        expanded-keys={[]}
-                        onUpdateCollapsed={() => $configer.setCollapse(!$configer.configer.value.collapse)}
-                    ></n-layout-sider>
-                    <n-layout class="layout-provider" style={{ flex: 1 }} content-style={layout.value}>
-                        <n-layout-header style={{ height: '60px' }} bordered inverted={inverted.value}></n-layout-header>
+                <n-layout class="layout-provider" content-style={layout.value}>
+                    <n-layout-header style={{ height: '60px' }} bordered inverted={inverted.value}></n-layout-header>
+                    <n-layout class="layout-provider" has-sider style={{ flex: 1 }} content-style={layout.value}>
+                        <n-layout-sider
+                            bordered
+                            width={240}
+                            native-scrollbar={false}
+                            collapsed-width={mobile.value ? 0 : 64}
+                            inverted={inverted.value}
+                            show-trigger={mobile.value ? false : 'bar'}
+                            collapsed={$configer.configer.value.collapse}
+                            collapse-mode="width"
+                            expanded-keys={[]}
+                            onUpdateCollapsed={() => $configer.setCollapse(!$configer.configer.value.collapse)}
+                        ></n-layout-sider>
                         <n-layout-content
                             style={{ flex: 1 }}
                             content-style={content.value}
