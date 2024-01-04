@@ -1,12 +1,12 @@
 import Client from 'ali-oss'
 
-export let OSS_CLIENT: Client
-export let OSS_STS_CLIENT: Client.STS
+export let ossClient: Client
+export let ossSTSClient: Client.STS
 
 export async function createOssProvider() {
-    if (!OSS_CLIENT) {
+    if (!ossClient) {
         const config = useRuntimeConfig()
-        OSS_CLIENT = new Client({
+        ossClient = new Client({
             region: config.OSS_REGION,
             endpoint: config.OSS_ENDPOINT,
             accessKeyId: config.OSS_ACCESSKEYID,
@@ -18,16 +18,16 @@ export async function createOssProvider() {
             cname: true
         })
     }
-    return OSS_CLIENT
+    return ossClient
 }
 
 export async function createOssSTSProvider() {
-    if (!OSS_STS_CLIENT) {
+    if (!ossSTSClient) {
         const config = useRuntimeConfig()
-        OSS_STS_CLIENT = new Client.STS({
+        ossSTSClient = new Client.STS({
             accessKeyId: config.OSS_ACCESSKEYID,
             accessKeySecret: config.OSS_ACCESSKEYSECRET
         })
     }
-    return OSS_STS_CLIENT
+    return ossSTSClient
 }

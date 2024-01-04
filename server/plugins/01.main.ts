@@ -7,5 +7,5 @@ export default defineNitroPlugin(async nitroApp => {
     nitroApp.$db = await createConnection()
     nitroApp.$transporter = await createTransport()
     nitroApp.$ossClient = await createOssProvider()
-    nitroApp.$ossAuthorize = await createOssSTSProvider()
+    nitroApp.$ossSTSClient = await createOssSTSProvider()
 })

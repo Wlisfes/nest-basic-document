@@ -6,5 +6,5 @@ export default defineEventHandler(async event => {
     event.context.db = await createConnection()
     event.context.transporter = await createTransport()
     event.context.ossClient = await createOssProvider()
-    event.context.ossAuthorize = await createOssSTSProvider()
+    event.context.ossSTSClient = await createOssSTSProvider()
 })
