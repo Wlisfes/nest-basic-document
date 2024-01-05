@@ -49,6 +49,10 @@ export default defineNuxtConfig({
         MYSQL_USERNAME: process.env.MYSQL_USERNAME,
         MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
         MYSQL_DATABASE: process.env.MYSQL_DATABASE,
+        REDIS_HOST: process.env.REDIS_HOST,
+        REDIS_PORT: process.env.REDIS_PORT,
+        REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+        REDIS_DB: process.env.REDIS_DB,
         JWT_EXPIRE: process.env.JWT_EXPIRE,
         JWT_SECRET: process.env.JWT_SECRET,
         CAPTCHA_PRIVATE_SITEKEY: process.env.CAPTCHA_PRIVATE_SITEKEY,
@@ -78,6 +82,15 @@ export default defineNuxtConfig({
                         experimentalDecorators: true
                     }
                 }
+            }
+        },
+        storage: {
+            redis: {
+                driver: 'redis',
+                host: process.env.REDIS_HOST,
+                port: process.env.REDIS_PORT,
+                password: process.env.REDIS_PASSWORD,
+                db: process.env.REDIS_DB
             }
         }
     },
