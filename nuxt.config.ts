@@ -44,23 +44,30 @@ export default defineNuxtConfig({
             APP_NUXT_DESCRIPTIOM: APP_NUXT_DESCRIPTIOM,
             CAPTCHA_PUBLIC_SITEKEY: process.env.CAPTCHA_PUBLIC_SITEKEY
         },
+        //### MySQL配置
         MYSQL_HOST: process.env.MYSQL_HOST,
         MYSQL_PORT: process.env.MYSQL_PORT,
         MYSQL_USERNAME: process.env.MYSQL_USERNAME,
         MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
         MYSQL_DATABASE: process.env.MYSQL_DATABASE,
+        //### Redis配置
         REDIS_HOST: process.env.REDIS_HOST,
         REDIS_PORT: process.env.REDIS_PORT,
         REDIS_PASSWORD: process.env.REDIS_PASSWORD,
         REDIS_DB: process.env.REDIS_DB,
+        //### Jwt配置
         JWT_EXPIRE: process.env.JWT_EXPIRE,
         JWT_SECRET: process.env.JWT_SECRET,
+        //### 验证码配置
+        CAPTCHA_PUBLIC_SITEKEY: process.env.CAPTCHA_PUBLIC_SITEKEY,
         CAPTCHA_PRIVATE_SITEKEY: process.env.CAPTCHA_PRIVATE_SITEKEY,
+        //### 邮箱服务配置
         NODEMAILER_HOST: process.env.NODEMAILER_HOST,
         NODEMAILER_PORT: process.env.NODEMAILER_PORT,
         NODEMAILER_SECURE: process.env.NODEMAILER_SECURE,
         NODEMAILER_USER: process.env.NODEMAILER_USER,
         NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
+        //### 阿里云oss配置
         OSS_REGION: process.env.OSS_REGION,
         OSS_ENDPOINT: process.env.OSS_ENDPOINT,
         OSS_ACCESSKEYID: process.env.OSS_ACCESSKEYID,
@@ -69,7 +76,10 @@ export default defineNuxtConfig({
         OSS_TIMEOUT: process.env.OSS_TIMEOUT,
         OSS_DOMAIN: process.env.OSS_DOMAIN,
         OSS_ROLEARN: process.env.OSS_ROLEARN,
-        OSS_SESSIONNAME: process.env.OSS_SESSIONNAME
+        OSS_SESSIONNAME: process.env.OSS_SESSIONNAME,
+        //### GitHub授权登录
+        GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+        GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET
     },
     nitro: {
         experimental: {
@@ -127,4 +137,4 @@ export default defineNuxtConfig({
             script: [{ src: `https://cdn.bootcdn.net/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js` }]
         }
     }
-})
+} as Parameters<typeof defineNuxtConfig>['0'])
