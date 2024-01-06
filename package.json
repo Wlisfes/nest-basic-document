@@ -39,7 +39,7 @@
         "@types/jsonwebtoken": "^9.0.5",
         "@types/node-rsa": "^1.1.4",
         "@types/nodemailer": "^6.4.14",
-        "nuxt": "^3.8.2",
+        "nuxt": "3.8.2",
         "sass": "^1.69.5",
         "unplugin-vue-components": "^0.26.0",
         "vite-plugin-svg-icons": "^2.0.1"
