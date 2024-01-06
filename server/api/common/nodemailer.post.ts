@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsEmail } from 'class-validator'
 import { divineEventValidator, divineEventCatcher } from '@/server/utils/utils-validator'
-import { customCoder, customCheckNodemailer } from '@/server/utils/utils-transporter'
+import { customCoder, customCheckNodemailer } from '@/server/lib/nodemailer'
 
 export class BodySchema {
     @IsEmail({}, { message: '邮箱 格式错误' })
