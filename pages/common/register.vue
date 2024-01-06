@@ -42,6 +42,15 @@ export default defineNuxtComponent({
                             </nuxt-link>
                         </n-space>
                     </n-form>
+                    <n-space size={32} wrap-item={false} justify="center" align="center" style={{ marginTop: '24px' }}>
+                        <n-button text focusable={false}>
+                            <common-wrapper size={42} name="Google"></common-wrapper>
+                        </n-button>
+                        <common-wrapper size={24} name="Specor"></common-wrapper>
+                        <n-button text focusable={false}>
+                            <common-wrapper size={42} name="Github"></common-wrapper>
+                        </n-button>
+                    </n-space>
                 </n-element>
             </n-element>
         )

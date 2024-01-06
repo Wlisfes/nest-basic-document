@@ -42,7 +42,9 @@ export default defineNuxtConfig({
         public: {
             APP_NUXT_TITLE: APP_NUXT_TITLE,
             APP_NUXT_DESCRIPTIOM: APP_NUXT_DESCRIPTIOM,
-            CAPTCHA_PUBLIC_SITEKEY: process.env.CAPTCHA_PUBLIC_SITEKEY
+            CAPTCHA_PUBLIC_SITEKEY: process.env.CAPTCHA_PUBLIC_SITEKEY,
+            GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+            GITHUB_CLIENT_CALLBASE: process.env.GITHUB_CLIENT_CALLBASE
         },
         //### MySQL配置
         MYSQL_HOST: process.env.MYSQL_HOST,
@@ -79,7 +81,8 @@ export default defineNuxtConfig({
         OSS_SESSIONNAME: process.env.OSS_SESSIONNAME,
         //### GitHub授权登录
         GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-        GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET
+        GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+        GITHUB_CLIENT_CALLBASE: process.env.GITHUB_CLIENT_CALLBASE
     },
     nitro: {
         experimental: {

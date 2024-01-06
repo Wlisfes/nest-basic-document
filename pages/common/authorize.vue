@@ -1,6 +1,7 @@
 <script lang="tsx">
 import { OnClickOutside } from '@vueuse/components'
 import { useCustomize } from '@/hooks/hook-customize'
+import { useAuthorize } from '@/hooks/hook-authorize'
 import { createNotice } from '@/utils/utils-naive'
 import { stop } from '@/utils/utils-common'
 import * as http from '@/interface'
@@ -10,6 +11,7 @@ export default defineNuxtComponent({
     components: { OnClickOutside },
     setup() {
         const { $store, $user } = useNuxtApp()
+        const { navigateAuthorize } = useAuthorize()
         const { formRef, state, setLoading, setDisabled, setVisible, divineFormValidater } = useCustomize({
             loading: false,
             form: {
@@ -126,6 +128,15 @@ export default defineNuxtComponent({
                             </nuxt-link>
                         </n-space>
                     </n-form>
+                    <n-space size={32} wrap-item={false} justify="center" align="center" style={{ margin: '24px 0 10px' }}>
+                        <n-button text focusable={false} onClick={(evt: Event) => navigateAuthorize('Google')}>
+                            <common-wrapper size={48} name="Google"></common-wrapper>
+                        </n-button>
+                        <common-wrapper size={24} name="Specor"></common-wrapper>
+                        <n-button text focusable={false} onClick={(evt: Event) => navigateAuthorize('Github')}>
+                            <common-wrapper size={48} name="Github"></common-wrapper>
+                        </n-button>
+                    </n-space>
                 </n-element>
             </n-element>
         )
