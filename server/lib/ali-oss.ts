@@ -44,10 +44,14 @@ export enum FileMime {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' = 'xlsx'
 }
 
+export type Folder = 'avatar'
+
 /**文件重命名**/
-export async function createRename(folder: string, suffix: string) {
+export async function createRename(folder: Folder, suffix: string) {
+    const config = useRuntimeConfig()
     const name = await divineIntNumber(21)
-    return folder + name + '.' + suffix
+    const pathURL = [config.OSS_FOLDER, folder, name].join('/')
+    return pathURL + '.' + suffix
 }
 
 /*远程下载文件**/
@@ -75,7 +79,7 @@ export async function downloadFileBuffer(baseURL: string): Promise<{ suffix: str
 export async function uploadFileBuffer(client: Client, option: { buffer: ArrayBuffer; fileName: string }) {
     try {
         const response = await client.put(option.fileName, Buffer.from(option.buffer))
-        await divineEventWhereCatcher(response.res.status !== 200, {
+        return await divineEventWhereCatcher(response.res.status !== 200, {
             message: '上传失败',
             data: response
         }).then(() => {

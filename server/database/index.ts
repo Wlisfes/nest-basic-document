@@ -1,1 +1,1 @@
-export { TableUser } from './table.user'
+export { TableUser, TableUserGitHub } from './table.user'

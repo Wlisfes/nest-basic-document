@@ -79,6 +79,7 @@ export default defineNuxtConfig({
         OSS_DOMAIN: process.env.OSS_DOMAIN,
         OSS_ROLEARN: process.env.OSS_ROLEARN,
         OSS_SESSIONNAME: process.env.OSS_SESSIONNAME,
+        OSS_FOLDER: process.env.OSS_FOLDER,
         //### GitHub授权登录
         GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
         GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
