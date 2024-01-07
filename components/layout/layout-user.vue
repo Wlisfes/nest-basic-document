@@ -39,13 +39,20 @@ export default defineNuxtComponent({
         }
 
         return () => (
-            <n-popover style={popover.value} show={state.visible} trigger="click" placement="bottom" onClickoutside={done}>
+            <n-popover
+                style={popover.value}
+                show={state.visible}
+                trigger="click"
+                display-directive="show"
+                placement="bottom"
+                onClickoutside={done}
+            >
                 {{
                     trigger: () => (
                         <n-element class="n-pointer no-selecter" onClick={done}>
                             {$user.user.value.uid ? (
                                 <n-space align="center" size={5} wrap-item={false}>
-                                    <n-avatar round size={28} src="https://oss.lisfes.cn/cloud/avatar/2021-08/1628499198955.jpg" />
+                                    <n-avatar round size={28} src={$user.user.value.avatar} />
                                     <n-ellipsis tooltip={false} style={{ maxWidth: '80px' }}>
                                         {$user.user.value.nickname}
                                     </n-ellipsis>
@@ -62,7 +69,7 @@ export default defineNuxtComponent({
                             {$user.user.value.uid ? (
                                 <Fragment>
                                     <n-space align="center" size={10} wrap-item={false} style={{ marginBottom: '10px' }}>
-                                        <n-avatar round size={40} src="https://oss.lisfes.cn/cloud/avatar/2021-08/1628499198955.jpg" />
+                                        <n-avatar round size={40} src={$user.user.value.avatar} />
                                         <div style={{ flex: 1, overflow: 'hidden' }}>
                                             <n-h3 style={{ margin: 0, fontSize: '16px' }}>
                                                 <n-ellipsis tooltip={false}>{$user.user.value.nickname}</n-ellipsis>

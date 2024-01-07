@@ -1,7 +1,7 @@
 import { createBaser, createBuilder, createInserter } from '@/server/lib/typeorm'
 import { TableUser, TableUserGitHub } from '@/server/database'
 import { downloadFileBuffer, uploadFileBuffer, createRename } from '@/server/lib/ali-oss'
-import { divineEventWhereCatcher } from '@/server/utils/utils-validator'
+import { divineEventCatcher, divineEventWhereCatcher } from '@/server/utils/utils-validator'
 import { divineJwtSignAuthorize } from '@/server/utils//utils-handler'
 import { divineIntNumber } from '@/utils/utils-common'
 import { IsNotEmpty } from 'class-validator'
@@ -67,7 +67,7 @@ export async function httpGitHubResolver(body: { token: string }) {
 }
 
 export default defineEventHandler(async event => {
-    return await divineEventCatcher(event, async evt => {
+    try {
         const state = await getQuery<{ code: string }>(event)
         await divineEventValidator(QuerySchema, {
             data: state,
@@ -166,5 +166,7 @@ export default defineEventHandler(async event => {
                 })
             })
         })
-    })
+    } catch (e) {
+        return await sendRedirect(event, event.path, 302)
+    }
 })
