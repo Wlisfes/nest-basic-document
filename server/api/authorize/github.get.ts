@@ -99,7 +99,7 @@ export default defineEventHandler(async event => {
                 })
                 const { token, expire } = await divineJwtSignAuthorize({ uid: post.uid, nickname, status, password })
                 await setCookie(event, 'APP_NUXT_TOKEN', token, { maxAge: expire })
-                return await sendRedirect(event, '/', 302)
+                return await sendRedirect(event, '/', 301)
             })
         }
 
@@ -120,7 +120,7 @@ export default defineEventHandler(async event => {
                     password: have.password
                 })
                 await setCookie(event, 'APP_NUXT_TOKEN', token, { maxAge: expire })
-                return await sendRedirect(event, '/', 302)
+                return await sendRedirect(event, '/', 301)
             }
 
             //邮箱不存在、执行新用户注册-----------------------------------------------------------------
@@ -162,11 +162,11 @@ export default defineEventHandler(async event => {
                 }).then(async ({ nickname, status, password }) => {
                     const { token, expire } = await divineJwtSignAuthorize({ uid, nickname, status, password })
                     await setCookie(event, 'APP_NUXT_TOKEN', token, { maxAge: expire })
-                    return await sendRedirect(event, '/', 302)
+                    return await sendRedirect(event, '/', 301)
                 })
             })
         })
     } catch (e) {
-        return await sendRedirect(event, event.path, 302)
+        return await sendRedirect(event, '/', 301)
     }
 })
