@@ -1,6 +1,5 @@
 <script lang="tsx">
 import { Fragment, type CSSProperties } from 'vue'
-import { useState } from '@/hooks/hook-state'
 import { stop, divineWherer, divineDelay } from '@/utils/utils-common'
 import { createDiscover } from '@/utils/utils-naive'
 
@@ -8,21 +7,21 @@ export default defineNuxtComponent({
     name: 'LayoutUser',
     setup() {
         const route = useRoute()
+        const state = reactive({ visible: false })
         const { $user } = useNuxtApp()
-        const { state, setState } = useState({ visible: false })
         const popover = computed<CSSProperties>(() => ({
             width: divineWherer(Boolean($user.user.value.uid), '240px', '140px'),
             padding: divineWherer(Boolean($user.user.value.uid), '15px', '8px')
         }))
 
         async function done() {
-            return await setState({ visible: !state.visible })
+            return (state.visible = !state.visible)
         }
 
         function stopHandler(evt: Event) {
             return stop(evt, () => {
                 if (!state.visible) {
-                    setState({ visible: true })
+                    state.visible = true
                 }
             })
         }

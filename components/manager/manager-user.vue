@@ -1,21 +1,21 @@
 <script lang="tsx">
-import { useState } from '@/hooks/hook-state'
 import { stop, divineDelay } from '@/utils/utils-common'
 import { createDiscover } from '@/utils/utils-naive'
 
 export default defineNuxtComponent({
     name: 'ManagerUser',
     setup() {
+        const state = reactive({ visible: false })
         const { $user } = useNuxtApp()
-        const { state, setState } = useState({ visible: false })
+
         async function done() {
-            return await setState({ visible: !state.visible })
+            return (state.visible = !state.visible)
         }
 
         function stopHandler(evt: Event) {
             return stop(evt, () => {
                 if (!state.visible) {
-                    setState({ visible: true })
+                    state.visible = true
                 }
             })
         }

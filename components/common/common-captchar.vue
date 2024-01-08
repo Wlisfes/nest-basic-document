@@ -2,7 +2,6 @@
 import { ref, computed, onMounted, onUnmounted, Fragment } from 'vue'
 import { divineDelay, stop } from '@/utils/utils-common'
 import { divineMaticChecker } from '@/utils/utils-plugin'
-import { useState } from '@/hooks/hook-state'
 
 export default defineNuxtComponent({
     name: 'CommonCaptchar',
@@ -24,7 +23,7 @@ export default defineNuxtComponent({
         const canvas2 = ref<HTMLCanvasElement>()
         const canvas3 = ref<HTMLCanvasElement>()
         const slider = ref<HTMLDivElement>()
-        const { state, setState } = useState({
+        const state = reactive({
             mouseDown: false, // 鼠标是否在按钮上按下
             startWidth: 50, // 鼠标点下去时父级的width
             startX: 0, // 鼠标按下时的X
@@ -47,6 +46,10 @@ export default defineNuxtComponent({
             session: undefined,
             token: undefined
         })
+
+        async function setState(newState: Partial<typeof state> = {}) {
+            return Object.assign(state, newState)
+        }
 
         //处理一下sliderSize，弄成整数，以免计算有偏差
         const sliderBaseSize = computed(() => {

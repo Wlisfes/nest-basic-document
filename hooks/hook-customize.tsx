@@ -2,17 +2,18 @@ import type { FormInst, FormRules, FormItemRule } from 'naive-ui'
 import { ref, reactive } from 'vue'
 import { divineHandler, divineDelay } from '@/utils/utils-common'
 
-interface Option<T extends Record<string, any>> {
+interface Option<T extends Record<string, any>, R extends Record<string, any>> {
     initialize?: boolean
     disabled?: boolean
     visible?: boolean
     loading?: boolean
     rules?: FormRules
     form: T
+    option: R
 }
 
 /**自定义表单Hooks**/
-export function useCustomize<T extends Object>(data: Option<T>) {
+export function useCustomize<T extends Record<string, any>, R extends Record<string, any>>(data: Option<T, R>) {
     const formRef = ref<FormInst & { $el: Element }>()
     const initialize = ref<boolean>(data.initialize ?? true)
     const disabled = ref<boolean>(data.disabled ?? false)
@@ -20,7 +21,8 @@ export function useCustomize<T extends Object>(data: Option<T>) {
     const loading = ref<boolean>(data.loading ?? false)
     const form = ref<typeof data.form>(data.form)
     const rules = ref<typeof data.rules>(data.rules)
-    const state = reactive({ initialize, disabled, visible, loading, form, rules })
+    const option = ref<typeof data.option>(data.option)
+    const state = reactive({ initialize, disabled, visible, loading, form, rules, option })
 
     async function setInitialize(value: boolean) {
         return (initialize.value = value)
@@ -40,6 +42,10 @@ export function useCustomize<T extends Object>(data: Option<T>) {
 
     async function setForm(value: Partial<T>) {
         return (form.value = { ...form.value, ...value })
+    }
+
+    async function setOption(value: Partial<R>) {
+        return (option.value = { ...option.value, ...value })
     }
 
     /**验证表单**/
@@ -92,6 +98,7 @@ export function useCustomize<T extends Object>(data: Option<T>) {
         loading,
         form,
         rules,
+        option,
         state,
         formRef,
         setInitialize,
@@ -99,6 +106,7 @@ export function useCustomize<T extends Object>(data: Option<T>) {
         setVisible,
         setLoading,
         setForm,
+        setOption,
         divineFormValidater,
         divineFormRestore,
         divineFormScrollbar
