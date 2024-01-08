@@ -20,7 +20,7 @@ export async function divineEventTokenDecrypt(
         privateKey.setOptions({ encryptionScheme: 'pkcs1' })
         return JSON.parse(privateKey.decrypt(token, 'utf8'))
     } catch (e) {
-        throw createError({ statusCode: 400, message: '验证码错误' })
+        throw createError({ statusCode: 400, message: '滑动验证错误' })
     }
 }
 
@@ -29,10 +29,10 @@ export async function divineEventSlideTokenValidator(event: H3Event<EventHandler
     const node = await divineEventTokenDecrypt(token)
     const origin = getRequestHeader(event, 'origin')
     await divineEventWhereCatcher(node.referer !== origin, {
-        message: '地址不合法'
+        message: '滑动验证地址不合法'
     })
     await divineEventWhereCatcher(Date.now() - 180000 > node.timestamp, {
-        message: '验证码已过期'
+        message: '滑动验证已过期'
     })
     return node
 }

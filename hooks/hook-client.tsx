@@ -1,3 +1,4 @@
+import { onMounted } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import IsMobile from 'is-mobile'
 
@@ -33,4 +34,47 @@ export function useResize() {
         xxl: computed(() => width.value <= 1680),
         xxxl: computed(() => width.value <= 1920)
     }
+}
+
+/**倒计时**/
+export function useCountdate(data: Partial<{ date: number; immediate: boolean }> = {}) {
+    const date = ref<number>(data.date ?? 0)
+    const immediate = ref<boolean>(data.immediate ?? false)
+    const timeout = ref()
+
+    async function setDateTime(value: number) {
+        return (date.value = value)
+    }
+
+    async function start() {
+        if (date.value < 1) {
+            return false
+        }
+        if (timeout.value) {
+            stop()
+        }
+        immediate.value = true
+        timeout.value = setTimeout(() => {
+            date.value--
+            if (date.value >= 1) {
+                start()
+            } else {
+                stop()
+            }
+        }, 1000)
+    }
+
+    function stop() {
+        if (timeout.value) {
+            clearTimeout(timeout.value)
+        }
+    }
+
+    onMounted(() => {
+        if (data.immediate) {
+            start()
+        }
+    })
+
+    return { date, immediate, setDateTime, start, stop }
 }

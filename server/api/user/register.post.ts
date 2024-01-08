@@ -16,13 +16,14 @@ export default defineEventHandler(event => {
             option: { groups: ['nickname', 'email', 'password', 'code'] }
         })
         return await createBaser(event.context.db, TableUser).then(async model => {
-            await createInserter(model, {
-                uid: await divineIntNumber(16),
-                nickname: body.nickname,
-                email: body.email,
-                password: body.password
-            })
-            return { message: '注册成功' }
+            console
+            // await createInserter(model, {
+            //     uid: await divineIntNumber(16),
+            //     nickname: body.nickname,
+            //     email: body.email,
+            //     password: body.password
+            // })
+            // return { message: '注册成功' }
         })
     })
 })
