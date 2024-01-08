@@ -9,7 +9,7 @@ export default defineNuxtComponent({
         const { $configer } = useNuxtApp()
 
         return () => (
-            <n-element class="manager-header n-chunk n-center">
+            <n-element class="layout-pager n-chunk n-center" style={{ maxWidth: 'initial' }}>
                 <n-space size={20} wrap-item={false} align="center" justify="space-between" style={{ width: '100%' }}>
                     <nuxt-link to="/" style={{ textDecoration: 'none' }}>
                         <n-button text focusable={false}>
@@ -42,13 +42,3 @@ export default defineNuxtComponent({
     }
 })
 </script>
-
-<style lang="scss" scoped>
-.manager-header {
-    position: relative;
-    height: 100%;
-    box-sizing: border-box;
-    padding-left: 32px;
-    padding-right: 32px;
-}
-</style>

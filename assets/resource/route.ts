@@ -5,7 +5,7 @@ export interface BaseRoute {
 
 export const common: Array<BaseRoute> = [
     {
-        url: '/common/authorize',
+        url: '/common/login',
         name: '登录'
     },
     {

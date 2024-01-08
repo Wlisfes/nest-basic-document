@@ -1,6 +1,6 @@
 <script lang="tsx">
 import { useState } from '@/hooks/hook-state'
-import { divineDelay } from '@/utils/utils-common'
+import { stop, divineDelay } from '@/utils/utils-common'
 import { createDiscover } from '@/utils/utils-naive'
 
 export default defineNuxtComponent({
@@ -10,6 +10,14 @@ export default defineNuxtComponent({
         const { state, setState } = useState({ visible: false })
         async function done() {
             return await setState({ visible: !state.visible })
+        }
+
+        function stopHandler(evt: Event) {
+            return stop(evt, () => {
+                if (!state.visible) {
+                    setState({ visible: true })
+                }
+            })
         }
 
         async function closure() {
@@ -43,7 +51,7 @@ export default defineNuxtComponent({
             >
                 {{
                     trigger: () => (
-                        <n-element class="n-pointer no-selecter" onClick={done}>
+                        <n-element class="n-pointer no-selecter" onClick={stopHandler}>
                             {$user.user.value.uid ? (
                                 <n-space align="center" size={5} wrap-item={false}>
                                     <n-avatar round size={28} src="https://oss.lisfes.cn/cloud/avatar/2021-08/1628499198955.jpg" />

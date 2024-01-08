@@ -9,9 +9,9 @@ export async function fetchUserRegister(data: { nickname: string; password: stri
 }
 
 /**登录**/
-export async function fetchUserAuthorize(data: { account: string; password: string; token: string }) {
+export async function fetchUserLoginer(data: { account: string; password: string; token: string }) {
     return await divineRequestCatcher<{ token: string; expire: number }>(
-        await $fetch('/api/user/authorize', { headers: await useHeaders(), method: 'POST', body: data })
+        await $fetch('/api/user/login', { headers: await useHeaders(), method: 'POST', body: data })
     )
 }
 

@@ -1,12 +1,13 @@
 <script lang="tsx">
 import { Fragment, type CSSProperties } from 'vue'
 import { useState } from '@/hooks/hook-state'
-import { divineWherer, divineDelay } from '@/utils/utils-common'
+import { stop, divineWherer, divineDelay } from '@/utils/utils-common'
 import { createDiscover } from '@/utils/utils-naive'
 
 export default defineNuxtComponent({
     name: 'LayoutUser',
     setup() {
+        const route = useRoute()
         const { $user } = useNuxtApp()
         const { state, setState } = useState({ visible: false })
         const popover = computed<CSSProperties>(() => ({
@@ -16,6 +17,14 @@ export default defineNuxtComponent({
 
         async function done() {
             return await setState({ visible: !state.visible })
+        }
+
+        function stopHandler(evt: Event) {
+            return stop(evt, () => {
+                if (!state.visible) {
+                    setState({ visible: true })
+                }
+            })
         }
 
         async function closure() {
@@ -39,17 +48,10 @@ export default defineNuxtComponent({
         }
 
         return () => (
-            <n-popover
-                style={popover.value}
-                show={state.visible}
-                trigger="click"
-                display-directive="show"
-                placement="bottom"
-                onClickoutside={done}
-            >
+            <n-popover style={popover.value} show={state.visible} trigger="click" placement="bottom" onClickoutside={done}>
                 {{
                     trigger: () => (
-                        <n-element class="n-pointer no-selecter" onClick={done}>
+                        <n-element class="n-pointer no-selecter" onClick={stopHandler}>
                             {$user.user.value.uid ? (
                                 <n-space align="center" size={5} wrap-item={false}>
                                     <n-avatar round size={28} src={$user.user.value.avatar} />
@@ -95,8 +97,15 @@ export default defineNuxtComponent({
                                 </Fragment>
                             ) : (
                                 <Fragment>
-                                    <nuxt-link to="/common/authorize" style={{ textDecoration: 'none', color: 'var(--text-color-2)' }}>
-                                        <n-button quaternary focusable={false} size="large" style={{ width: '100%' }} onClick={done}>
+                                    <nuxt-link to="/common/login" style={{ textDecoration: 'none', color: 'var(--text-color-2)' }}>
+                                        <n-button
+                                            quaternary
+                                            focusable={false}
+                                            size="large"
+                                            disabled={route.path === '/common/login'}
+                                            style={{ width: '100%' }}
+                                            onClick={done}
+                                        >
                                             <n-element class="n-chunk n-center" style={{ gap: '5px' }}>
                                                 <common-wrapper size={24} name="Safety"></common-wrapper>
                                                 <n-h4 style={{ margin: 0, lineHeight: '20px' }}>登录</n-h4>
@@ -104,7 +113,14 @@ export default defineNuxtComponent({
                                         </n-button>
                                     </nuxt-link>
                                     <nuxt-link to="/common/register" style={{ textDecoration: 'none', color: 'var(--text-color-2)' }}>
-                                        <n-button quaternary focusable={false} size="large" style={{ width: '100%' }} onClick={done}>
+                                        <n-button
+                                            quaternary
+                                            focusable={false}
+                                            size="large"
+                                            style={{ width: '100%' }}
+                                            disabled={route.path === '/common/register'}
+                                            onClick={done}
+                                        >
                                             <n-element class="n-chunk n-center" style={{ gap: '5px' }}>
                                                 <common-wrapper size={22} name="Meta"></common-wrapper>
                                                 <n-h4 style={{ margin: 0, lineHeight: '20px' }}>注册</n-h4>

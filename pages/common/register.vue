@@ -35,7 +35,7 @@ export default defineNuxtComponent({
                                     忘记密码
                                 </n-button>
                             </nuxt-link>
-                            <nuxt-link to="/common/authorize" style={{ textDecoration: 'none' }}>
+                            <nuxt-link to="/common/login" style={{ textDecoration: 'none' }}>
                                 <n-button text focusable={false} style={{ fontSize: '18px' }}>
                                     登录
                                 </n-button>

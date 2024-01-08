@@ -8,7 +8,7 @@ import { stop } from '@/utils/utils-common'
 import * as http from '@/interface'
 
 export default defineNuxtComponent({
-    name: 'Authorize',
+    name: 'Login',
     components: { OnClickOutside },
     setup() {
         const { $store, $user } = useNuxtApp()
@@ -48,7 +48,7 @@ export default defineNuxtComponent({
                 await setLoading(true)
                 await setDisabled(true)
                 await setVisible(false)
-                const { data, message } = await http.fetchUserAuthorize({
+                const { data, message } = await http.fetchUserLoginer({
                     account: form.value.account,
                     password: window.btoa(form.value.password),
                     token: evt.token
