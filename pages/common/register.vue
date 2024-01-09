@@ -18,8 +18,10 @@ export default defineNuxtComponent({
             loading: false,
             option: { github: false, google: false },
             form: {
+                nickname: '',
+                password: '123456',
                 email: 'limvcfast@gmail.com',
-                password: '123456'
+                code: ''
             },
             rules: {
                 account: { required: true, trigger: ['blur', 'change'], message: '请输入邮箱/手机号' },
@@ -33,24 +35,32 @@ export default defineNuxtComponent({
             return await setDisabled(false)
         }
 
+        /**邮箱校验**/
+        async function onCheckEmailer(evt: Event) {
+            evt.preventDefault()
+            evt.stopPropagation()
+            await setDisabled(true)
+            return await setVisible(true)
+        }
+
         /**发送邮箱验证码**/
         async function httpCommonNodemailer(evt: { token: string }) {
             try {
+                console.log(evt)
                 await setVisible(false)
-                const { message } = await http.fetchCommonNodemailer({
-                    source: 'register',
-                    email: state.form.email,
-                    token: evt.token
-                })
+                await divineFormValidater(() => {})
+                // await setVisible(false)
+                // const { message } = await http.fetchCommonNodemailer({
+                //     source: 'register',
+                //     email: state.form.email,
+                //     token: evt.token
+                // })
+                // return await createNotice({
+                //     type: 'success',
+                //     title: message,
+                //     onAfterEnter: async () => {}
+                // })
             } catch (e) {}
-        }
-
-        /**验证表单**/
-        async function onEventChecker() {
-            return divineFormValidater(async () => {
-                await setDisabled(true)
-                return await setVisible(true)
-            })
         }
 
         return () => (
@@ -58,7 +68,7 @@ export default defineNuxtComponent({
                 <n-element class="chunk-element">
                     <n-h1 style={{ textAlign: 'center' }}>注册账号</n-h1>
                     <n-form size="large" label-placement="left">
-                        <n-form-item path="mobile">
+                        <n-form-item path="nickname">
                             <n-input
                                 maxlength={22}
                                 type="text"
@@ -77,21 +87,33 @@ export default defineNuxtComponent({
                                 placeholder="请输入登录密码"
                             ></n-input>
                         </n-form-item>
-                        <n-form-item>
+                        <n-form-item path="code">
                             <n-input-group>
                                 <n-input maxlength={6} style={{ flex: 1 }} placeholder="请输入邮箱验证码" />
-                                <n-button
-                                    type="primary"
-                                    tertiary
-                                    style={{ width: '130px' }}
-                                    disabled={date.value > 0 || state.disabled || state.loading}
-                                >
-                                    {!immediate.value ? (
-                                        <span>发送验证码</span>
-                                    ) : (
-                                        <span>{date.value > 0 ? `${date.value}s 重新发送` : `重新发送`}</span>
-                                    )}
-                                </n-button>
+                                <n-popover trigger="manual" style={{ padding: 0 }} show={state.visible}>
+                                    {{
+                                        default: () => (
+                                            <onClickOutside onTrigger={onOutsideCloser}>
+                                                <common-captchar onSuccess={httpCommonNodemailer}></common-captchar>
+                                            </onClickOutside>
+                                        ),
+                                        trigger: () => (
+                                            <n-button
+                                                type="primary"
+                                                tertiary
+                                                style={{ width: '130px' }}
+                                                disabled={date.value > 0 || state.disabled || state.loading || state.visible}
+                                                onClick={onCheckEmailer}
+                                            >
+                                                {!immediate.value ? (
+                                                    <span>发送验证码</span>
+                                                ) : (
+                                                    <span>{date.value > 0 ? `${date.value}s 重新发送` : `重新发送`}</span>
+                                                )}
+                                            </n-button>
+                                        )
+                                    }}
+                                </n-popover>
                             </n-input-group>
                         </n-form-item>
                         <n-form-item>
