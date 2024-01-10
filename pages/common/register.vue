@@ -6,6 +6,8 @@ import { useCountdate } from '@/hooks/hook-client'
 import { createNotice } from '@/utils/utils-naive'
 import { stop } from '@/utils/utils-common'
 import * as http from '@/interface'
+const ruleEmail =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 export default defineNuxtComponent({
     name: 'Register',
@@ -19,13 +21,25 @@ export default defineNuxtComponent({
             option: { github: false, google: false },
             form: {
                 nickname: '',
-                password: '123456',
-                email: 'limvcfast@gmail.com',
+                password: '',
+                email: '',
                 code: ''
             },
             rules: {
-                account: { required: true, trigger: ['blur', 'change'], message: '请输入邮箱/手机号' },
-                password: { required: true, trigger: ['blur', 'change'], message: '请输入登录密码' }
+                nickname: { key: 'nickname', required: true, trigger: ['blur'], message: '请输入昵称' },
+                password: { key: 'password', required: true, trigger: ['blur'], message: '请输入登录密码' },
+                code: { key: 'code', required: true, trigger: ['blur'], message: '请输入邮箱验证码' },
+                email: {
+                    key: 'email',
+                    required: true,
+                    trigger: ['blur'],
+                    validator: (rule, value) => {
+                        if (!value || !ruleEmail.test(value)) {
+                            return new Error('请输入正确邮箱')
+                        }
+                        return true
+                    }
+                }
             }
         })
 
@@ -39,35 +53,42 @@ export default defineNuxtComponent({
         async function onCheckEmailer(evt: Event) {
             evt.preventDefault()
             evt.stopPropagation()
-            await setDisabled(true)
-            return await setVisible(true)
+            return await divineFormValidater(
+                async () => {
+                    await setDisabled(true)
+                    return await setVisible(true)
+                },
+                { formatter: rule => ['email'].includes(rule.key) }
+            )
         }
 
         /**发送邮箱验证码**/
         async function httpCommonNodemailer(evt: { token: string }) {
             try {
-                console.log(evt)
                 await setVisible(false)
-                await divineFormValidater(() => {})
-                // await setVisible(false)
-                // const { message } = await http.fetchCommonNodemailer({
-                //     source: 'register',
-                //     email: state.form.email,
-                //     token: evt.token
-                // })
-                // return await createNotice({
-                //     type: 'success',
-                //     title: message,
-                //     onAfterEnter: async () => {}
-                // })
-            } catch (e) {}
+                const { message } = await http.fetchCommonNodemailer({
+                    source: 'register',
+                    email: state.form.email,
+                    token: evt.token
+                })
+                return await createNotice({
+                    type: 'success',
+                    title: message,
+                    onAfterEnter: async () => {
+                        await setVisible(false)
+                    }
+                })
+            } catch (e) {
+                await createNotice({ type: 'error', title: e.message })
+                return await setVisible(false)
+            }
         }
 
         return () => (
             <n-element class="layout-provider n-chunk n-column n-center n-middle n-auto no-selecter">
                 <n-element class="chunk-element">
                     <n-h1 style={{ textAlign: 'center' }}>注册账号</n-h1>
-                    <n-form size="large" label-placement="left">
+                    <n-form ref={formRef} model={state.form} rules={state.rules} size="large" label-placement="left">
                         <n-form-item path="nickname">
                             <n-input
                                 maxlength={22}
@@ -85,6 +106,15 @@ export default defineNuxtComponent({
                                 input-props={{ autocomplete: 'new-password' }}
                                 disabled={state.disabled || state.loading}
                                 placeholder="请输入登录密码"
+                            ></n-input>
+                        </n-form-item>
+                        <n-form-item path="email">
+                            <n-input
+                                v-model:value={state.form.email}
+                                disabled={state.disabled || state.loading}
+                                maxlength={22}
+                                type="text"
+                                placeholder="请输入邮箱"
                             ></n-input>
                         </n-form-item>
                         <n-form-item path="code">
