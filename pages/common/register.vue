@@ -17,9 +17,9 @@ export default defineNuxtComponent({
             loading: false,
             option: { github: false, google: false },
             form: {
-                nickname: '',
-                password: '',
-                email: '',
+                nickname: '一叶之秋',
+                password: '123456',
+                email: 'lisfes@outlook.com',
                 code: ''
             },
             rules: {
@@ -83,6 +83,7 @@ export default defineNuxtComponent({
 
         /**注册**/
         async function httpUserRegister() {
+            console.log('111')
             return await divineFormValidater().then(async valid => {
                 if (!valid) {
                     return false
@@ -101,7 +102,7 @@ export default defineNuxtComponent({
                     })
                 } catch (e) {
                     await setDisabled(false)
-                    return await setLoading(true)
+                    return await setLoading(false)
                 }
             })
         }
@@ -113,6 +114,7 @@ export default defineNuxtComponent({
                     <n-form ref={formRef} model={state.form} rules={state.rules} size="large" label-placement="left">
                         <n-form-item path="nickname">
                             <n-input
+                                v-model:value={state.form.nickname}
                                 maxlength={22}
                                 type="text"
                                 input-props={{ autocomplete: 'off' }}
@@ -122,6 +124,7 @@ export default defineNuxtComponent({
                         </n-form-item>
                         <n-form-item path="password">
                             <n-input
+                                v-model:value={state.form.password}
                                 maxlength={18}
                                 type="password"
                                 show-password-on="mousedown"
@@ -141,7 +144,7 @@ export default defineNuxtComponent({
                         </n-form-item>
                         <n-form-item path="code">
                             <n-input-group>
-                                <n-input maxlength={6} style={{ flex: 1 }} placeholder="请输入邮箱验证码" />
+                                <n-input v-model:value={state.form.code} maxlength={6} style={{ flex: 1 }} placeholder="请输入邮箱验证码" />
                                 <n-popover trigger="manual" style={{ padding: 0 }} show={state.visible}>
                                     {{
                                         default: () => (
@@ -154,9 +157,7 @@ export default defineNuxtComponent({
                                                 type="primary"
                                                 tertiary
                                                 style={{ width: '115px', padding: '0 10px' }}
-                                                disabled={
-                                                    date.value > 0 || date.loading || state.disabled || state.loading || state.visible
-                                                }
+                                                disabled={date.value > 0 || date.loading || state.disabled || state.loading || state.visible}
                                                 onClick={onCheckEmailer}
                                             >
                                                 {date.loading ? (
@@ -176,7 +177,13 @@ export default defineNuxtComponent({
                             </n-input-group>
                         </n-form-item>
                         <n-form-item>
-                            <n-button type="info" style={{ width: '100%' }}>
+                            <n-button
+                                type="info"
+                                style={{ width: '100%' }}
+                                loading={state.loading}
+                                disabled={state.disabled || state.loading || state.visible || date.loading}
+                                onClick={httpUserRegister}
+                            >
                                 立即注册
                             </n-button>
                         </n-form-item>
@@ -187,14 +194,7 @@ export default defineNuxtComponent({
                                 </n-button>
                             </nuxt-link>
                             <nuxt-link to="/common/login" style={{ textDecoration: 'none' }}>
-                                <n-button
-                                    text
-                                    focusable={false}
-                                    style={{ fontSize: '18px' }}
-                                    loading={state.loading}
-                                    disabled={state.disabled || state.loading || state.visible || date.loading}
-                                    onClick={httpUserRegister}
-                                >
+                                <n-button text focusable={false} style={{ fontSize: '18px' }}>
                                     登录
                                 </n-button>
                             </nuxt-link>

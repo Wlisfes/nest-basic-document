@@ -42,7 +42,7 @@ export async function createBuilder<T, R>(db: DataSource, model: T, callback: (q
 }
 
 /**保存数据**/
-export async function createInserter<T>(model: Repository<T>, state: DeepPartial<T>) {
+export async function inserter<T>(model: Repository<T>, state: DeepPartial<T>) {
     const node = await model.create(state)
     return model.save(node as typeof state)
 }

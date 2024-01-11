@@ -59,7 +59,6 @@ export function useCountdate(data: Partial<{ date: number; immediate: boolean; l
             if (date.value <= 0) {
                 stop()
             }
-            console.log(date.value)
             date.value--
         }, 1000)
     }

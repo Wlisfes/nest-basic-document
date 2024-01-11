@@ -1,4 +1,4 @@
-import { createBaser, createBuilder, createInserter } from '@/server/lib/typeorm'
+import { createBaser, createBuilder, inserter } from '@/server/lib/typeorm'
 import { TableUser, TableUserGitHub } from '@/server/database'
 import { downloadFileBuffer, uploadFileBuffer, createRename } from '@/server/lib/ali-oss'
 import { divineEventCatcher, divineEventWhereCatcher } from '@/server/utils/utils-validator'
@@ -131,7 +131,7 @@ export default defineEventHandler(async event => {
                     fileName: await createRename('avatar', suffix),
                     buffer: buffer
                 })
-                const { uid } = await createInserter(model, {
+                const { uid } = await inserter(model, {
                     uid: await divineIntNumber(16),
                     nickname: node.login,
                     email: node.email,
@@ -140,7 +140,7 @@ export default defineEventHandler(async event => {
                 })
                 //存储GitHub数据
                 await createBaser(event.context.db, TableUserGitHub).then(async model => {
-                    return await createInserter(model, {
+                    return await inserter(model, {
                         uid: uid,
                         id: node.id,
                         login: node.login,

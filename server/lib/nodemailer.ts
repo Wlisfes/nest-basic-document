@@ -71,8 +71,22 @@ export async function customCoder(pad: number = 6) {
 
 /**读取模板**/
 export async function readNodemailer(source: SourceEnum, option: Record<string, any> = {}) {
-    const execute = handlebar.compile(
-        fs.readFileSync(path.join(process.cwd(), `./server/static/template/${source ?? 'common'}.html`), 'utf8')
-    )
+    const execute = handlebar.compile(fs.readFileSync(path.join(process.cwd(), `./server/static/template/${source ?? 'common'}.html`), 'utf8'))
     return execute(option)
+}
+
+/**邮件验证码redis存储**/
+export async function setStorage(source: SourceEnum, opts: { email: string; code: string; ttl: number }) {
+    const key = `document:${source}:email:${opts.email}`
+    if (opts.ttl) {
+        return await useStorage('redis').setItem(key, opts.code, { ttl: opts.ttl })
+    } else {
+        return await useStorage('redis').setItem(key, opts.code)
+    }
+}
+
+/**邮件验证码redis读取**/
+export async function getStorage(source: SourceEnum, opts: { email: string }) {
+    const key = `document:${source}:email:${opts.email}`
+    return await useStorage('redis').getItem(key)
 }
