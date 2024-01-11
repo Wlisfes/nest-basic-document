@@ -33,7 +33,10 @@ export default defineNuxtComponent({
 
         /**验证表单**/
         async function onEventChecker() {
-            return divineFormValidater(async () => {
+            return await divineFormValidater().then(async valid => {
+                if (!valid) {
+                    return false
+                }
                 await setDisabled(true)
                 return await setVisible(true)
             })

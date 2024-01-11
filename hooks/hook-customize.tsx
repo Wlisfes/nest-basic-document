@@ -48,23 +48,14 @@ export function useCustomize<T extends Record<string, any>, R extends Record<str
         return (option.value = { ...option.value, ...value })
     }
 
-    /**验证表单**/
-    function divineFormValidater(
-        callback: Function = Function,
-        app: { reject?: boolean; catch?: Function; formatter?: (e: FormItemRule) => boolean } = {}
-    ) {
-        return new Promise((resolve, reject) => {
+    /**验证表单**/ //prettier-ignore
+    function divineFormValidater(formatter?: (e: FormItemRule) => boolean): Promise<boolean> {
+        return new Promise(resolve => {
             if (!formRef.value) {
-                return reject('不存在formRef实例')
+                return console.error('不存在formRef实例')
             }
-            //prettier-ignore
-            formRef.value.validate(async err => {
-                if (!err) {
-                    return resolve(await callback())
-                }
-            }, app.formatter).catch(err => {
-                app.catch && app.catch(err)
-                app.reject && reject(err)
+            formRef.value.validate(err => resolve(!err), formatter).catch(err => {
+                // console.error(err)
             })
         })
     }
