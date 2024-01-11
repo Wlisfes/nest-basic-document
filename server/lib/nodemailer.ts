@@ -26,6 +26,10 @@ export interface SendMail {
     subject: string
     html: string
 }
+export enum SourceEnum {
+    Register = 'register',
+    Password = 'password'
+}
 
 export function customNodemailer(transporter: any, opts: SendMail) {
     return new Promise((resolve, reject) => {
@@ -40,9 +44,15 @@ export function customNodemailer(transporter: any, opts: SendMail) {
 }
 
 /**验证码发送**/
-export async function customCheckNodemailer(transporter: any, opts: Pick<SendMail, 'from' | 'to'> & { code: string; ttl: string }) {
+export async function customCheckNodemailer(
+    transporter: any,
+    source: SourceEnum,
+    opts: Pick<SendMail, 'from' | 'to'> & {
+        data: { code: string; ttl: string; title?: string } & Record<string, any>
+    }
+) {
     try {
-        const content = await readNodemailer({ code: opts.code, ttl: opts.ttl })
+        const content = await readNodemailer(source, opts.data)
         return await customNodemailer(transporter, {
             from: `"Wlisfes" <${opts.from}>`,
             to: opts.to,
@@ -60,7 +70,9 @@ export async function customCoder(pad: number = 6) {
 }
 
 /**读取模板**/
-export async function readNodemailer(option: Record<string, any> = {}) {
-    const execute = handlebar.compile(fs.readFileSync(path.join(process.cwd(), './server/static/template/common.html'), 'utf8'))
+export async function readNodemailer(source: SourceEnum, option: Record<string, any> = {}) {
+    const execute = handlebar.compile(
+        fs.readFileSync(path.join(process.cwd(), `./server/static/template/${source ?? 'common'}.html`), 'utf8')
+    )
     return execute(option)
 }

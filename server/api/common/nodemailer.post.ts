@@ -1,18 +1,16 @@
 import { IsNotEmpty, IsEmail, IsEnum } from 'class-validator'
 import { createBuilder, createBaser, createInserter } from '@/server/lib/typeorm'
 import { TableUser } from '@/server/database'
-import { divineEventValidator, divineEventCatcher, divineEventWhereCatcher } from '@/server/utils/utils-validator'
-import { customCoder, customCheckNodemailer } from '@/server/lib/nodemailer'
-
-export enum SourceEnum {
-    Register = 'register',
-    Password = 'password'
-}
+import { SourceEnum, customCoder, customCheckNodemailer } from '@/server/lib/nodemailer'
+import * as validator from '@/server/utils/utils-validator'
 
 export class BodySchema {
     @IsEmail({}, { message: '邮箱 格式错误' })
     @IsNotEmpty({ message: '邮箱 必填' })
     email: string
+
+    @IsNotEmpty({ message: 'Token 必填' })
+    token: string
 
     @IsNotEmpty({ message: '来源 必填' })
     @IsEnum(SourceEnum, { message: '来源类型错误' })
@@ -36,25 +34,27 @@ export async function getStorage(source: SourceEnum, opts: { email: string; code
 }
 
 export default defineEventHandler(async event => {
-    return await divineEventCatcher(event, async evt => {
+    return await validator.divineEventCatcher(event, async evt => {
         const state = await readBody<BodySchema>(event)
         const config = useRuntimeConfig()
         const code = await customCoder(6)
-        await divineEventValidator(BodySchema, { data: state })
+        await validator.divineEventValidator(BodySchema, { data: state })
+
+        /**验证滑动验证**/
+        await validator.divineEventSlideTokenValidator(event, state.token)
 
         /**注册验证码******************************************************************/
         if (state.source === SourceEnum.Register) {
             return await createBuilder(event.context.db, TableUser, async qb => {
                 return await qb.where('t.email = :email', { email: state.email }).getOne()
             }).then(async user => {
-                await divineEventWhereCatcher(Boolean(user), {
+                await validator.divineEventWhereCatcher(Boolean(user), {
                     message: '邮箱号已注册'
                 })
-                return await customCheckNodemailer(event.context.transporter, {
+                return await customCheckNodemailer(event.context.transporter, state.source, {
                     from: config.NODEMAILER_USER,
                     to: state.email,
-                    ttl: '5',
-                    code
+                    data: { ttl: '5', code }
                 }).then(async result => {
                     await setStorage(state.source, {
                         email: state.email,
