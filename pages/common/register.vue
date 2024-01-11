@@ -17,9 +17,9 @@ export default defineNuxtComponent({
             loading: false,
             option: { github: false, google: false },
             form: {
-                nickname: '一叶之秋',
-                password: '123456',
-                email: 'lisfes@outlook.com',
+                nickname: '',
+                password: '',
+                email: '',
                 code: ''
             },
             rules: {

@@ -1,7 +1,7 @@
 import { IsNotEmpty, isEmpty } from 'class-validator'
 import { TableUser } from '@/server/database'
 import { createBaser, createBuilder, inserter } from '@/server/lib/typeorm'
-import { SourceEnum, getStorage } from '@/server/lib/nodemailer'
+import { SourceEnum, getStorage, delStorage } from '@/server/lib/nodemailer'
 import { divineEventCatcher, divineEventValidator, divineEventWhereCatcher } from '@/server/utils/utils-validator'
 import { divineIntNumber } from '@/utils/utils-common'
 
@@ -40,7 +40,9 @@ export default defineEventHandler(event => {
                 email: state.email,
                 password: state.password
             })
-            return { message: '注册成功' }
+            return await delStorage(SourceEnum.Register, { email: state.email }).then(() => {
+                return { message: '注册成功' }
+            })
         })
     })
 })

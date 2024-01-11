@@ -16,8 +16,8 @@ export default defineNuxtComponent({
             loading: false,
             option: { github: false, google: false },
             form: {
-                account: 'limvcfast@gmail.com',
-                password: '123456'
+                account: '',
+                password: ''
             },
             rules: {
                 account: { required: true, trigger: ['blur', 'change'], message: '请输入邮箱/手机号' },

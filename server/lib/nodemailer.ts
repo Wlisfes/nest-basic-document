@@ -90,3 +90,9 @@ export async function getStorage(source: SourceEnum, opts: { email: string }) {
     const key = `document:${source}:email:${opts.email}`
     return await useStorage('redis').getItem(key)
 }
+
+/**邮件验证码redis删除**/
+export async function delStorage(source: SourceEnum, opts: { email: string }) {
+    const key = `document:${source}:email:${opts.email}`
+    return await useStorage('redis').removeItem(key)
+}
