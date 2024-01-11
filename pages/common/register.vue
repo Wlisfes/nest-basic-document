@@ -4,17 +4,14 @@ import { useCustomize } from '@/hooks/hook-customize'
 import { useAuthorize } from '@/hooks/hook-authorize'
 import { useCountdate } from '@/hooks/hook-client'
 import { createNotice } from '@/utils/utils-naive'
-import { stop } from '@/utils/utils-common'
+import { isEmail } from 'class-validator'
 import * as http from '@/interface'
-const ruleEmail =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 export default defineNuxtComponent({
     name: 'Register',
     components: { OnClickOutside },
     setup() {
-        const { $store, $user } = useNuxtApp()
-        const { immediate, date, setDateTime, start } = useCountdate()
+        const { date, setDate, start } = useCountdate()
         const { navigateAuthorize } = useAuthorize()
         const { formRef, state, setLoading, setDisabled, setVisible, divineFormValidater } = useCustomize({
             loading: false,
@@ -34,7 +31,7 @@ export default defineNuxtComponent({
                     required: true,
                     trigger: ['blur'],
                     validator: (rule, value) => {
-                        if (!value || !ruleEmail.test(value)) {
+                        if (!value || !isEmail(value)) {
                             return new Error('请输入正确邮箱')
                         }
                         return true
@@ -53,35 +50,60 @@ export default defineNuxtComponent({
         async function onCheckEmailer(evt: Event) {
             evt.preventDefault()
             evt.stopPropagation()
-            return await divineFormValidater(
-                async () => {
-                    await setDisabled(true)
-                    return await setVisible(true)
-                },
-                { formatter: rule => ['email'].includes(rule.key) }
-            )
+            return await divineFormValidater(rule => ['email'].includes(rule.key)).then(async valid => {
+                if (!valid) {
+                    return false
+                }
+                await setDisabled(true)
+                return await setVisible(true)
+            })
         }
 
         /**发送邮箱验证码**/
         async function httpCommonNodemailer(evt: { token: string }) {
             try {
                 await setVisible(false)
+                await setDate({ loading: true })
                 const { message } = await http.fetchCommonNodemailer({
                     source: 'register',
                     email: state.form.email,
                     token: evt.token
                 })
-                return await createNotice({
-                    type: 'success',
-                    title: message,
-                    onAfterEnter: async () => {
-                        await setVisible(false)
-                    }
+                return await createNotice({ type: 'success', title: message }).then(async () => {
+                    await setDisabled(false)
+                    await setDate({ loading: false, value: 60 })
+                    await start()
                 })
             } catch (e) {
-                await createNotice({ type: 'error', title: e.message })
+                await setDate({ loading: false, value: 0 })
+                await setDisabled(false)
                 return await setVisible(false)
             }
+        }
+
+        /**注册**/
+        async function httpUserRegister() {
+            return await divineFormValidater().then(async valid => {
+                if (!valid) {
+                    return false
+                }
+                try {
+                    await setLoading(true)
+                    await setDisabled(true)
+                    const { message } = await http.fetchUserRegister({
+                        nickname: state.form.nickname,
+                        password: window.btoa(state.form.password),
+                        email: state.form.email,
+                        code: state.form.code
+                    })
+                    return await createNotice({ type: 'success', title: message }).then(async () => {
+                        return await navigateTo({ path: `/common/login` })
+                    })
+                } catch (e) {
+                    await setDisabled(false)
+                    return await setLoading(true)
+                }
+            })
         }
 
         return () => (
@@ -131,11 +153,18 @@ export default defineNuxtComponent({
                                             <n-button
                                                 type="primary"
                                                 tertiary
-                                                style={{ width: '130px' }}
-                                                disabled={date.value > 0 || state.disabled || state.loading || state.visible}
+                                                style={{ width: '115px', padding: '0 10px' }}
+                                                disabled={
+                                                    date.value > 0 || date.loading || state.disabled || state.loading || state.visible
+                                                }
                                                 onClick={onCheckEmailer}
                                             >
-                                                {!immediate.value ? (
+                                                {date.loading ? (
+                                                    <div class="n-chunk n-center">
+                                                        <common-wrapper name="RadixSpin" size={18}></common-wrapper>
+                                                        <span style={{ marginLeft: '5px' }}>发送中</span>
+                                                    </div>
+                                                ) : !date.immediate ? (
                                                     <span>发送验证码</span>
                                                 ) : (
                                                     <span>{date.value > 0 ? `${date.value}s 重新发送` : `重新发送`}</span>
@@ -158,7 +187,14 @@ export default defineNuxtComponent({
                                 </n-button>
                             </nuxt-link>
                             <nuxt-link to="/common/login" style={{ textDecoration: 'none' }}>
-                                <n-button text focusable={false} style={{ fontSize: '18px' }}>
+                                <n-button
+                                    text
+                                    focusable={false}
+                                    style={{ fontSize: '18px' }}
+                                    loading={state.loading}
+                                    disabled={state.disabled || state.loading || state.visible || date.loading}
+                                    onClick={httpUserRegister}
+                                >
                                     登录
                                 </n-button>
                             </nuxt-link>

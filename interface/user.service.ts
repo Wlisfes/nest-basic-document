@@ -2,7 +2,7 @@ import type { Result, Notice, IUser } from '@/types/instance.resolver'
 import { useHeaders, divineRequestCatcher } from '@/utils/utils-cookie'
 
 /**用户注册**/
-export async function fetchUserRegister(data: { nickname: string; password: string; mobile: string; code: string }) {
+export async function fetchUserRegister(data: { nickname: string; password: string; email: string; code: string }) {
     return await divineRequestCatcher<Notice>(
         await $fetch('/api/user/register', { headers: await useHeaders(), method: 'POST', body: data })
     )

@@ -37,44 +37,39 @@ export function useResize() {
 }
 
 /**倒计时**/
-export function useCountdate(data: Partial<{ date: number; immediate: boolean }> = {}) {
-    const date = ref<number>(data.date ?? 0)
-    const immediate = ref<boolean>(data.immediate ?? false)
-    const timeout = ref()
+export function useCountdate(data: Partial<{ date: number; immediate: boolean; loading: boolean }> = {}) {
+    const interval = ref()
+    const date = reactive({
+        value: data.date ?? 0,
+        immediate: data.immediate ?? false,
+        loading: data.loading ?? false
+    })
 
-    async function setDateTime(value: number) {
-        return (date.value = value)
+    async function setDate(newState: Partial<{ value: number; loading: boolean }> = {}) {
+        return Object.assign(date, newState)
     }
 
     async function start() {
         if (date.value < 1) {
             return false
         }
-        if (timeout.value) {
-            stop()
-        }
-        immediate.value = true
-        timeout.value = setTimeout(() => {
-            date.value--
-            if (date.value >= 1) {
-                start()
-            } else {
+        date.value--
+        date.immediate = true
+        interval.value = setInterval(() => {
+            if (date.value <= 0) {
                 stop()
             }
+            console.log(date.value)
+            date.value--
         }, 1000)
     }
 
     function stop() {
-        if (timeout.value) {
-            clearTimeout(timeout.value)
+        if (interval.value) {
+            clearTimeout(interval.value)
+            interval.value = null
         }
     }
 
-    onMounted(() => {
-        if (data.immediate) {
-            start()
-        }
-    })
-
-    return { date, immediate, setDateTime, start, stop }
+    return { date, setDate, start, stop }
 }
