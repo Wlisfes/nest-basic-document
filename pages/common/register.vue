@@ -5,7 +5,7 @@ import { useAuthorize } from '@/hooks/hook-authorize'
 import { useCountdate } from '@/hooks/hook-client'
 import { createNotice } from '@/utils/utils-naive'
 import { isEmail } from 'class-validator'
-import * as http from '@/interface'
+import * as http from '@/interface/instance.service'
 
 export default defineNuxtComponent({
     name: 'Register',

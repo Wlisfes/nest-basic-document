@@ -1,5 +1,5 @@
 import { useStore } from '@/utils/utils-cookie'
-import * as http from '@/interface'
+import * as http from '@/interface/instance.service'
 
 export function useUser(store: ReturnType<typeof useStore>) {
     const user = useState('user', () => ({

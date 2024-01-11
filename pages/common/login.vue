@@ -4,7 +4,7 @@ import { useCustomize } from '@/hooks/hook-customize'
 import { useAuthorize } from '@/hooks/hook-authorize'
 import { createNotice } from '@/utils/utils-naive'
 import { stop } from '@/utils/utils-common'
-import * as http from '@/interface'
+import * as http from '@/interface/instance.service'
 
 export default defineNuxtComponent({
     name: 'Login',
