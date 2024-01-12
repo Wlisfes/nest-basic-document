@@ -1,6 +1,12 @@
 import { findSeoRoute } from '@/assets/resource/route'
 import { divineHandler } from '@/utils/utils-common'
 
+//已登录禁止进入
+export const black: Array<{ name: string; path: string }> = [
+    { name: '登录', path: '/common/login' },
+    { name: '注册', path: '/common/register' }
+]
+
 async function createUseSeoMeta(evt: Partial<{ title: string; prefix: string }> = {}) {
     return useSeoMeta({
         title: evt.title,
@@ -55,7 +61,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                 return await navigateTo({ path: '/' })
             }
         })
+        if (black.some(item => item.path === to.path)) {
+            return await navigateTo({ path: '/', params: to.params, query: to.query, replace: true })
+        }
     } else if (process.client) {
-        console.log()
     }
 })
