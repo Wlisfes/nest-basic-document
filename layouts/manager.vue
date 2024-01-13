@@ -28,16 +28,18 @@ export default defineNuxtComponent({
                 <n-layout class="layout-provider" has-sider style={{ flex: 1 }} content-style={layout.value}>
                     <n-layout-sider
                         bordered
-                        width={240}
+                        width={260}
                         native-scrollbar={false}
-                        collapsed-width={mobile.value ? 0 : 64}
+                        collapsed-width={mobile.value ? 0 : 80}
                         inverted={inverted.value}
                         show-trigger={mobile.value ? false : 'bar'}
                         collapsed={$configer.configer.value.collapse}
                         collapse-mode="width"
                         expanded-keys={[]}
                         onUpdateCollapsed={() => $configer.setCollapse(!$configer.configer.value.collapse)}
-                    ></n-layout-sider>
+                    >
+                        <manager-sider></manager-sider>
+                    </n-layout-sider>
                     <n-layout-content
                         style={{ flex: 1 }}
                         content-style={content.value}

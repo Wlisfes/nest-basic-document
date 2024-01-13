@@ -8,7 +8,8 @@ export function useUser(store: ReturnType<typeof useStore>) {
         nickname: undefined,
         email: undefined,
         avatar: undefined,
-        mobile: undefined
+        mobile: undefined,
+        roles: []
     }))
 
     /**更新用户信息**/
@@ -19,6 +20,7 @@ export function useUser(store: ReturnType<typeof useStore>) {
         user.value.email = data.email ?? undefined
         user.value.avatar = data.avatar ?? undefined
         user.value.mobile = data.mobile ?? undefined
+        user.value.roles = data.roles ?? []
         return await store.setUid(data.uid ?? undefined).then(() => {
             return data
         })

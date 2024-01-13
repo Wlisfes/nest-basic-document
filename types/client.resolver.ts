@@ -1,4 +1,4 @@
-import { Base } from '~/types/common.resolver'
+import type { Base } from '@/types/common.resolver'
 
 export interface IUser extends Base {
     uid: string
@@ -8,4 +8,5 @@ export interface IUser extends Base {
     mobile: string
     status: string
     password: string
+    roles: string[]
 }

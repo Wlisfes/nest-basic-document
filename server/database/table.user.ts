@@ -1,5 +1,5 @@
 import { Entity, Column } from 'typeorm'
-import { IsNotEmpty, Length, IsEmail } from 'class-validator'
+import { IsNotEmpty, Length, IsEmail, isEmpty } from 'class-validator'
 import { IsMobile } from '@/server/utils/utils-decorator'
 import { TableCommon } from '~/server/database/table.common'
 import bcrypt from 'bcryptjs'
@@ -29,13 +29,20 @@ export class TableUser extends TableCommon {
     mobile: string
 
     @IsNotEmpty({ message: '状态 必填' })
+    @Column({ type: 'varchar', comment: '状态: 禁用-disable、启用-enable、删除-delete', default: 'enable', nullable: false })
+    status: string
+
+    @IsNotEmpty({ message: '角色权限 必填', groups: ['roles'] })
     @Column({
         type: 'varchar',
-        comment: '状态: 禁用-disable、启用-enable、删除-delete',
-        default: 'enable',
-        nullable: false
+        comment: '角色权限',
+        nullable: true,
+        transformer: {
+            from: value => (isEmpty(value) ? value : value.split(',').filter(Boolean)),
+            to: value => value
+        }
     })
-    status: string
+    roles: string[]
 
     @Length(6, 18, { message: '密码格式错误', groups: ['password'] })
     @IsNotEmpty({ message: '密码 必填', groups: ['password'] })
