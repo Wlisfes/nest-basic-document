@@ -9,10 +9,41 @@ export interface NodeOption {
     children?: NodeOption[]
 }
 
-export function divineNodeFormatter<T extends NodeOption>(node: T, roles: string[]) {
-    console.log({ node, roles })
+export function useManager() {
+    const { $user } = useNuxtApp()
+    const tree = ref<Array<NodeOption>>([
+        { label: '主控台', key: '/manager', icon: 'Github', roles: ['administrator', 'developer', 'customer'] },
+        { label: '标签管理', key: '/manager/source', icon: 'Github', roles: ['administrator', 'developer', 'customer'] },
+        {
+            label: '系统管理',
+            key: '/manager/system',
+            icon: 'Github',
+            roles: ['administrator', 'developer'],
+            children: [
+                { label: '用户管理', key: '/manager/system/user', icon: 'Github', roles: ['administrator', 'developer'] },
+                { label: '角色管理', key: '/manager/system/role', icon: 'Github', roles: ['administrator', 'developer'] }
+            ]
+        }
+    ])
 
-    return true
+    const formatter = computed(() => {
+        return tree.value.filter(node => divineNodeFormatter(node, $user.user.value.roles)).map(divineNodeTransfer)
+    })
+
+    return { tree, formatter }
+}
+
+export function divineNodeFormatter<T extends NodeOption>(node: T, roles: string[]) {
+    if (node.roles.some(role => roles.includes(role))) {
+        if (node.children && node.children.length > 0) {
+            node.children = node.children.filter(item => divineNodeFormatter(item, roles))
+        }
+        if (node.children && node.children.length === 0) {
+            return false
+        }
+        return true
+    }
+    return false
 }
 
 export function divineNodeTransfer<T extends NodeOption>(node: T) {
@@ -29,32 +60,13 @@ export function divineNodeTransfer<T extends NodeOption>(node: T) {
             )
         }
     }
-
     if (node.icon) {
         option.icon = function () {
             return createVNode(<common-wrapper name={node.icon} size={28}></common-wrapper>)
         }
     }
-
     if (node.children && node.children.length > 0) {
         option.children = node.children.map(divineNodeTransfer)
     }
-
     return option
-}
-
-export function useManager() {
-    const { $user } = useNuxtApp()
-
-    const tree = ref<Array<NodeOption>>([
-        { label: '主控台', key: '/manager', icon: 'Github', roles: ['administrator', 'developer', 'customer'] },
-        { label: '标签管理', key: '/manager、source', icon: 'Github', roles: ['administrator', 'developer', 'customer'] },
-        { label: '系统管理', key: '/manager/system', icon: 'Github', roles: ['administrator', 'developer'] }
-    ])
-
-    const formatter = computed(() => {
-        return tree.value.filter(node => divineNodeFormatter(node, $user.user.value.roles)).map(divineNodeTransfer)
-    })
-
-    return { tree, formatter }
 }

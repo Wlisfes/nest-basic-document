@@ -1,8 +1,8 @@
 <script lang="tsx">
 export default defineNuxtComponent({
-    name: 'ManagerIndex',
+    name: 'MRole',
     setup(props, { slots }) {
-        return () => <n-element class="layout-provider">Index</n-element>
+        return () => <n-element class="layout-provider">Role</n-element>
     }
 })
 </script>
