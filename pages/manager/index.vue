@@ -2,7 +2,7 @@
 export default defineNuxtComponent({
     name: 'ManagerIndex',
     setup(props, { slots }) {
-        return () => <n-element class="layout-provider">Index</n-element>
+        return () => <manager-container></manager-container>
     }
 })
 </script>
