@@ -1,25 +1,15 @@
 <script lang="tsx">
 import { createVNode } from 'vue'
-import { useProvider } from '@/hooks/hook-provider'
-
-const dataOptions = [
-    { label: '概述', key: '/manager', icon: 'Github', rules: ['administrator', 'developer'] },
-    { label: 'Document', key: '/document', icon: 'Github', rules: ['administrator', 'developer'] }
-]
+import { useManager } from '@/hooks/hook-manager'
 
 export default defineNuxtComponent({
     name: 'ManagerSider',
-    setup() {
-        const { $configer, $manager } = useNuxtApp()
-        const { inverted } = useProvider()
-
-        const menuOptions = computed(() => {
-            return dataOptions.reduce((current, next) => {
-                return []
-            }, [])
-        })
-
-        console.log($manager)
+    props: {
+        inverted: { type: Boolean },
+        collapse: { type: Boolean }
+    },
+    setup(props) {
+        const { formatter } = useManager()
 
         function divineIconRender(node: { icon: string }) {
             return createVNode(<common-wrapper name={node.icon} size={28}></common-wrapper>)
@@ -38,13 +28,13 @@ export default defineNuxtComponent({
         return () => (
             <n-menu
                 accordion
-                inverted={inverted.value}
                 root-indent={24}
                 collapsed-width={80}
                 value={'/manager'}
-                collapsed={$configer.configer.value.collapse}
+                inverted={props.inverted}
+                collapsed={props.collapse}
                 style={{ '--n-item-height': '50px' }}
-                //options={menuOptions.value}
+                options={formatter.value}
                 //render-label={divineLabelRender}
                 //render-icon={divineIconRender}
             />

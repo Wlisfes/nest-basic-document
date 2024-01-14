@@ -38,7 +38,7 @@ export default defineNuxtComponent({
                         expanded-keys={[]}
                         onUpdateCollapsed={() => $configer.setCollapse(!$configer.configer.value.collapse)}
                     >
-                        <manager-sider></manager-sider>
+                        <manager-sider inverted={inverted.value} collapse={$configer.configer.value.collapse}></manager-sider>
                     </n-layout-sider>
                     <n-layout-content
                         style={{ flex: 1 }}
