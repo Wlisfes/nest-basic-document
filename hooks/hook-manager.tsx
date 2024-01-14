@@ -4,24 +4,24 @@ import { createVNode } from 'vue'
 export interface NodeOption {
     label: string
     key: string
-    icon: string
     roles: string[]
+    icon?: string
     children?: NodeOption[]
 }
 
 export function useManager() {
     const { $user } = useNuxtApp()
     const tree = ref<Array<NodeOption>>([
-        { label: '主控台', key: '/manager', icon: 'Github', roles: ['administrator', 'developer', 'customer'] },
-        { label: '标签管理', key: '/manager/source', icon: 'Github', roles: ['administrator', 'developer', 'customer'] },
+        { label: '主控台', key: '/manager', icon: 'Dashboard', roles: ['administrator', 'developer', 'customer'] },
+        { label: '标签管理', key: '/manager/source', icon: 'Source', roles: ['administrator', 'developer', 'customer'] },
         {
             label: '系统管理',
             key: '/manager/system',
-            icon: 'Github',
+            icon: 'Settings',
             roles: ['administrator', 'developer'],
             children: [
-                { label: '用户管理', key: '/manager/system/user', icon: 'Github', roles: ['administrator', 'developer'] },
-                { label: '角色管理', key: '/manager/system/role', icon: 'Github', roles: ['administrator', 'developer'] }
+                { label: '用户管理', key: '/manager/system/user', roles: ['administrator', 'developer'] },
+                { label: '角色管理', key: '/manager/system/role', roles: ['administrator', 'developer'] }
             ]
         }
     ])
