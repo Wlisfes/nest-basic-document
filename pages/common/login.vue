@@ -61,7 +61,10 @@ export default defineNuxtComponent({
                     title: message,
                     onAfterEnter: async () => {
                         await setLoading(false)
-                        await navigateTo({ path: $store.store.value.redirect })
+                        await navigateTo({
+                            replace: true,
+                            path: $store.store.value.redirect || '/'
+                        })
                     }
                 })
             } catch (e) {

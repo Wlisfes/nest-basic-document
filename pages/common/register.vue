@@ -83,7 +83,6 @@ export default defineNuxtComponent({
 
         /**注册**/
         async function httpUserRegister() {
-            console.log('111')
             return await divineFormValidater().then(async valid => {
                 if (!valid) {
                     return false
@@ -157,7 +156,9 @@ export default defineNuxtComponent({
                                                 type="primary"
                                                 tertiary
                                                 style={{ width: '115px', padding: '0 10px' }}
-                                                disabled={date.value > 0 || date.loading || state.disabled || state.loading || state.visible}
+                                                disabled={
+                                                    date.value > 0 || date.loading || state.disabled || state.loading || state.visible
+                                                }
                                                 onClick={onCheckEmailer}
                                             >
                                                 {date.loading ? (
