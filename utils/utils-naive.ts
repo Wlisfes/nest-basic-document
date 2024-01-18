@@ -1,7 +1,4 @@
 import type { DialogOptions, DialogReactive, NotificationOptions, NotificationReactive, ButtonProps } from 'naive-ui'
-import { createDiscreteApi } from 'naive-ui'
-import { divineHandler } from '@/utils/utils-common'
-import { useProvider } from '@/hooks/hook-provider'
 
 /**对话弹窗二次封装**/
 export function createDiscover(
