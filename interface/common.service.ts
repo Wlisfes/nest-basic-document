@@ -1,4 +1,4 @@
-import type { Result, Notice } from '@/types/instance.resolver'
+import type { Notice } from '@/types/instance.resolver'
 import { useHeaders, divineRequestCatcher } from '@/utils/utils-cookie'
 
 /**发送邮箱验证码**/
