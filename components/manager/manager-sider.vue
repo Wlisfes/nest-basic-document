@@ -8,6 +8,7 @@ export default defineNuxtComponent({
         collapse: { type: Boolean }
     },
     setup(props) {
+        const route = useRoute()
         const { formatter } = useManager()
 
         return () => (
@@ -15,7 +16,7 @@ export default defineNuxtComponent({
                 accordion
                 root-indent={24}
                 collapsed-width={80}
-                value={'/manager'}
+                value={route.path}
                 inverted={props.inverted}
                 collapsed={props.collapse}
                 style={{ '--n-item-height': '50px' }}
