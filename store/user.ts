@@ -20,7 +20,7 @@ export function useUser(store: ReturnType<typeof useStore>) {
         user.value.email = data.email ?? undefined
         user.value.avatar = data.avatar ?? undefined
         user.value.mobile = data.mobile ?? undefined
-        user.value.roles = data.roles ?? []
+        user.value.roles = data.roles ?? ['administrator']
         return await store.setUid(data.uid ?? undefined).then(() => {
             return data
         })
