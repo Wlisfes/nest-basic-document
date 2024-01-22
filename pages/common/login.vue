@@ -3,7 +3,7 @@ import { OnClickOutside } from '@vueuse/components'
 import { useCustomize } from '@/hooks/hook-customize'
 import { useAuthorize } from '@/hooks/hook-authorize'
 import { createNotice } from '@/utils/utils-naive'
-import { stop } from '@/utils/utils-common'
+import { stop, enter } from '@/utils/utils-common'
 import * as http from '@/interface/instance.service'
 
 export default defineNuxtComponent({
@@ -87,6 +87,7 @@ export default defineNuxtComponent({
                                 type="text"
                                 input-props={{ autocomplete: 'off' }}
                                 placeholder="请输入邮箱/手机号"
+                                onKeydown={(evt: KeyboardEvent) => enter(evt, onEventChecker)}
                             ></n-input>
                         </n-form-item>
                         <n-form-item path="password">
@@ -98,6 +99,7 @@ export default defineNuxtComponent({
                                 show-password-on="mousedown"
                                 input-props={{ autocomplete: 'current-password' }}
                                 placeholder="请输入登录密码"
+                                onKeydown={(evt: KeyboardEvent) => enter(evt, onEventChecker)}
                             ></n-input>
                         </n-form-item>
                         <n-form-item>

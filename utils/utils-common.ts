@@ -2,21 +2,33 @@ import { type CSSProperties } from 'vue'
 import dayjs from 'dayjs'
 
 /**时间处理函数**/
-export function moment(date?: dayjs.ConfigType) {
-    return dayjs(date)
+export const moment = dayjs
+
+/**回车事件**/
+export async function enter(e: KeyboardEvent, handler?: Function) {
+    if (e.key === 'Enter' && typeof handler === 'function') {
+        await handler()
+    }
+    return e
 }
 
 /**事件默认处理**/
-export function prevent(e: Event, handler?: Function) {
+export async function prevent(e: Event, handler?: Function) {
     e.preventDefault()
-    return handler?.(e)
+    if (typeof handler === 'function') {
+        await handler()
+    }
+    return e
 }
 
 /**事件阻止处理**/
-export function stop(e: Event, handler?: Function) {
+export async function stop(e: Event, handler?: Function) {
     e.preventDefault()
     e.stopPropagation()
-    return handler?.(e)
+    if (typeof handler === 'function') {
+        await handler()
+    }
+    return e
 }
 
 /**生成时间戳组合数字**/
