@@ -1,16 +1,21 @@
 <script lang="tsx">
+import { useResolver } from '@/hooks/hook-resolver'
 import * as http from '@/interface/instance.service'
 
 export default defineNuxtComponent({
     name: 'MUser',
     setup(props, { slots }) {
-        http.fetchUserColumnr().then(data => {
-            console.log(data)
+        const { setState, fetchUpdate } = useResolver({
+            immediate: true,
+            request: async data => {
+                return await http.fetchUserColumnr()
+            }
         })
 
         return () => (
             <n-element class="layout-provider">
-                {Array.from({ length: 50 }, (x, i) => (
+                <n-button onClick={fetchUpdate}>Set</n-button>
+                {Array.from({ length: 5 }, (x, i) => (
                     <n-h1>User</n-h1>
                 ))}
             </n-element>

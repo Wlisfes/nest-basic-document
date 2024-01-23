@@ -1,4 +1,4 @@
-import type { Notice, IUser } from '@/types/instance.resolver'
+import type { Notice, IUser, Result } from '@/types/instance.resolver'
 import { useHeaders, divineRequestCatcher } from '@/utils/utils-cookie'
 
 /**用户注册**/
@@ -22,5 +22,5 @@ export async function fetchUserResolver() {
 
 /**用户列表**/
 export async function fetchUserColumnr() {
-    return await divineRequestCatcher<IUser>(await $fetch('/api/user/column', { headers: await useHeaders(), method: 'GET' }))
+    return await divineRequestCatcher<Result<IUser>>(await $fetch('/api/user/column', { headers: await useHeaders(), method: 'GET' }))
 }
