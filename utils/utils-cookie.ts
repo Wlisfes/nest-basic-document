@@ -75,7 +75,10 @@ export function divineRequestCatcher<T>(result: Response<T>, option: Partial<{ n
             } else {
                 return await divineHandler(option.notice ?? true, async () => {
                     return await createNotice({ type: 'error', title: result.message })
-                }).then(() => {
+                }).then(async () => {
+                    if (result.code === 401) {
+                        await navigateTo({ path: '/', replace: true })
+                    }
                     return reject(result)
                 })
             }

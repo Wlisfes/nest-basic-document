@@ -6,7 +6,7 @@ export default defineNuxtComponent({
     name: 'MUser',
     setup(props, { slots }) {
         const { setState, fetchUpdate } = useResolver({
-            immediate: true,
+            immediate: false,
             request: async data => {
                 return await http.fetchUserColumnr()
             }
