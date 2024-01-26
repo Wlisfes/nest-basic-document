@@ -12,14 +12,7 @@ export default defineNuxtComponent({
             }
         })
 
-        return () => (
-            <n-element class="layout-provider">
-                <n-button onClick={fetchUpdate}>Set</n-button>
-                {Array.from({ length: 5 }, (x, i) => (
-                    <n-h1>User</n-h1>
-                ))}
-            </n-element>
-        )
+        return () => <common-resolver></common-resolver>
     }
 })
 </script>
