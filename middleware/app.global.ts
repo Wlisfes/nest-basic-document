@@ -64,6 +64,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         if (black.some(item => item.path === to.path)) {
             return await navigateTo({ path: '/', params: to.params, query: to.query, replace: true })
         }
-    } else if (process.client) {
+    } else if (process.client && to.path.includes('/manager')) {
+        return await navigateTo({ path: '/', params: to.params, query: to.query, replace: true })
     }
 })
