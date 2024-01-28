@@ -4,14 +4,16 @@ import { useHeaders, divineRequestCatcher } from '@/utils/utils-cookie'
 /**用户注册**/
 export async function fetchUserRegister(data: { nickname: string; password: string; email: string; code: string }) {
     return await divineRequestCatcher<Notice>(
-        await $fetch('/api/user/register', { headers: await useHeaders(), method: 'POST', body: data })
+        await $fetch('/api/user/register', { headers: await useHeaders(), method: 'POST', body: data }),
+        { notice: false }
     )
 }
 
 /**登录**/
 export async function fetchUserLoginer(data: { account: string; password: string; token: string }) {
     return await divineRequestCatcher<{ token: string; expire: number }>(
-        await $fetch('/api/user/login', { headers: await useHeaders(), method: 'POST', body: data })
+        await $fetch('/api/user/login', { headers: await useHeaders(), method: 'POST', body: data }),
+        { notice: false }
     )
 }
 
