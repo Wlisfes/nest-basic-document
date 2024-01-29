@@ -5304,7 +5304,7 @@ mz@^2.4.0, mz@^2.7.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
-naive-ui@^2.37.0:
+naive-ui@^2.37.3:
   version "2.37.3"
   resolved "https://registry.npmmirror.com/naive-ui/-/naive-ui-2.37.3.tgz#08050219a331b879cf63e5e8bb6b19af46a4bc53"
   integrity sha512-aUkHFXVIluSi8Me+npbcsdv1NYhVMj5t9YaruoCESlqmfqspj+R2QHEVXkTtUI1kQwVrABMCtAGq/wountqjZA==
