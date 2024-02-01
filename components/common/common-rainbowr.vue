@@ -1,22 +1,22 @@
 <script lang="tsx">
 import { useCurrentElement } from '@vueuse/core'
-import { createRibboner } from '@/assets/js/ribbon.min'
+import { createRainbowr } from '@/assets/js/rainbow.min'
 
 export default defineNuxtComponent({
-    name: 'CommonRibbon',
+    name: 'CommonRainbowr',
     setup(props) {
         const element = useCurrentElement()
 
         onMounted(() => {
-            createRibboner(element.value)
+            createRainbowr(element.value)
         })
-        return () => <div class="common-ribbon"></div>
+        return () => <div class="common-rainbowr"></div>
     }
 })
 </script>
 
 <style lang="scss" scoped>
-.common-ribbon {
+.common-rainbowr {
     position: absolute;
     left: 0;
     right: 0;

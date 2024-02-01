@@ -4,7 +4,7 @@
  * https://www.jq22.com/jquery-info21392
  */
 //@ts-nocheck
-export function createRibboner(element) {
+export function createRainbowr(element) {
     var _w = window,
         _b = document.body, //返回html dom中的body节点 即<body>
         _d = document.documentElement //返回html dom中的root 节点 即<html>

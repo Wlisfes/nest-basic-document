@@ -34,7 +34,7 @@ export default defineNuxtComponent({
                     <n-element class="layout-pager n-chunk n-column n-auto">{{ default: slots.default }}</n-element>
                     <layout-footer></layout-footer>
                 </n-layout-content>
-                <common-ribbon></common-ribbon>
+                <common-rainbowr></common-rainbowr>
             </n-layout>
         )
     }
