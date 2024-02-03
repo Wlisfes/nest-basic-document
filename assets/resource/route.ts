@@ -4,44 +4,23 @@ export interface BaseRoute {
 }
 
 export const common: Array<BaseRoute> = [
-    {
-        url: '/common/login',
-        name: '登录'
-    },
-    {
-        url: '/common/register',
-        name: '注册'
-    }
+    { url: '/common/login', name: '登录' },
+    { url: '/common/register', name: '注册' }
 ]
 
 export const client: Array<BaseRoute> = [
-    {
-        url: '/',
-        name: '一个神奇的网站'
-    },
-    {
-        url: '/document',
-        name: '归档'
-    },
-    {
-        url: '/issues',
-        name: '问题'
-    },
-    {
-        url: '/video',
-        name: '视频'
-    },
-    {
-        url: '/star',
-        name: '收藏'
-    },
-    {
-        url: '/lifer',
-        name: '生活'
-    }
+    { url: '/', name: '一个神奇的网站' },
+    { url: '/document', name: '归档' },
+    { url: '/issues', name: '问题' },
+    { url: '/video', name: '视频' },
+    { url: '/star', name: '收藏' },
+    { url: '/lifer', name: '生活' }
 ]
 
-export const manager: Array<BaseRoute> = []
+export const manager: Array<BaseRoute> = [
+    { url: '/manager', name: '控制台' },
+    { url: '/manager/source', name: '标签管理' }
+]
 
 export const routes: Array<BaseRoute> = [].concat(client, common, manager)
 
