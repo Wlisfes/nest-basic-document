@@ -5,12 +5,6 @@ declare global {
         AliyunUpload: {
             Vod: new (option) => any
         }
-        JSEncrypt: {
-            new (): {
-                setPublicKey: (key: string) => void
-                encrypt: (data: string) => string
-            }
-        }
         LZString: {
             compress: (o: string) => string
             compressToBase64: (r: string) => string
