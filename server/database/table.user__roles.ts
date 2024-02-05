@@ -1,5 +1,5 @@
 import { Entity, Column } from 'typeorm'
-import { IsNotEmpty, Length, IsEmail, isEmpty } from 'class-validator'
+import { IsNotEmpty } from 'class-validator'
 import { TableCommon } from '@/server/database/table.common'
 
 @Entity('table_user__roles')
@@ -11,4 +11,8 @@ export class TableUserRoles extends TableCommon {
     @IsNotEmpty({ message: '角色名称 必填', groups: ['name'] })
     @Column({ type: 'varchar', comment: '角色名称', nullable: false })
     name: string
+
+    @IsNotEmpty({ message: '状态 必填' })
+    @Column({ type: 'varchar', comment: '状态: 禁用-disable、启用-enable', default: 'enable', nullable: false })
+    status: string
 }

@@ -1,7 +1,8 @@
-import { Entity, Column } from 'typeorm'
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm'
 import { IsNotEmpty, Length, IsEmail, isEmpty } from 'class-validator'
 import { IsMobile } from '@/server/utils/utils-decorator'
 import { TableCommon } from '@/server/database/table.common'
+import { TableUserRoles } from '@/server/database'
 import bcrypt from 'bcryptjs'
 
 @Entity('table_user')
@@ -32,18 +33,6 @@ export class TableUser extends TableCommon {
     @Column({ type: 'varchar', comment: '状态: 禁用-disable、启用-enable、删除-delete', default: 'enable', nullable: false })
     status: string
 
-    @IsNotEmpty({ message: '角色权限 必填', groups: ['roles'] })
-    @Column({
-        type: 'varchar',
-        comment: '角色权限',
-        nullable: true,
-        transformer: {
-            from: value => (isEmpty(value) ? value : value.split(',').filter(Boolean)),
-            to: value => value
-        }
-    })
-    roles: string[]
-
     @Length(6, 18, { message: '密码格式错误', groups: ['password'] })
     @IsNotEmpty({ message: '密码 必填', groups: ['password'] })
     @Column({
@@ -54,4 +43,8 @@ export class TableUser extends TableCommon {
         transformer: { from: value => value, to: value => bcrypt.hashSync(value) }
     })
     password: string
+
+    @ManyToMany(type => TableUserRoles)
+    @JoinTable({ name: 'table_user__join__roles' })
+    roles: TableUserRoles[]
 }
