@@ -163,7 +163,7 @@ export default defineNuxtComponent({
                                             >
                                                 {date.loading ? (
                                                     <div class="n-chunk n-center">
-                                                        <common-wrapper name="RadixSpin" size={18}></common-wrapper>
+                                                        <common-wrapper name="Spiner" size={18}></common-wrapper>
                                                         <span style={{ marginLeft: '5px' }}>发送中</span>
                                                     </div>
                                                 ) : !date.immediate ? (
@@ -210,7 +210,7 @@ export default defineNuxtComponent({
                         >
                             {state.option.google ? (
                                 <div class="n-chunk n-center n-middle" style={{ width: '48px', height: '48px' }}>
-                                    <common-wrapper size={44} name="RadixSpin"></common-wrapper>
+                                    <common-wrapper size={44} name="Spiner"></common-wrapper>
                                 </div>
                             ) : (
                                 <common-wrapper size={48} name="Google"></common-wrapper>
@@ -225,7 +225,7 @@ export default defineNuxtComponent({
                         >
                             {state.option.github ? (
                                 <div class="n-chunk n-center n-middle" style={{ width: '48px', height: '48px' }}>
-                                    <common-wrapper size={44} name="RadixSpin"></common-wrapper>
+                                    <common-wrapper size={44} name="Spiner"></common-wrapper>
                                 </div>
                             ) : (
                                 <common-wrapper size={48} name="Github"></common-wrapper>

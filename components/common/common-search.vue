@@ -18,7 +18,7 @@ export default defineNuxtComponent({
 
         function divineNodePrefixWrapper() {
             if (loading.value) {
-                return <common-wrapper size={22} name="RadixSpin"></common-wrapper>
+                return <common-wrapper size={22} name="Spiner"></common-wrapper>
             } else {
                 return (
                     <common-wrapper

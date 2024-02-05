@@ -21,7 +21,7 @@ export default defineNuxtComponent({
     left: 0;
     right: 0;
     top: 60px;
-    bottom: 60px;
+    bottom: 50px;
     overflow: hidden;
     z-index: 1;
 }
