@@ -27,12 +27,12 @@ export default defineEventHandler(async event => {
         const state = await divineEventParameter({ page: 1, size: 10 }).then(json => {
             return Object.assign(json, getQuery<QuerySchema>(event))
         })
-        console.log(state)
         await divineEventValidator(QuerySchema, {
             data: state,
             option: { groups: ['page', 'size'] }
         })
         return await createBuilder(event.context.db, TableUser, async qb => {
+            qb.leftJoinAndSelect('t.roles', 'roles')
             await divineHandler(!!state.keyword, () => {
                 qb.orWhere('t.uid LIKE :uid', { uid: `%${state.keyword}%` })
                 qb.orWhere('t.nickname LIKE :nickname', { nickname: `%${state.keyword}%` })
