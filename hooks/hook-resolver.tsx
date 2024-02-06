@@ -1,5 +1,4 @@
-import { ref, reactive, nextTick, onMounted } from 'vue'
-import { isEmpty } from 'class-validator'
+import { ref, computed, onMounted } from 'vue'
 import { divineHandler } from '@/utils/utils-common'
 import { type DataTableBaseColumn } from 'naive-ui'
 import { type Result, type Response } from '@/types/common.resolver'
@@ -15,11 +14,14 @@ export interface OptionResolver<T> {
     dataColumn?: Array<DataTableBaseColumn>
     form?: Record<string, any>
     option?: Record<string, any>
-    request: (e: Omit<OptionResolver<T>, 'request'>) => Promise<Response<Result<T>>>
+}
+
+export interface OptionRequestResolver<T> extends OptionResolver<T> {
+    request: (e: OptionResolver<T>) => Promise<Response<Result<T>>>
 }
 
 /**列表Hooks**/
-export function useResolver<T>(opts: OptionResolver<T>) {
+export function useResolver<T>(opts: OptionRequestResolver<T>) {
     const page = ref<number>(opts.page ?? 0)
     const size = ref<number>(opts.size ?? 0)
     const total = ref<number>(opts.total ?? 0)
@@ -29,7 +31,19 @@ export function useResolver<T>(opts: OptionResolver<T>) {
     const dataColumn = ref<Array<DataTableBaseColumn>>(opts.dataColumn ?? [])
     const form = ref((opts.form ?? {}) as typeof opts.form)
     const option = ref((opts.option ?? {}) as typeof opts.option)
-    const state = reactive({ page, size, total, loading, initialize, dataSource, dataColumn, form, option })
+    const state = computed(() => {
+        return {
+            page: page.value,
+            size: size.value,
+            total: total.value,
+            loading: loading.value,
+            initialize: initialize.value,
+            dataSource: dataSource.value,
+            dataColumn: dataColumn.value,
+            form: form.value,
+            option: option.value
+        }
+    })
 
     onMounted(async () => {
         return await divineHandler(opts.immediate, async () => {
@@ -37,67 +51,72 @@ export function useResolver<T>(opts: OptionResolver<T>) {
         })
     })
 
-    function setState(
-        data: Pick<OptionResolver<T>, 'page' | 'size' | 'total' | 'form' | 'option' | 'dataSource' | 'loading' | 'initialize'>
-    ): Promise<typeof state> {
-        return new Promise(async resolve => {
-            await divineHandler(!isEmpty(data.form), () => {
-                return (form.value = { ...form.value, ...data.form })
-            })
-            await divineHandler(!isEmpty(data.option), () => {
-                return (option.value = { ...option.value, ...data.option })
-            })
-            await divineHandler(!isEmpty(data.page), () => {
-                return (page.value = data.page)
-            })
-            await divineHandler(!isEmpty(data.size), () => {
-                return (size.value = data.size)
-            })
-            await divineHandler(!isEmpty(data.total), () => {
-                return (size.value = data.total)
-            })
-            await divineHandler(!isEmpty(data.dataSource), () => {
-                return (dataSource.value = data.dataSource as never)
-            })
-            await divineHandler(!isEmpty(data.total), () => {
-                return (size.value = data.total)
-            })
-            return await divineHandler(!isEmpty(data.initialize), () => {
-                return (initialize.value = data.initialize)
-            }).then(() => {
-                return resolve(state)
-            })
-        })
+    async function setInitialize(value: boolean) {
+        return (initialize.value = value)
+    }
+
+    async function setForm(value: Partial<typeof opts.form>) {
+        return (form.value = { ...form.value, ...value })
+    }
+
+    async function setOption(value: Partial<typeof opts.option>) {
+        return (option.value = { ...option.value, ...value })
+    }
+
+    async function setDataColumn(value: Array<DataTableBaseColumn>) {
+        return (dataColumn.value = value)
+    }
+
+    async function setState(
+        data: Pick<OptionResolver<T>, 'page' | 'size' | 'total' | 'loading' | 'dataSource'> = {}
+    ): Promise<OptionResolver<T>> {
+        loading.value = data.loading ?? loading.value
+        page.value = data.page ?? page.value
+        size.value = data.size ?? size.value
+        total.value = data.total ?? total.value
+        dataSource.value = (data.dataSource ?? dataSource.value) as Array<never>
+        return state.value as OptionResolver<T>
     }
 
     /**初始化列表接口**/
-    function fetchColumnHandler(handler?: Function): Promise<typeof state> {
-        return new Promise(resolve => {
-            return setState({ loading: true }).then(async () => {
-                try {
-                    const { data } = await opts.request(state as never)
-                    await setState({ dataSource: data.list, total: data.total })
-                } catch (err) {
-                    await setState({ dataSource: [], total: 0 })
-                } finally {
-                    nextTick(async () => {
-                        await setState({ loading: false, initialize: false })
-                        await handler?.(state)
-                        return await resolve(state)
-                    })
-                }
+    async function fetchColumnHandler() {
+        try {
+            await setState({ loading: true })
+            const { data } = await opts.request(state.value as OptionResolver<T>)
+            await setInitialize(false)
+            return await setState({
+                dataSource: data.list,
+                total: data.total,
+                loading: false
             })
-        })
+        } catch (err) {
+            await setInitialize(false)
+            return await setState({ dataSource: [], total: 0, loading: false })
+        }
     }
 
     /**列表更新**/
-    async function fetchUpdate(
-        parameter: Pick<OptionResolver<T>, 'page' | 'size' | 'total' | 'form' | 'loading'>,
-        handler?: Function
-    ): Promise<typeof state> {
-        await setState(parameter as never)
-        return await fetchColumnHandler(handler as never)
+    async function fetchUpdate(parameter: Pick<OptionResolver<T>, 'page' | 'size' | 'total' | 'loading'>) {
+        await setState(parameter)
+        return await fetchColumnHandler()
     }
 
-    return { page, size, total, loading, initialize, dataSource, dataColumn, form, option, state, setState, fetchUpdate }
+    return {
+        page,
+        size,
+        total,
+        loading,
+        initialize,
+        dataSource,
+        dataColumn,
+        form,
+        option,
+        state,
+        setInitialize,
+        setForm,
+        setOption,
+        setDataColumn,
+        fetchUpdate,
+        setState
+    }
 }
