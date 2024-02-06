@@ -114,7 +114,7 @@ export default defineNuxtComponent({
                         <n-form-item path="nickname">
                             <n-input
                                 v-model:value={state.form.nickname}
-                                maxlength={22}
+                                maxlength={32}
                                 type="text"
                                 input-props={{ autocomplete: 'off' }}
                                 disabled={state.disabled || state.loading}
@@ -136,7 +136,7 @@ export default defineNuxtComponent({
                             <n-input
                                 v-model:value={state.form.email}
                                 disabled={state.disabled || state.loading}
-                                maxlength={22}
+                                maxlength={32}
                                 type="text"
                                 placeholder="请输入邮箱"
                             ></n-input>
@@ -249,6 +249,22 @@ export default defineNuxtComponent({
     background-color: var(--action-color);
     box-shadow: var(--box-shadow-1);
     box-sizing: border-box;
+    .n-input > :deep(.n-input-wrapper) {
+        padding: 0;
+        .n-input__input-el,
+        .n-input__placeholder {
+            padding-left: var(--n-padding-left);
+            border-radius: var(--n-border-radius);
+            padding-right: 40px;
+        }
+        .n-input__suffix {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: var(--n-padding-right);
+            margin: 0;
+        }
+    }
     a {
         position: relative;
         display: block;

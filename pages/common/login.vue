@@ -82,7 +82,7 @@ export default defineNuxtComponent({
                         <n-input
                             v-model:value={state.form.account}
                             disabled={state.disabled || state.loading}
-                            maxlength={22}
+                            maxlength={32}
                             type="text"
                             input-props={{ autocomplete: 'off' }}
                             placeholder="请输入邮箱/手机号"
@@ -184,6 +184,22 @@ export default defineNuxtComponent({
     box-shadow: var(--box-shadow-1);
     box-sizing: border-box;
     margin: auto;
+    .n-input > :deep(.n-input-wrapper) {
+        padding: 0;
+        .n-input__input-el,
+        .n-input__placeholder {
+            padding-left: var(--n-padding-left);
+            border-radius: var(--n-border-radius);
+            padding-right: 40px;
+        }
+        .n-input__suffix {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: var(--n-padding-right);
+            margin: 0;
+        }
+    }
     a {
         position: relative;
         display: block;

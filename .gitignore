@@ -7,6 +7,8 @@
 dist
 .vscode
 *.code-workspace
+auto-imports.d.ts
+components.d.ts
 
 # Node dependencies
 node_modules
