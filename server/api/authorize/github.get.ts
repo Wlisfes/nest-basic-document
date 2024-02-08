@@ -1,7 +1,7 @@
 import { createBaser, createBuilder, inserter } from '@/server/lib/typeorm'
 import { TableUser, TableUserGitHub } from '@/server/database'
 import { downloadFileBuffer, uploadFileBuffer, createRename } from '@/server/lib/ali-oss'
-import { divineEventWhereCatcher } from '@/server/utils/utils-validator'
+import { divineWhereCatcher } from '@/server/utils/utils-validator'
 import { divineJwtSignAuthorize } from '@/server/utils//utils-handler'
 import { divineIntNumber } from '@/utils/utils-common'
 import { IsNotEmpty } from 'class-validator'
@@ -39,7 +39,7 @@ export async function httpGitHubAuthorize(body: { client_id: string; client_secr
             timeout: 60000,
             headers: { accept: 'application/json' }
         })
-        await divineEventWhereCatcher(!result || !result.access_token, {
+        await divineWhereCatcher(!result || !result.access_token, {
             data: result,
             message: '授权失败'
         })
@@ -56,7 +56,7 @@ export async function httpGitHubResolver(body: { token: string }) {
             method: 'GET',
             headers: { Authorization: body.token }
         })
-        await divineEventWhereCatcher(!result || !result.id || !result.login, {
+        await divineWhereCatcher(!result || !result.id || !result.login, {
             message: '用户信息授权失败',
             data: result
         })
@@ -69,7 +69,7 @@ export async function httpGitHubResolver(body: { token: string }) {
 export default defineEventHandler(async event => {
     try {
         const state = await getQuery<{ code: string }>(event)
-        await divineEventValidator(QuerySchema, {
+        await divineValidator(QuerySchema, {
             data: state,
             option: { groups: ['code'] }
         })
@@ -94,7 +94,7 @@ export default defineEventHandler(async event => {
             return await createBuilder(event.context.db, TableUser, async qb => {
                 return await qb.addSelect('t.password').where('t.uid = :uid', { uid: post.uid }).getOne()
             }).then(async ({ nickname, status, password }) => {
-                await divineEventWhereCatcher(status === 'disable', {
+                await divineWhereCatcher(status === 'disable', {
                     message: '账户已被禁用'
                 })
                 const { token, expire } = await divineJwtSignAuthorize({ uid: post.uid, nickname, status, password })
@@ -109,7 +109,7 @@ export default defineEventHandler(async event => {
             return await qb.getOne()
         }).then(async have => {
             if (have) {
-                await divineEventWhereCatcher(have.status === 'disable', {
+                await divineWhereCatcher(have.status === 'disable', {
                     message: '账户已被禁用'
                 })
                 //邮箱已存在、已注册直接返回token

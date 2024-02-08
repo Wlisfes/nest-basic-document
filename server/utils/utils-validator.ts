@@ -6,7 +6,7 @@ import { divineJwtVerifyAuthorize } from '@/server/utils/utils-handler'
 import { moment, divineHandler } from '@/utils/utils-common'
 
 /**参数聚合**/
-export async function divineEventParameter<T extends Record<string, any>>(data: T) {
+export async function divineParameter<T extends Record<string, any>>(data: T) {
     return data
 }
 
@@ -28,17 +28,17 @@ export async function divineEventTokenDecrypt(
 export async function divineEventSlideTokenValidator(event: H3Event<EventHandlerRequest>, token: string) {
     const node = await divineEventTokenDecrypt(token)
     const origin = getRequestHeader(event, 'origin')
-    await divineEventWhereCatcher(node.referer !== origin, {
+    await divineWhereCatcher(node.referer !== origin, {
         message: '滑动验证地址不合法'
     })
-    await divineEventWhereCatcher(Date.now() - 180000 > node.timestamp, {
+    await divineWhereCatcher(Date.now() - 180000 > node.timestamp, {
         message: '滑动验证已过期'
     })
     return node
 }
 
 /**JWT token验证**/
-export async function divineEventJwtTokenValidator(
+export async function divineJwtTokenValidator(
     event: H3Event<EventHandlerRequest>,
     option: { next: boolean; code?: number; message?: string }
 ): ReturnType<typeof divineJwtVerifyAuthorize> {
@@ -60,7 +60,7 @@ export async function divineEventJwtTokenValidator(
 }
 
 /**验证包装**/ //prettier-ignore
-export async function divineEventValidator<T>(
+export async function divineValidator<T>(
     cls: ClassConstructor<T>,
     state: { data: T; option?: ValidatorOptions }
 ): Promise<T> {
@@ -81,7 +81,7 @@ export async function divineEventValidator<T>(
 }
 
 /**条件捕获、异常抛出**/
-export async function divineEventWhereCatcher(where: boolean, option: { message: string; code?: number; data?: any }) {
+export async function divineWhereCatcher(where: boolean, option: { message: string; code?: number; data?: any }) {
     return await divineHandler(where, () => {
         throw createError({
             statusCode: option.code ?? 400,

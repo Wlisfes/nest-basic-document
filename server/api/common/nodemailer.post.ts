@@ -2,7 +2,7 @@ import { IsNotEmpty, IsEmail, IsEnum } from 'class-validator'
 import { createBuilder } from '@/server/lib/typeorm'
 import { TableUser } from '@/server/database'
 import { SourceEnum, customCoder, customCheckNodemailer, setStorage } from '@/server/lib/nodemailer'
-import { divineEventValidator, divineEventWhereCatcher, divineEventSlideTokenValidator } from '@/server/utils/utils-validator'
+import { divineValidator, divineWhereCatcher, divineEventSlideTokenValidator } from '@/server/utils/utils-validator'
 
 export class BodySchema {
     @IsEmail({}, { message: '邮箱 格式错误' })
@@ -21,7 +21,7 @@ export default defineEventHandler(async event => {
     const state = await readBody<BodySchema>(event)
     const config = useRuntimeConfig()
     const code = await customCoder(6)
-    await divineEventValidator(BodySchema, { data: state })
+    await divineValidator(BodySchema, { data: state })
 
     /**验证滑动验证**/
     await divineEventSlideTokenValidator(event, state.token)
@@ -31,7 +31,7 @@ export default defineEventHandler(async event => {
         return await createBuilder(event.context.db, TableUser, async qb => {
             return await qb.where('t.email = :email', { email: state.email }).getOne()
         }).then(async user => {
-            await divineEventWhereCatcher(Boolean(user), {
+            await divineWhereCatcher(Boolean(user), {
                 message: '邮箱号已注册'
             })
             const result = await customCheckNodemailer(event.context.transporter, state.source, {

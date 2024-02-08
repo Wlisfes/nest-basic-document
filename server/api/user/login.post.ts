@@ -1,7 +1,7 @@
 import { IsNotEmpty } from 'class-validator'
 import { TableUser } from '@/server/database'
 import { createBuilder } from '@/server/lib/typeorm'
-import { divineEventValidator, divineEventSlideTokenValidator } from '@/server/utils/utils-validator'
+import { divineValidator, divineEventSlideTokenValidator } from '@/server/utils/utils-validator'
 import { divineJwtSignAuthorize } from '@/server/utils/utils-handler'
 import bcrypt from 'bcryptjs'
 
@@ -16,7 +16,7 @@ export class BodySchema extends TableUser {
 export default defineEventHandler(async event => {
     const state = await readBody<BodySchema>(event)
     await divineEventSlideTokenValidator(event, state.token)
-    await divineEventValidator(BodySchema, {
+    await divineValidator(BodySchema, {
         data: state,
         option: { groups: ['account', 'password', 'token'] }
     })
@@ -29,15 +29,15 @@ export default defineEventHandler(async event => {
         qb.andWhere('t.status IN(:...status)', { status: ['enable', 'disable'] })
         return await qb.getOne()
     }).then(async data => {
-        await divineEventWhereCatcher(!Boolean(data), {
+        await divineWhereCatcher(!Boolean(data), {
             code: 401,
             message: '用户未注册'
         })
-        await divineEventWhereCatcher(data.status === 'disable', {
+        await divineWhereCatcher(data.status === 'disable', {
             code: 401,
             message: '账户已被禁用'
         })
-        await divineEventWhereCatcher(!bcrypt.compareSync(state.password, data.password), {
+        await divineWhereCatcher(!bcrypt.compareSync(state.password, data.password), {
             code: 401,
             message: '账户密码错误'
         })

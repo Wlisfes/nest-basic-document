@@ -2,7 +2,7 @@ import { IsNotEmpty, isEmpty } from 'class-validator'
 import { TableUser } from '@/server/database'
 import { createBaser, createBuilder, inserter } from '@/server/lib/typeorm'
 import { SourceEnum, getStorage, delStorage } from '@/server/lib/nodemailer'
-import { divineEventValidator, divineEventWhereCatcher } from '@/server/utils/utils-validator'
+import { divineParameter, divineValidator, divineWhereCatcher } from '@/server/utils/utils-validator'
 import { divineIntNumber } from '@/utils/utils-common'
 
 export class BodySchema extends TableUser {
@@ -11,14 +11,15 @@ export class BodySchema extends TableUser {
 }
 
 export default defineEventHandler(async event => {
-    const state = await readBody<BodySchema>(event)
-    await divineEventValidator(BodySchema, {
-        data: state,
-        option: { groups: ['nickname', 'email', 'password', 'code'] }
+    const state = await divineParameter(await readBody<BodySchema>(event)).then(async json => {
+        return await divineValidator(BodySchema, {
+            data: json,
+            option: { groups: ['nickname', 'email', 'password', 'code'] }
+        })
     })
     /**邮件验证码验证**/
     await getStorage(SourceEnum.Register, { email: state.email }).then(async code => {
-        return await divineEventWhereCatcher(isEmpty(code) || code != state.code, {
+        return await divineWhereCatcher(isEmpty(code) || code != state.code, {
             message: '验证码错误'
         })
     })
@@ -27,7 +28,7 @@ export default defineEventHandler(async event => {
         qb.where('t.email = :email', { email: state.email })
         return await qb.getOne()
     }).then(async node => {
-        return await divineEventWhereCatcher(Boolean(node), {
+        return await divineWhereCatcher(Boolean(node), {
             message: '邮箱号已注册'
         })
     })

@@ -1,4 +1,4 @@
-import { divineEventWhereCatcher } from '@/server/utils/utils-validator'
+import { divineWhereCatcher } from '@/server/utils/utils-validator'
 import { divineIntNumber } from '@/utils/utils-common'
 import Client from 'ali-oss'
 
@@ -58,11 +58,11 @@ export async function createRename(folder: Folder, suffix: string) {
 export async function downloadFileBuffer(baseURL: string): Promise<{ suffix: string; blob: Blob; buffer: ArrayBuffer }> {
     try {
         const blob = await $fetch<Blob>(baseURL, { method: 'GET', responseType: 'blob' })
-        await divineEventWhereCatcher(blob.size === 0, {
+        await divineWhereCatcher(blob.size === 0, {
             message: '下载失败',
             data: blob
         })
-        return await divineEventWhereCatcher(!FileMime[blob.type as keyof typeof FileMime], {
+        return await divineWhereCatcher(!FileMime[blob.type as keyof typeof FileMime], {
             message: '文件类型未知',
             data: blob
         }).then(async () => ({
@@ -79,7 +79,7 @@ export async function downloadFileBuffer(baseURL: string): Promise<{ suffix: str
 export async function uploadFileBuffer(client: Client, option: { buffer: ArrayBuffer; fileName: string }) {
     try {
         const response = await client.put(option.fileName, Buffer.from(option.buffer))
-        return await divineEventWhereCatcher(response.res.status !== 200, {
+        return await divineWhereCatcher(response.res.status !== 200, {
             message: '上传失败',
             data: response
         }).then(() => {
