@@ -1,8 +1,30 @@
 <script lang="tsx">
+import { type IRole } from '@/types/instance.resolver'
+import { useResolver } from '@/hooks/hook-resolver'
+import * as http from '@/interface/instance.service'
+
 export default defineNuxtComponent({
     name: 'MRole',
     setup(props, { slots }) {
-        return () => <n-element class="layout-provider">Role</n-element>
+        const { state, setState, fetchUpdate } = useResolver<IRole>({
+            immediate: true,
+            dataColumn: [
+                { key: 'name', title: '角色名称', minWidth: 160 },
+                { key: 'key', title: '角色标识', minWidth: 160 },
+                { key: 'comment', title: '角色描述', minWidth: 200 },
+                { key: 'status', title: '角色状态', minWidth: 120 },
+                { key: 'createTime', title: '创建时间', minWidth: 180 }
+            ],
+            request: async data => {
+                return await http.fetchRoleColumnr()
+            }
+        })
+
+        return () => (
+            <n-element class="manager-provider">
+                <n-data-table columns={state.value.dataColumn} data={state.value.dataSource} />
+            </n-element>
+        )
     }
 })
 </script>

@@ -12,7 +12,11 @@ export class TableUserRoles extends TableCommon {
     @Column({ type: 'varchar', comment: '角色名称', nullable: false })
     name: string
 
-    @IsNotEmpty({ message: '状态 必填' })
+    @IsNotEmpty({ message: '状态 必填', groups: ['status'] })
     @Column({ type: 'varchar', comment: '状态: 禁用-disable、启用-enable', default: 'enable', nullable: false })
     status: string
+
+    @IsOptional({ groups: ['comment'], message: '角色描述 选填' })
+    @Column({ type: 'varchar', comment: '角色描述', nullable: true })
+    comment: string
 }

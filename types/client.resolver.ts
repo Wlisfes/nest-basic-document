@@ -1,5 +1,11 @@
 import type { Base } from '@/types/common.resolver'
 
+export interface IRole extends Base {
+    key: string
+    name: string
+    status: string
+}
+
 export interface IUser extends Base {
     uid: string
     nickname: string
@@ -8,5 +14,5 @@ export interface IUser extends Base {
     mobile: string
     status: string
     password: string
-    roles: string[]
+    roles: IRole[]
 }

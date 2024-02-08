@@ -6,13 +6,7 @@ export default defineNuxtPlugin(nuxtApp => {
     const { $configer } = useNuxtApp()
     const { configProvider } = useProvider()
     const { message, notification, dialog, loadingBar } = createDiscreteApi(['message', 'dialog', 'notification', 'loadingBar'], {
-        configProviderProps: configProviderRef as ConfigProviderProps,
-        loadingBarProviderProps: {
-            loadingBarStyle: {
-                loading: { height: '3px' },
-                error: { height: '3px' }
-            }
-        }
+        configProviderProps: configProviderRef as ConfigProviderProps
     })
 
     //prettier-ignore
