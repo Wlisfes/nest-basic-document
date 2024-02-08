@@ -59,13 +59,16 @@ export async function divineEventJwtTokenValidator(
     }
 }
 
-/**验证包装**/
-export async function divineEventValidator<T>(cls: ClassConstructor<T>, state: { data: object; option?: ValidatorOptions }) {
+/**验证包装**/ //prettier-ignore
+export async function divineEventValidator<T>(
+    cls: ClassConstructor<T>,
+    state: { data: T; option?: ValidatorOptions }
+): Promise<T> {
     const post = plainToInstance(cls, state.data ?? {})
     return await validateOrReject(post as never, {
         validationError: { target: false, value: true },
         ...state.option
-    }).catch(async errors => {
+    }).then(() => state.data).catch(async errors => {
         const { constraints } = errors.shift() as ValidationError
         const data = Object.keys(constraints).map(field => ({ field: constraints[field] }))
         const message = constraints.isNotEmpty ?? data[0].field
