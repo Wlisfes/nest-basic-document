@@ -11,7 +11,7 @@ export default defineNuxtComponent({
             dataColumn: [
                 { key: 'name', title: '角色名称', minWidth: 160 },
                 { key: 'key', title: '角色标识', minWidth: 160 },
-                { key: 'comment', title: '角色描述', minWidth: 200 },
+                { key: 'comment', title: '角色描述', minWidth: 220 },
                 { key: 'status', title: '角色状态', minWidth: 120 },
                 { key: 'createTime', title: '创建时间', minWidth: 180 }
             ],
@@ -21,9 +21,16 @@ export default defineNuxtComponent({
         })
 
         return () => (
-            <n-element class="manager-provider">
-                <n-data-table columns={state.value.dataColumn} data={state.value.dataSource} />
-            </n-element>
+            <common-element mode="absolute">
+                <n-data-table
+                    loading={state.value.loading}
+                    columns={state.value.dataColumn}
+                    data={state.value.dataSource}
+                    flex-height={true}
+                    scroll-x={840}
+                    style={{ height: '100%' }}
+                />
+            </common-element>
         )
     }
 })
