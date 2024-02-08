@@ -4,7 +4,6 @@ import { type PropType } from 'vue'
 export default defineNuxtComponent({
     name: 'CommonElement',
     props: {
-        loading: { type: Boolean, default: false },
         mode: { type: String as PropType<'relative' | 'absolute'>, default: 'relative' }
     },
     setup(props, { slots }) {
@@ -15,6 +14,7 @@ export default defineNuxtComponent({
 
 <style lang="scss" scoped>
 .common-element {
+    box-sizing: border-box;
     &.is-relative {
         position: relative;
         flex: 1;

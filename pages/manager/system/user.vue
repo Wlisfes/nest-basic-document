@@ -42,7 +42,7 @@ export default defineNuxtComponent({
         }
 
         return () => (
-            <common-element mode="absolute">
+            <common-element mode="absolute" style={{ padding: '20px' }}>
                 <n-data-table
                     loading={state.value.loading}
                     columns={state.value.dataColumn}

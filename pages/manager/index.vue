@@ -2,7 +2,7 @@
 export default defineNuxtComponent({
     name: 'ManagerIndex',
     setup(props, { slots }) {
-        return () => <manager-container></manager-container>
+        return () => <common-element mode="absolute"></common-element>
     }
 })
 </script>

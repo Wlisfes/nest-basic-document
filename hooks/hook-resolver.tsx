@@ -85,7 +85,7 @@ export function useResolver<T>(opts: OptionRequestResolver<T>) {
             const { data } = await opts.request(state.value as OptionResolver<T>)
             await setInitialize(false)
             return await setState({
-                dataSource: Array.from({ length: 100 }, () => data.list[0]),
+                dataSource: data.list,
                 total: data.total,
                 loading: false
             })
