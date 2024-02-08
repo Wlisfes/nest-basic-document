@@ -1,7 +1,7 @@
 import { createBaser, createBuilder, inserter } from '@/server/lib/typeorm'
 import { TableUser, TableUserGitHub } from '@/server/database'
 import { downloadFileBuffer, uploadFileBuffer, createRename } from '@/server/lib/ali-oss'
-import { divineEventCatcher, divineEventWhereCatcher } from '@/server/utils/utils-validator'
+import { divineEventWhereCatcher } from '@/server/utils/utils-validator'
 import { divineJwtSignAuthorize } from '@/server/utils//utils-handler'
 import { divineIntNumber } from '@/utils/utils-common'
 import { IsNotEmpty } from 'class-validator'

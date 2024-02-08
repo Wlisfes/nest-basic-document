@@ -1,7 +1,7 @@
 import { IsNotEmpty } from 'class-validator'
 import { TableUser } from '@/server/database'
 import { createBuilder } from '@/server/lib/typeorm'
-import { divineEventCatcher, divineEventValidator, divineEventSlideTokenValidator } from '@/server/utils/utils-validator'
+import { divineEventValidator, divineEventSlideTokenValidator } from '@/server/utils/utils-validator'
 import { divineJwtSignAuthorize } from '@/server/utils/utils-handler'
 import bcrypt from 'bcryptjs'
 
@@ -14,43 +14,41 @@ export class BodySchema extends TableUser {
 }
 
 export default defineEventHandler(async event => {
-    return await divineEventCatcher(event, async evt => {
-        const state = await readBody<BodySchema>(event)
-        await divineEventValidator(BodySchema, {
-            data: state,
-            option: { groups: ['account', 'password', 'token'] }
-        })
-        await divineEventSlideTokenValidator(event, state.token)
+    const state = await readBody<BodySchema>(event)
+    await divineEventSlideTokenValidator(event, state.token)
+    await divineEventValidator(BodySchema, {
+        data: state,
+        option: { groups: ['account', 'password', 'token'] }
+    })
 
-        /**查询登录用户**/
-        const node = await createBuilder(event.context.db, TableUser, async qb => {
-            qb.addSelect('t.password')
-            qb.where('t.email = :email', { email: state.account })
-            qb.orWhere('t.mobile = :mobile', { mobile: state.account })
-            qb.andWhere('t.status IN(:...status)', { status: ['enable', 'disable'] })
-            return await qb.getOne()
-        }).then(async data => {
-            await divineEventWhereCatcher(!Boolean(data), {
-                code: 401,
-                message: '用户未注册'
-            })
-            await divineEventWhereCatcher(data.status === 'disable', {
-                code: 401,
-                message: '账户已被禁用'
-            })
-            await divineEventWhereCatcher(!bcrypt.compareSync(state.password, data.password), {
-                code: 401,
-                message: '账户密码错误'
-            })
-            return data
+    /**查询登录用户**/
+    const node = await createBuilder(event.context.db, TableUser, async qb => {
+        qb.addSelect('t.password')
+        qb.where('t.email = :email', { email: state.account })
+        qb.orWhere('t.mobile = :mobile', { mobile: state.account })
+        qb.andWhere('t.status IN(:...status)', { status: ['enable', 'disable'] })
+        return await qb.getOne()
+    }).then(async data => {
+        await divineEventWhereCatcher(!Boolean(data), {
+            code: 401,
+            message: '用户未注册'
         })
-        return await divineJwtSignAuthorize({
-            uid: node.uid,
-            nickname: node.nickname,
-            status: node.status,
-            password: node.password
-        }).then(({ token, expire }) => {
-            return { token, expire, message: '登录成功' }
+        await divineEventWhereCatcher(data.status === 'disable', {
+            code: 401,
+            message: '账户已被禁用'
         })
+        await divineEventWhereCatcher(!bcrypt.compareSync(state.password, data.password), {
+            code: 401,
+            message: '账户密码错误'
+        })
+        return data
+    })
+    return await divineJwtSignAuthorize({
+        uid: node.uid,
+        nickname: node.nickname,
+        status: node.status,
+        password: node.password
+    }).then(({ token, expire }) => {
+        return { token, expire, message: '登录成功' }
     })
 })
