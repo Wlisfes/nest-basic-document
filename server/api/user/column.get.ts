@@ -1,54 +1,36 @@
-import { IsNumber, Min } from 'class-validator'
-import { Type } from 'class-transformer'
 import { createBuilder } from '@/server/lib/typeorm'
 import { TableUser } from '@/server/database'
 import { divineHandler } from '@/utils/utils-common'
+import { IsOptional } from '@/server/utils/utils-decorator'
+import { ColumnSchema } from '@/server/interface/common.resolver'
 
-export class QuerySchema {
-    @IsOptional({ groups: ['size'] })
-    @IsNumber({}, { message: 'page必须是数字', groups: ['size'] })
-    @Min(1, { message: 'page必须大于0', groups: ['size'] })
-    @Type(type => Number)
-    page: number
-
-    @IsOptional({ groups: ['size'] })
-    @IsNumber({}, { message: 'size必须是数字', groups: ['size'] })
-    @Min(1, { message: 'size必须大于0', groups: ['size'] })
-    @Type(type => Number)
-    size: number
-
+/**列表参数**/
+export class QuerySchema extends ColumnSchema {
     @IsOptional({ groups: ['keyword'] })
     keyword: string
 }
 
 export default defineEventHandler(async event => {
-    return divineEventCatcher(event, async evt => {
-        await divineEventJwtTokenValidator(event, { next: false })
-        const state = await divineEventParameter({ page: 1, size: 10 }).then(json => {
-            return Object.assign(json, getQuery<QuerySchema>(event))
+    await divineEventJwtTokenValidator(event, { next: false })
+    const state = await divineEventParameter({ page: 1, size: 10 }).then(json => {
+        return Object.assign(json, getQuery<QuerySchema>(event))
+    })
+    await divineEventValidator(QuerySchema, {
+        data: state,
+        option: { groups: ['page', 'size'] }
+    })
+    return await createBuilder(event.context.db, TableUser, async qb => {
+        qb.leftJoinAndSelect('t.roles', 'roles')
+        await divineHandler(!!state.keyword, () => {
+            qb.orWhere('t.uid LIKE :uid', { uid: `%${state.keyword}%` })
+            qb.orWhere('t.nickname LIKE :nickname', { nickname: `%${state.keyword}%` })
+            qb.orWhere('t.mobile LIKE :mobile', { mobile: `%${state.keyword}%` })
+            return qb.orWhere('t.email LIKE :email', { email: `%${state.keyword}%` })
         })
-        await divineEventValidator(QuerySchema, {
-            data: state,
-            option: { groups: ['page', 'size'] }
-        })
-        return await createBuilder(event.context.db, TableUser, async qb => {
-            qb.leftJoinAndSelect('t.roles', 'roles')
-            await divineHandler(!!state.keyword, () => {
-                qb.orWhere('t.uid LIKE :uid', { uid: `%${state.keyword}%` })
-                qb.orWhere('t.nickname LIKE :nickname', { nickname: `%${state.keyword}%` })
-                qb.orWhere('t.mobile LIKE :mobile', { mobile: `%${state.keyword}%` })
-                return qb.orWhere('t.email LIKE :email', { email: `%${state.keyword}%` })
-            })
-            qb.skip((state.page - 1) * state.size)
-            qb.take(state.size)
-            return await qb.getManyAndCount()
-        }).then(async ([list = [], total = 0]) => {
-            return {
-                total,
-                list,
-                page: state.page,
-                size: state.size
-            }
-        })
+        qb.skip((state.page - 1) * state.size)
+        qb.take(state.size)
+        return await qb.getManyAndCount()
+    }).then(([list = [], total = 0, page = Number(state.page), size = Number(state.size)]) => {
+        return { page, size, total, list }
     })
 })
