@@ -24,7 +24,7 @@ export default defineEventHandler(async event => {
     await divineValidator(BodySchema, { data: state })
 
     /**验证滑动验证**/
-    await divineEventSlideTokenValidator(event, state.token)
+    // await divineEventSlideTokenValidator(event, state.token)
 
     /**注册验证码******************************************************************/
     if (state.source === SourceEnum.Register) {

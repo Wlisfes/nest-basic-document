@@ -15,7 +15,7 @@ export class BodySchema extends TableUser {
 
 export default defineEventHandler(async event => {
     const state = await readBody<BodySchema>(event)
-    await divineEventSlideTokenValidator(event, state.token)
+    // await divineEventSlideTokenValidator(event, state.token)
     await divineValidator(BodySchema, {
         data: state,
         option: { groups: ['account', 'password', 'token'] }
